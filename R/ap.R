@@ -83,7 +83,7 @@ results.data <- data.frame(stringsAsFactors = FALSE,
                            corrected = ifelse(stepm.results$rejected, "sig.", ""))
 
 results.data <- results.data[order(results.data$value, decreasing = TRUE),]
-results.data$predictor <- gsub(" \\.CT", "(\\\\textsc{ct})", results.data$predictor)
+results.data$predictor <- gsub(" \\.CT", "(CT)", results.data$predictor)
 results.data$predictor <- gsub("\\.", " ", results.data$predictor)
 names(results.data)[1] <- " "
 

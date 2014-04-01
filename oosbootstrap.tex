@@ -1,4 +1,4 @@
-\documentclass[11pt,fleqn]{article}
+\documentclass[12pt,fleqn]{article}
 
 \usepackage{amsfonts}
 \usepackage{amsmath,amsthm,amssymb,graphicx,setspace,url,booktabs,tabularx,enumerate,slantsc}
@@ -7,8 +7,9 @@
 \usepackage[sort,round,comma]{natbib}
 \usepackage[margin=1.25in]{geometry}
 \usepackage[small]{caption}
+\usepackage[charter]{mathdesign}
+\urlstyle{same}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
-\onehalfspacing
 \bibliographystyle{abbrvnat}
 \newcommand\citepos[2][]{\citeauthor{#2}'s \citeyearpar[#1]{#2}}
 \newcommand\poscw{\citeauthor{ClW:06}'s \citeyearpar{ClW:06,ClW:07}}
@@ -61,26 +62,26 @@
 \newcommand{\oavg}[1]{\tfrac{1}{P} \osum{#1}}
 \newcommand{\oclt}[1]{\tfrac{1}{\sqrt{P}} \osum{#1}}
 
-\newcommand{\aic}{\textsc{aic}}
-\newcommand{\bic}{\textsc{bic}}
-\newcommand{\brc}{\textsc{brc}}
-\newcommand{\cdf}{\textsc{cdf}}
-\newcommand{\clt}{\textsc{clt}}
+\newcommand{\aic}{AIC}
+\newcommand{\bic}{BIC}
+\newcommand{\brc}{BRC}
+\newcommand{\cdf}{CDF}
+\newcommand{\clt}{CLT}
 \newcommand{\dd}[1]{\frac{\partial}{\partial #1}}
-\newcommand{\dgp}{\textsc{dgp}}
-\newcommand{\fclt}{\textsc{fclt}}
-\newcommand{\fwe}{\textsc{fwe}}
-\newcommand{\gdp}{\textsc{gdp}}
-\newcommand{\hac}{\textsc{hac}}
-\newcommand{\lln}{\textsc{lln}}
-\newcommand{\ma}{\textsc{ma}}
-\newcommand{\mds}{\textsc{mds}}
-\newcommand{\ned}{\textsc{ned}}
-\newcommand{\ols}{\textsc{ols}}
-\newcommand{\oos}{\textsc{oos}}
-\newcommand{\sfwe}{\textsc{sfwe}}
-\newcommand{\spa}{\textsc{spa}}
-\newcommand{\wfwe}{\textsc{wfwe}}
+\newcommand{\dgp}{DGP}
+\newcommand{\fclt}{FCLT}
+\newcommand{\fwe}{FWE}
+\newcommand{\gdp}{GDP}
+\newcommand{\hac}{HAC}
+\newcommand{\lln}{LLN}
+\newcommand{\ma}{MA}
+\newcommand{\mds}{MDS}
+\newcommand{\ned}{NED}
+\newcommand{\ols}{OLS}
+\newcommand{\oos}{OOS}
+\newcommand{\sfwe}{SFWE}
+\newcommand{\spa}{SPA}
+\newcommand{\wfwe}{WFWE}
 
 \renewcommand{\Re}{\ensuremath{\mathbb{R}}}
 
@@ -99,14 +100,14 @@
 
 \author{Gray Calhoun\thanks{ Economics Department; Iowa State
     University; Ames, IA 50011.  Telephone: (515) 294-6271.  Email:
-    \texttt{gcalhoun@iastate.edu}.  Web:
-    \texttt{http://gray.clhn.co}.  I'd like to
+    \guillemotleft\protect\url{gcalhoun@iastate.edu}\guillemotright.  Web:
+    \guillemotleft\protect\url{http://gray.clhn.co}\guillemotright.  I'd like to
     thank Helle Bunzel, Todd Clark, Graham Elliott, Yu-Chin Hsu,
     Michael McCracken, Pablo Pincheira, Allan Timmermann, Stephane
     Meng-Feng Yen and participants at the 2011 Midwest Econometrics
     Group meeting for helpful comments and discussions.  I'd also like to thank Amit
     Goyal for providing computer code and data for his 2008
-    \textsc{rfs} paper with Ivo
+    RFS paper with Ivo
     Welch \citep{GoW:08}.} \\
   Iowa State University}
 
@@ -190,7 +191,7 @@ model invalidates their proof.
 
 In this paper, I show that a modified version of their statistic is
 asymptotically normal even when the smaller model is estimated.  To
-achieve normality, we need a consistent estimate of the pseudo-true
+achieve normality, we need a consistent estimate of the pseudotrue
 benchmark model, while maintaining an inconsistent estimate of the
 larger model so that we can ignore nesting.  We can meet both needs by
 using different window strategies for each model: the benchmark model
@@ -203,7 +204,7 @@ accuracy between the two models.  The benchmark model rarely allows
 for breaks, parameter drift, or other forms of
 instability,%
 \footnote{Exceptions are \citepos{StW:07}
-  \textsc{ima}(1,1) and \textsc{uc-sv} models of inflation.} %
+  IMA(1,1) and UC-SV models of inflation.} %
 but the
 researcher is typically concerned about instability.  Indeed, concern
 about instability is often given as a reason for doing an \oos\
@@ -220,7 +221,7 @@ could instead impose stability on the benchmark and relax it for the
 alternative by using a recursive window for the benchmark and a
 rolling window for the alternative model.  This approach could have a
 power advantage and is similar in spirit to using a Likelihood Ratio
-Test instead of an \textsc{lm} or Wald test, which depend on just the
+Test instead of an LM or Wald test, which depend on just the
 restricted or unrestricted model respectively.
 
 This paper's statistic has a substantial advantage over existing \oos\
