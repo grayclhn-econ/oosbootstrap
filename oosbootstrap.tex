@@ -34,7 +34,7 @@ Bootstrap; Reality Check
 
 \end{abstract}
 
-\newpage 
+\newpage
 
 \section{Introduction}
 
@@ -333,17 +333,17 @@ statistics.
 \appendix
 \section{Proofs of Main Theoretical Results}\label{sec:B}
 
-Define the additional notation 
+Define the additional notation
 $F_t(\beta) = \tfrac{\partial}{\partial \beta} f_t(\beta)$,
 $F_t = F_t(\btrue)$,
 $\hat f_t^* = f_t^*(\hat\beta_t^*)$,
 $F_t^*(\beta) = \tfrac{\partial}{\partial \beta} f_t^*(\beta)$,
 $F_t^* = F_t^*(\btrue[*])$,
 $h_t = h_t(\btrue)$,
-$h_t^* = h_t^*(\btrue[*])$, 
+$h_t^* = h_t^*(\btrue[*])$,
 and
 \begin{equation*}
-      H_{t}^* = \begin{cases} 
+      H_{t}^* = \begin{cases}
         \tfrac1t \sum_{s=1}^t h_{s}^* & \text{recursive window} \\
         \tfrac1R \sum_{s=t-R+1}^t h_{s}^* & \text{rolling window} \\
         \tfrac1R \sum_{s=1}^R h_{s}^* & \text{fixed window} \\
@@ -368,7 +368,7 @@ and
   where (as in \citealp{Wes:96}) the $i$th element of $w_t^*$ is
   \begin{equation*}
     w_{it} = \tfrac12 (\hat\beta_t^* - \hat\beta_{T+1})'
-    \Big[\tfrac{\partial^2}{\partial \beta \partial\beta'} 
+    \Big[\tfrac{\partial^2}{\partial \beta \partial\beta'}
     f_{it}^*(\tilde\beta_{it}^*) \Big]
     (\hat\beta_t^* - \hat\beta_{T+1})
   \end{equation*}
@@ -454,7 +454,7 @@ as each element has positive variance.
   \item $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
     \citepos{Jon:97} \clt, so the result is trivial.  Also,
    \begin{equation}
-     \Big\lvert\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T 
+     \Big\lvert\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T
      ( F_t^* - \E^* F^*)\Big\rvert = O_{p^*}(\Omega^*(\hat\beta_{T+1})^{1/2}) = O_p(1)
     \end{equation}
     as in the proof of part 1, where now $\Omega^*(\beta) = \var^* F_t^*(\beta)$.
@@ -469,7 +469,7 @@ as each element has positive variance.
 \begin{proof}[Proof of Lemma~\ref{res:a4}]
 We can write
 \begin{equation*}
-  \Big\lvert \WesA[*] \Big\rvert \leq 
+  \Big\lvert \WesA[*] \Big\rvert \leq
   \Big\lvert \oclt{t} (F_t^* - \E^* F^*_t) B^* \Big\rvert
   \sup_t | H_t^* |.
 \end{equation*}
@@ -481,9 +481,9 @@ similar.
 
 \begin{lema}\label{res:a3}
   Suppose the conditions of Theorem~\ref{res:3} hold, let
-  \[\psi_t^{*}(\beta) = 
+  \[\psi_t^{*}(\beta) =
   \binom{f_t^{*}(\beta) - \bar{f}(\beta)}{h_t^{*}(\beta) - \bar h(\beta)},\]
-  and define $\psi_t = \psi_t(\btrue)$, $\hat\psi_t = \psi_t(\btrue[*])$, and 
+  and define $\psi_t = \psi_t(\btrue)$, $\hat\psi_t = \psi_t(\btrue[*])$, and
   $\psi_t^* = \psi_t^*(\btrue[*])$.  Then
   \begin{equation}\label{eq:1}
     \pr\Big[\sup_x \Big| \pr^{*}\Big[ \oclt{t} \psi_{t}^{*}
@@ -497,7 +497,7 @@ similar.
   Note that both $\psi_t$ and $\psi_t^*$ satisfy
   \clt s, (\citealp[Theorem~2]{Jon:97} and
   \citealp[Theorem~1]{Cal:13}) so it suffices to prove that
-  \[ \tfrac{ 1 }{ P } \var^* \osum{t} \psi_t^* 
+  \[ \tfrac{ 1 }{ P } \var^* \osum{t} \psi_t^*
   - \tfrac{ 1 }{ P } \var \osum{t} \psi_t \to^p
   0. \] I will prove this result for the Circular Block Bootstrap
   \citep{PoR:92}---the proof for other block bootstraps is similar and
@@ -537,9 +537,9 @@ similar.
   hold by assumption and it remains to prove their condition (2.9)
   holds, namely that
   \begin{equation}\label{eq:2}
-    \sup_{\beta \in N} \Bigg\lVert \tfrac{1}{T} \sum_{t=1}^T e^{i \xi t/b} 
+    \sup_{\beta \in N} \Bigg\lVert \tfrac{1}{T} \sum_{t=1}^T e^{i \xi t/b}
     \Bigg( \frac{\partial \psi_{jt}(\beta)}{\partial \beta_k} -
-          \E \frac{\partial \psi_{jt}(\beta)}{\partial \beta_k} \Bigg) 
+          \E \frac{\partial \psi_{jt}(\beta)}{\partial \beta_k} \Bigg)
     \Bigg\rVert_2 \to 0
   \end{equation}
   for all $j$, $k$, and $\xi$.  For any fixed $\beta \in N$,
@@ -577,7 +577,7 @@ similar.
   almost surely.  For any positive $\delta$,
   \begin{equation*}
     \pr \Bigg[ \tfrac{1}{T} \sum_{s = 1}^{b - 1} | \hat\psi_{is} |
-              > \delta \Bigg] \leq 
+              > \delta \Bigg] \leq
     \pr \Bigg[\tfrac{1}{T} \sum_{s = 1}^{b - 1} \sup_{ \beta \in N } | \psi_{is}( \beta ) |
               > \delta \Bigg] +
     \pr \big[ \hat \beta_{T+1} \notin N \big].
@@ -595,12 +595,12 @@ similar.
     \oclt{t}
     (\hat f_t - \E f_t) \to^d N(0, \sigma^2),
   \end{equation}
-  with 
+  with
   \begin{align}
   \sigma^2 &= S_{ff} + \lambda_{fh} (F B S_{fh}' + S_{fh} B' F') + 2 \lambda_{hh} F V_\beta F' \\
-  (\lambda_{fh}, \lambda_{hh}) &= 
+  (\lambda_{fh}, \lambda_{hh}) &=
   \begin{cases}
-    (1, 2) \times \big(1 - \tfrac{1}{\pi} \ln(1 + \pi)\big) 
+    (1, 2) \times \big(1 - \tfrac{1}{\pi} \ln(1 + \pi)\big)
       & \text{recursive window} \\
     \big(\tfrac{\pi}{2}, \pi - \tfrac{\pi^2}{3}\big)
       & \text{rolling window with $\pi \leq 1$} \\
@@ -628,7 +628,7 @@ similar.
   where (again, as in \citealp{Wes:96}) the $i$th element of $w_t$ is
   \begin{equation*}
     w_{it} = \tfrac12 (\hat\beta_t - \btrue)'
-    \Big[\tfrac{\partial^2}{\partial \beta \partial\beta'} 
+    \Big[\tfrac{\partial^2}{\partial \beta \partial\beta'}
     f_{it}(\tilde\beta_{it}) \Big]
     (\hat\beta_t - \btrue)
   \end{equation*}
