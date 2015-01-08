@@ -530,12 +530,10 @@ of the bootstrap process, so
     the previous argument and by assumption.  The same argument holds
     for $\hat{\beta}_t^{*} - \btrue[*]$ as well.
   \item $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
-    \citepos{Jon:97} \clt, so the result is trivial.  Also,
-   \begin{equation}
-     \Big\lvert\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T
-     ( F_t^* - \E^* F^*)\Big\rvert = O_{p^*}(\Omega^*(\hat\beta_{T+1})^{1/2}) = O_p(1)
-    \end{equation}
-    as in the proof of part 1, where now $\Omega^*(\beta) = \var^* F_t^*(\beta)$.
+    \citepos{Jon:97} \clt, so the result is trivial. For the
+    bootstrapped process, we know that the bootstrap variance is
+    equivalent to (...HAC estimator...) which is consistent by
+    \citepos{JoD:00} Theorem (2?).\qedhere
   \end{enumerate}
 \end{proof}
 
