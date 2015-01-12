@@ -14,8 +14,8 @@
     Welch \citep{GoW:08}.} \\
   Iowa State University}
 
-\title{A block bootstrap for asymptotically normal out-of-sample
-  test statistics}
+\title{A simple block bootstrap for asymptotically normal
+  out-of-sample test statistics}
 
 \maketitle
 
@@ -38,167 +38,26 @@ Bootstrap; Reality Check
 
 \section{Introduction}
 
-This paper develops a block bootstrap method to consistently estimate
-out-of-sample (OOS) statistics' distributions.
-
-\oos\ tests are commonly used in International Macroeconomics,
-Macroeconomics, and Finance (see, for example, \citealt{MeR:83};
-\citealt{StW:03}; and \citealt{GoW:08}) and there is a substantial
-literature developing the theoretical properties of these statistics,
-beginning primarily with \citet{DiM:95} and
-\citet{Wes:96}.%
-\footnote{Other papers in this literature include
-  \citet{WeM:98}, \citet{Mcc:98,Mcc:00},
-  \citet{ClM:01,ClM:05-2,ClM:05,ClM:11b,ClM:12,ClM:12b},
-  \citet{CCS:01}, \citet{CoS:02,CoS:04,CoS:07}, \citet{Whi:00},
-  \citet{InK:04,InK:06}, \citet{Han:05}, \citet{Ros:05},
-  \citet{ClW:06,ClW:07}, \citet{Ana:07}, \citet{GiR:09,GiR:10},
-  \citet{HuW:10}, \citet{HLN:11}, \cite{InR:11}, \cite{Pin:11},
-  \cite{RoS:11,RoS:11b}, and \citet{Cal:11}, among others.  For recent
-  reviews of this literature and additional references, see
-  \citet{McW:02}, \citet{CoS:06}, \citet{Wes:06}, \citet{ClM:11c},
-  \citet{CoD:11}, and \citet{Gia:11}} %
-In a pair of papers,
-\citet{ClW:06,ClW:07} develop an \oos\ test of the null hypothesis
-that a small benchmark model is correctly specified.  Their test
-compares the forecasting performance of a pair of nested models, and
-the null hypothesis is that the innovations in the smaller model form
-a martingale difference sequence.  This test procedure is popular, and
-one assumes that this is due in part to the statistic's convenience,
-the statistic is approximately normal after adjusting for the
-estimation error of the larger model.  Normality comes from a
-fixed-length rolling window, as in \citet{GiW:06}, and the adjustment
-centers the statistic appropriately.  This statistic is especially
-convenient because other \oos\ tests for similar hypotheses
-(\citealt{CCS:01}; \citealt{ClM:01,ClM:05}; \citealt{CoS:02,CoS:04};
-and \citealt{Mcc:07}; among others) have a nonstandard limit
-distribution and place restrictions on the models under consideration,
-while other asymptotically normal statistics test a different null
-hypothesis \citep{GiW:06} or place assumptions on the models and \dgp\
-that are often violated in empirical work (\citealt{DiM:95};
-\citealt{Wes:96}; \citealt{WeM:98};
-\citealt{Mcc:00}).%
-\footnote{\citet{DiM:95} assume that the models are
-  not estimated. \citet{Wes:96}, \citet{WeM:98}, and \citet{Mcc:00}
-  implicitly assume that the models do not converge to the same limit,
-  which rules out nesting.} %
-
-However, Clark and West's statistic is only ``approximately normal''
-in an informal sense.  Clark and West present Monte Carlo evidence of
-the statistic's distribution, but only prove that the statistic is
-asymptotically normal with mean zero when the benchmark model is a
-random walk \citep{ClW:06}. Estimating the parameters of the smaller
-model invalidates their proof.
-
-In this paper, I show that a modified version of their statistic is
-asymptotically normal even when the smaller model is estimated.  To
-achieve normality, we need a consistent estimate of the pseudotrue
-benchmark model, while maintaining an inconsistent estimate of the
-larger model so that we can ignore nesting.  We can meet both needs by
-using different window strategies for each model: the benchmark model
-is estimated using a recursive window and the alternative with a
-fixed-length rolling window.
-
-Mixing window strategies is uncommon but needn't be. In most
-applications, the null hypothesis imposes stability as well as equal
-accuracy between the two models.  The benchmark model rarely allows
-for breaks, parameter drift, or other forms of
-instability,%
-\footnote{Exceptions are \citepos{StW:07}
-  IMA(1,1) and UC-SV models of inflation.} %
-but the
-researcher is typically concerned about instability.  Indeed, concern
-about instability is often given as a reason for doing an \oos\
-analysis, especially with a short rolling window.%
-\footnote{This
-  motivation is discussed by \citet{StW:03}, \citet{PeT:05,PeT:07},
-  \cite{GiW:06}, \citet{GoW:08}, \citet{ClM:09c}, and
-  \cite{GiR:09,GiR:10}, among others.} %
-A researcher could impose
-stability on both models by using a recursive window or relax
-stability for both by using a rolling window; either approach should
-not affect the test's size, but may affect power.  But the researcher
-could instead impose stability on the benchmark and relax it for the
-alternative by using a recursive window for the benchmark and a
-rolling window for the alternative model.  This approach could have a
-power advantage and is similar in spirit to using a Likelihood Ratio
-Test instead of an LM or Wald test, which depend on just the
-restricted or unrestricted model respectively.
-
-This paper's statistic has a substantial advantage over existing \oos\
-tests for nested models: the alternative can be essentially arbitrary
-as long as high level moment conditions hold.  In particular,
-researchers can use model selection techniques like the \aic\ or \bic\
-to determine the number of lags to include, the particular exogenous
-variables to include, etc.  Other methods that test a similar
-hypothesis are unable to handle these models \citep[except][which does
-not allow the benchmark to be estimated]{ClW:06}; \citet{GiW:06} are
-able to handle such models for both the alternative and the benchmark
-but, as mentioned earlier, they test a different aspect of forecasting
-performance.
-
-This paper focuses on nested models, as they have received the most
-attention in the empirical and theoretical literature, but the
-statistic can be used with non-nested models as well.  This generality
-is useful, since \citepos{Wes:96} results do not apply to non-nested
-models if they both encompass the true \dgp,%
-\footnote{\citet{ClM:11b}
-  call this scenario, ``overlapping models.''} %
-which is allowable
-under the null: in the limit, both models will converge to the \dgp\
-and give identical forecasts.  Consequently, the naive \oos\ $t$-test
-is invalid, even after correcting the standard error if necessary to
-reflect parameter uncertainty.  \citet{ClM:11b} show that the fixed
-window \oos\ $t$-test remains normal for these models but the
-recursive and rolling windows (with the window size increasing to
-$\infty$) do not, and provide a procedure for pointwise (but not
-uniformly) valid tests for the recursive and rolling windows and
-uniformly valid tests for the fixed window.  The test proposed in this
-paper is uniformly valid and places fewer assumptions on the models
-under study and the true \dgp.
-
-Since researchers often have a set of potential models and want to
-know which of them significantly outperform the benchmark, procedures
-that compare a single pair of models are of limited practical value.
-As \citet{Whi:00} demonstrates, looking at the naive $p$-values of
-individual tests is misleading, but researchers can obtain a valid test
-by using the bootstrap to approximate the distribution of the largest
-individual test statistic under the null (White calls this procedure
-the \textit{Bootstrap Reality Check} or \brc).  This paper presents a test
-for equal predictive ability of multiple models based on
-\citepos{RoW:05} StepM, which uses a step-down procedure that
-iteratively rejects models to achieve higher power than the \brc\ and
-indicate which of the models improves on the benchmark (see
-Theorem~\ref{res:2} for details).
-
-This paper also presents a new result for the validity of block
-bootstraps with \oos\ statistics, which is necessary to verify that
-the StepM is valid.  Existing results on bootstrapping \oos\
-statistics have some drawbacks.  \citet{Whi:00} and \citet{Han:05} use
-the stationary bootstrap, but require the test sample to be much
-smaller than the training sample, which obviously does not hold here.
-\citet{CoS:07} relax that requirement, but make the statistic more
-complicated than necessary by adjusting the objective function of the
-bootstrapped statistic to center it correctly.%
-\footnote{Their
-  recentering is required for consistency and does not imply higher
-  order accuracy.} %
-A parametric bootstrap, such as that used by
-\cite{Mar:95}, \cite{Lut:99}, and \citet{ClM:12b}, is an alternative
-method, but requires the benchmark model to be correctly specified.
-Although I focus on the null hypothesis that the benchmark is
-correctly specified, this paper's block bootstrap methods remain valid
-when the benchmark is misspecified and are relatively easy to
-implement.  So this paper's result for bootstrapping \oos\ statistics
-considerably improves on existing procedures.
+This paper develops a block bootstrap method that can be used to
+consistently estimate the distributions of asymptotically normal
+out-of-sample (\oos) test statistics. Since the asymptotic variance of
+these statistics can have a complicated formula in many applications,
+bootstrap methods have the potential to be very useful in applied
+work. However, existing bootstraps are either based on parametric
+models of the null hypothesis (typically using sieve arguments, so
+that the effect of imposing a functional form dies out in large
+samples; see [fill in]), only hold with strict restrictions on the
+size of the test sample \citep{Whi:00,Han:05}, or require complicated
+estimation strategies in the bootstrap \citep{CoS:07}, making this
+approach impractical. In this paper, we show that standard
+nonparametric block bootstraps are also consistent and derive the
+correct centering term to ensure consistency.
 
 The next section presents our block bootstrap result.
 Section~\ref{sec:4} concludes.
 
 \section{The Bootstrap for Out-of-Sample Statistics}\label{sec:1b}
-The validity of the bootstrap in Theorem~\ref{res:2} is a special case
-of a result of independent interest---the validity in general of block
-bootstraps for asymptotically normal \oos\ statistics.  This section
+This section
 presents the general result.  In this section, let $\to^{p^{*}}$ and
 $\to^{d^{*}}$ refer to convergence in probability or distribution
 conditional on the observed data.  Similarly, $\E^{*}$, $\var^{*}$,
@@ -206,13 +65,6 @@ and $\cov^{*}$ refer to the expectation, variance, and covariance with
 respect to the probability measure induced by the bootstrap, and
 $y_t^{*}$, etc. is the random variable $y_t$ but under the
 bootstrap-induced \cdf.
-
-The notation in this section is more general than that of
-Section~\ref{sec:1}.  The assumptions required are generalizations of
-the conditions of Theorems~\ref{res:1} and~\ref{res:2}.  See
-\citet{Wes:96,Wes:06}, \citet{WeM:98}, and \citet{Mcc:00} for a
-discussion of these conditions, as theirs are nearly identical.
-Theorem~\ref{res:3} gives the result.
 
 \begin{asmp}\label{a1}
   The estimator $\hat{\beta}_t$ of $\btrue$ is estimated with a
@@ -414,7 +266,7 @@ and
         T\rfloor} \sum_{s=1}^{\lfloor \gamma T \rfloor} h_{s} \Big| \to^{p} 0
     \end{equation}
     with the convergence following from the continuous mapping
-    theorem.  For the bootstrapped average, \citepos{Cal:13}
+    theorem.  For the bootstrapped average, \citepos{Cal:14}
     Theorem~2 ensures that
     \begin{equation}
       \tfrac{1}{\sqrt{\gamma
