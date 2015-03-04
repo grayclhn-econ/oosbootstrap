@@ -19,9 +19,20 @@
 
 \maketitle
 
-\begin{abstract}\noindent%
+\begin{abstract} \noindent%
   This paper proposes an improved block bootstrap method for
-  out-of-sample statistics.
+  out-of-sample statistics. Previous block bootstrap methods for these
+  statistics have centered the bootstrap out-of-sample average on the
+  observed out-of-sample average, which can cause the distribution to
+  be miscentered under the null --- these papers have used either a
+  short out-of-sample period or an adjustment to the model parameter
+  estimators under the bootstrap to correct this centering
+  problem. Our approach centers the bootstrap replications correctly
+  under the null while continuing to use the standard formulas to
+  estimate the model parameters under the bootstrap, while allowing
+  the out-of-sample period to remain large. The resulting approach is
+  computationally more efficient and easier to program.
+
 \strut
 
 \noindent Keywords: Forecast Evaluation, Martingale Difference
