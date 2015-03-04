@@ -19,9 +19,20 @@
 
 \maketitle
 
-\begin{abstract}\noindent%
+\begin{abstract} \noindent%
   This paper proposes an improved block bootstrap method for
-  out-of-sample statistics.
+  out-of-sample statistics. Previous block bootstrap methods for these
+  statistics have centered the bootstrap out-of-sample average on the
+  observed out-of-sample average, which can cause the distribution to
+  be miscentered under the null --- these papers have used either a
+  short out-of-sample period or an adjustment to the model parameter
+  estimators under the bootstrap to correct this centering
+  problem. Our approach centers the bootstrap replications correctly
+  under the null while continuing to use the standard formulas to
+  estimate the model parameters under the bootstrap, while allowing
+  the out-of-sample period to remain large. The resulting approach is
+  computationally more efficient and easier to program.
+
 \strut
 
 \noindent Keywords: Forecast Evaluation, Martingale Difference
@@ -241,8 +252,24 @@ and
 
 \section{Supporting Results}
 
+Define the following notation to describe the bootstrap process. Let
+$u_1,\dots,u_{J}$ denote the starting periods of each block of the
+bootstrap, let $\ell_i$ denote their lengths, define the sigma fields
+\[
+  \Ms_i = \sigma(u_1,\dots,u_i; \ell_1,\dots,\ell_i; J)
+\]
+and
+\[
+  \Ms_i^* = \sigma(y_1,\dots,y_T; x_1,\dots, x_T;u_1,\dots,u_i; \ell_1,\dots,\ell_i; J)
+\]
+and let $j^*_t$ denote the block that contains the $t$th observation
+of the bootstrap process, so
+\[
+  t \in \{1 + \sum_{i=1}^{j^*_t-1} \ell_i, \sum_{i=1}^{j^*_t} \ell_i\}.
+\]
+
 \begin{lema}\label{res:a2}
-  Suppose $a \in [0,\frac12)$ and the conditions of Theorem~\ref{res:3}
+  Suppose $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
   hold.
   \begin{enumerate}
   \item $P^a \sup_t | H_{t} | \to^p 0$ and $P^a \sup_t | H_{t}^{*} |
@@ -258,28 +285,103 @@ and
 
 \begin{proof}[Proof of Lemma~\ref{res:a2}]
   \begin{enumerate}
-  \item The process $\tfrac{1}{\sqrt{T}} h_{s}$ satisfies
-    \citepos[Theorem 3.1]{JoD:00b} functional \clt.  So
-    \begin{equation}
-      P^a \sup_t \Big| \tfrac1t \sum_{s=1}^t h_{s} \Big| =
-      P^a \sup_{\gamma \in [0,1]} \Big| \tfrac{1}{\lfloor \gamma
-        T\rfloor} \sum_{s=1}^{\lfloor \gamma T \rfloor} h_{s} \Big| \to^{p} 0
-    \end{equation}
-    with the convergence following from the continuous mapping
-    theorem.  For the bootstrapped average, \citepos{Cal:14}
-    Theorem~2 ensures that
-    \begin{equation}
-      \tfrac{1}{\sqrt{\gamma
-          T}} \sum_{s=1}^{\lfloor \gamma T \rfloor} h_{s}^*
-      = O_{p^*}(\Omega^*(\hat\beta_{T+1})^{1/2})
-    \end{equation}
-    where $\Omega^*(\beta) = \var^* h_t^*(\beta)$.  Since
-    $\hat\beta_{T+1} \to^p \btrue$, it suffices to show that
-    $\sup_{\beta \in N} | \Omega^*(\beta) - \var h_t(\beta) | \to^p
-    0$.  But this convergence holds for any fixed $\beta$ and our
-    assumptions guarantee stochastic equicontinuity as in
-    \citet{JoD:00} \citep[also see][]{Dav:94}, completing the proof.
+  \item Convergence for the original process is essentially the same
+    as the proof in \citet{Wes:96}, with minor tweaks as in
+    \citet{Cal:15}; we will repeat it here for completeness. Our
+    assumptions ensure that $h_t$ is an $L_2$-mixingale of size $-1/2$;
+    let $c_t$ and $\zeta_k$ denote its mixingale constants and
+    coefficients and note that $h_t/t$ is also an $L_2$-mixingale array
+    with constants $c_s/t$ and coefficients $\zeta_k$, since
+    \begin{align*}
+      \| \E_{t-k} h_t / t \| = t^{-1} \| \E_{t-k} h_t \| \leq (c_t/t)\, \zeta_k
+    \end{align*}
+    and
+    \begin{equation*}
+      \| h_t/t - \E_{t+k} h_t/t \| = t^{-1} \|  h_t - \E_{t+k} h_t \| \leq (c_t/t)\, \zeta_{k+1}.
+    \end{equation*}
 
+    Then
+    \begin{align*}
+      P^{2a} \E\Bigg[\omax{t} \Big| \sum_{s=1}^t h_s/t \Big|^2\Bigg]
+      &\leq P^{2a} \E\Bigg[\omax{t} \Big| \sum_{s=1}^t h_s/s \Big|^2\Bigg] \\
+      &= O(P^{2a}) \sum_{s=1}^{T-1} s^{-2}
+    \end{align*}
+    where the second line follows from \citepos{Mcl:75} maximal
+    inequality (also available as \citealp{Dav:94}, Theorem 16.9 and
+    Corollary 16.10). This term converges to zero from \citepos{Wes:96} Lemma A1.
+
+    For the bootstrap process, we will use an argument similar to
+    those in \cite{Cal:14} and make liberal use of the
+    LIE. Define $\Hs_i^* = \sum_{t=K_{i-1}+1}^{K_i}
+    h_t^*/t$, so
+    \begin{align*}
+      \omax{t} | H_t^* |
+      &\leq \omax{t} \Big| \sum_{i=1}^{j^*_t - 1}\Hs_i^* \Big| + \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big|
+    \end{align*}
+    Now observe that $\{\sum_{i=1}^j \Hs_i^*; \Ms_j^*\}$ is a martingale, so
+    \begin{equation*}
+      \pr^*\Bigg[ \omax{t} \Big| \sum_{i=1}^{j^*_t - 1}\Hs_i^* \Big| > \epsilon \Bigg]
+      \leq \epsilon^{-2} \E^* \sum_{i=1}^J \E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*).
+    \end{equation*}
+
+    We can deal with this last term as follows. The expectation
+    $\E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*; \ell_i)$ only averages over the
+    start of the block used by $\Hs_i^*$, so
+    \begin{align*}
+      \E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*; \ell_i)
+      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}} \tilde{h}_{u + t}(\btrue[*]) / (K_{i-1} + t + 1)\Bigg]^2 \\
+      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 0}^{\ell_{i}-1}
+      (\tilde{h}_{u + t}(\btrue) + \tilde{h}_{u + t}(\btrue[*]) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t + 1)\Bigg]^2
+    \end{align*}
+    and we want to show that
+    \begin{equation}\label{eq:4}
+      P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t = 1}^{\ell_{i}}
+      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \to^p 0
+    \end{equation}
+    and
+    \begin{equation}\label{eq:5}
+      P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
+      (\tilde{h}_{u + t}(\btrue[*]) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t)\Bigg]^2
+      \to^p 0.
+    \end{equation}
+
+    For~\eqref{eq:4}, the $L_2$-mixingale property again ensures that
+    \begin{align*}
+      \E\Bigg|P^a \tfrac{1}{T-1} &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t = 1}^{\ell_{i}}
+      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \Bigg| \\
+      &= P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J \E\Bigg(\Bigg[\sum_{t = 1}^{\ell_{i}}
+      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \,\Big|\, \Ms_{i-1}, \ell_i\Bigg) \\
+      &\leq P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J C \sum_{t = 1}^{\ell_{i}} (K_{i-1} + t)^{-2} \\
+      &\leq P^a \sum_{t=1}^{T-1} t^{-2}
+    \end{align*}
+    (should be $2a$ in all of the above)
+    which converges to zero as before. For~\eqref{eq:5},
+    \begin{align*}
+      \tfrac{1}{T-1} &\sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
+      (\tilde{h}_{u + t}(\btrue[*]) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t)\Bigg]^2 \\
+      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
+      \nabla \tilde{h}_{u + t}(\tilde \beta_T)'(\btrue[*] - \btrue)/ (K_{i-1} + t)\Bigg]^2 \\
+      &= O_p(1/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
+      \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T) \rVert / (K_{i-1} + t)\Bigg]^2
+    \end{align*}
+    and
+    \begin{align*}
+      \E \Bigg| (P^{2a}/T) &\tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t =
+        1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
+      \rVert / (K_{i-1} + t)\Bigg]^2 \Bigg| \\
+      &= (P^{2a}/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J
+      \E \Bigg(\Bigg[\sum_{t =
+        1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
+      \rVert / (K_{i-1} + t)\Bigg]^2 \,\Bigg|\, \Ms_{i-1}; \ell_i \Bigg) \\
+      &\leq (P^{2a}/T) \E \sum_{i=1}^J \ell_i^2/K_{i-1}^2
+    \end{align*}
+    which converges to zero by Lemma~[add!].
+
+    Since
+    \[
+    \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big| \leq \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \Big| \sum_{s=K_{i-1}+1}^t h_s^*/t \Big|
+    \]
+    the proof that the second component converges to zero is similar.
   \item We have
     \begin{multline}
       P^a \sup_t | \hat{\beta}_t - \btrue | = P^a \sup_t |\hat{B}_{t}
@@ -291,12 +393,10 @@ and
     the previous argument and by assumption.  The same argument holds
     for $\hat{\beta}_t^{*} - \btrue[*]$ as well.
   \item $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
-    \citepos{Jon:97} \clt, so the result is trivial.  Also,
-   \begin{equation}
-     \Big\lvert\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T
-     ( F_t^* - \E^* F^*)\Big\rvert = O_{p^*}(\Omega^*(\hat\beta_{T+1})^{1/2}) = O_p(1)
-    \end{equation}
-    as in the proof of part 1, where now $\Omega^*(\beta) = \var^* F_t^*(\beta)$.
+    \citepos{Jon:97} \clt, so the result is trivial. For the
+    bootstrapped process, we know that the bootstrap variance is
+    equivalent to (...HAC estimator...) which is consistent by
+    \citepos{JoD:00} Theorem (2?).\qedhere
   \end{enumerate}
 \end{proof}
 
