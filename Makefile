@@ -1,4 +1,4 @@
-.PHONY: all clean burn libs dirs
+.PHONY: all clean burn dirs
 all: oosbootstrap.pdf
 
 .DELETE_ON_ERROR:
@@ -9,8 +9,8 @@ sqlite  := sqlite3
 LATEXMKFLAGS := -pdf -silent
 SHELL := /bin/bash
 
-dirs: tex db
-tex db:
+dirs: tex
+tex:
 	mkdir -p $@
 
 oosbootstrap.pdf: oosbootstrap.tex
