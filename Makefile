@@ -21,6 +21,4 @@ clean:
 	rm -f *~ slides/*~ data/*~
 burn: clean
 	$(latexmk) -C oosbootstrap.tex
-	rm -rf R auto tex slides/*.tex
-
-ROPTS = --byte-compile
+	rm -rf auto floats tex db slides/*.tex
