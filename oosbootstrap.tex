@@ -78,19 +78,23 @@ $y_t^{*}$, etc. is the random variable $y_t$ but under the
 bootstrap-induced \cdf.
 
 \begin{asmp}\label{a1}
-  The estimator $\hat{\beta}_t$ of $\btrue$ is estimated with a
+  The estimator $\hat{\beta}_t$ of $\btrue$ is an $M$-estimator estimated with a
   recursive, rolling, or fixed estimation window and satisfies
-  $\hat{\beta}_{t} - \beta_{0} = \hat{B}_{t} H_t$; $\hat{B}_{t}$ is a
-  sequence of $k \times q$ matrices such that $\sup_t |\hat{B}_t - B|
-  \to^p 0$; $H_{t}$ is a sequence of $q$-vectors such that
-  \begin{equation}
-    H_{t} = \begin{cases}
-      \tfrac1t \sum_{s=1}^t h_{s}(\btrue) & \text{recursive window} \\
-      \tfrac1R \sum_{s=t-R+1}^t h_{s}(\btrue) & \text{rolling window} \\
-      \tfrac1R \sum_{s=1}^R h_{s}(\btrue) & \text{fixed window} \\
+  \begin{equation*}
+    \hat\beta_t = \begin{cases}
+      \argmin_\beta \tfrac1t \sum_{s=1}^t q_{s}(\beta) & \text{recursive window} \\
+      \argmin_\beta \tfrac1R \sum_{s=t-R+1}^t q_{s}(\beta) & \text{rolling window} \\
+      \argmin_\beta \tfrac1R \sum_{s=1}^R q_{s}(\beta) & \text{fixed window}.
     \end{cases}
-  \end{equation}
-  and $\E h_{s}(\btrue) = 0$ for all $s$.
+  \end{equation*}
+  Similarly, the bootstrap estimator satisfies
+  \begin{equation*}
+    \hat\beta_t^* = \begin{cases}
+      \argmin_\beta \tfrac1t \sum_{s=1}^t q_{s}^*(\beta) & \text{recursive window} \\
+      \argmin_\beta \tfrac1R \sum_{s=t-R+1}^t q_{s}^*(\beta) & \text{rolling window} \\
+      \argmin_\beta \tfrac1R \sum_{s=1}^R q_{s}^*(\beta) & \text{fixed window}.
+    \end{cases}
+  \end{equation*}
 \end{asmp}
 
 \begin{asmp}\label{a2}
@@ -127,9 +131,6 @@ bootstrap-induced \cdf.
 \end{asmp}
 
 \begin{asmp}\label{a5}
-  The bootstrapped estimator satisfies $\sup_t |\hat{B}_t^{*} - B^{*}|
-  \to^p 0$, $B^{*} = B + o_p$ and $\frac1T \sum_{t=1}^T
-  h_t^*(\btrue[*]) = 0$ a.s.
 \end{asmp}
 
 \begin{asmp}\label{a6}
