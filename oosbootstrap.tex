@@ -67,9 +67,84 @@ correct centering term to ensure consistency.
 The next section presents our block bootstrap result.
 Section~\ref{sec:4} concludes.
 
-\section{The Bootstrap for Out-of-Sample Statistics}\label{sec:1b}
-This section
-presents the general result.  In this section, let $\to^{p^{*}}$ and
+\section{The Bootstrap for Out-of-Sample Statistics}
+
+We'll develop our theoretical results in a fairly general
+framework. Let $y_{t+1}$ be the target variable of interest --- the
+variable that is being predicted --- and let $x_t$ be a vector of
+other variables that are potentially informative about $y_{t+1}$ ---
+these are our predictors. The forecast $\hat y_{t+1}$ depends on the
+variables $x_t$ and an estimated parameter $\bh_t$. In the research
+project that we're trying to model, we're interested in a function of
+these variables and parameters, and the \oos\ average of that function
+is our test statistic.
+
+In symbols, we're interested in statistics of the form
+\begin{equation*}
+  \fb = \oclt{t} f(y_{t+1}, x_t, \bh_t).
+\end{equation*}
+To make the notation cleaner, we'll define $f_t(\beta) \equiv f(y_{t+1},
+x_t, \beta)$. We're also going to assume that $(y_{t+1}, x_t)$ is
+strictly stationary to simplify our presentation. One could derive the
+same results under the marginally weaker assumption that certain
+functions of these variables are weakly stationary.
+
+The coefficients are updated each period to mimic a true \oos\
+forecasting exercise. In this paper, we're going to assume that
+$\bh_t$ is an $M$-estimator. We expect that other classes of
+estimators can be used as well, as long as they are amenable to the
+bootstrap.
+
+Using standard terminology, the estimator $\bh_t$ is defined as
+\begin{equation}\label{eq:9}
+  \hat\beta_t = \begin{cases}
+    \argmin_\beta \tfrac1{t-1} \sum_{s=1}^{t-1} q(y_{s+1}, x_s, \beta) & \text{recursive window} \\
+    \argmin_\beta \tfrac1{R-1} \sum_{s=t-R+1}^{t-1} q(y_{s+1}, x_s, \beta) & \text{rolling window} \\
+    \argmin_\beta \tfrac1{R-1} \sum_{s=1}^{R-1} q(y_{s+1}, x_s, \beta) & \text{fixed window},
+  \end{cases}
+\end{equation}
+and, as before, to make the notation cleaner, define $q_s(\beta)
+\equiv q(y_{s+1},x_s,\beta)$. Obviously, for this to be a reasonable
+estimation approach $q_s$ will need to satisfy standard assumptions
+that we'll discuss soon.
+
+So far, this is is a very standard setup. Our novelty is in how we
+propose bootstrapping $\fb$. We're going to use a block bootstrap
+here. For the moment, consider the circular block bootstrap, which is
+implemented by drawing blocks of $\ell_1$ consecutive observations
+from the original dataset. For the circular block bootstrap, if the
+block extends beyond the dataset it is ``wrapped around,'' so, for
+example, $(T-1, T, 1, 2, 3, 4)$ is a possible block of indices when
+the block length is 6.
+
+We know from West's (1996) paper that, under appropriate assumptions,
+$\sqrt{P} (\fb - \E f_t(\btrue))$ is asymptotically normal with mean
+zero. The key insight in our paper is that we can match this result in
+the bootstrap, but we need to be careful about the exact centering
+term.  In particular, under the circular bootstrap, $\btrue[*]$ is the
+equivalent of $\btrue$ and the sample average is the equivalent of the
+population mean. That means that we should expect
+\begin{equation*}
+  \sqrt{P} (\fb^* - \fb(\btrue[*]))
+\end{equation*}
+to have the same asymptotic distribution and to give reliable
+confidence intervals, etc. And, after spelling out our specific
+assumptions, that's what we'll show!
+
+But, just to spell it out first, here
+\begin{equation}
+  \fb^* = \oavg{t} f(y_{t+1}^*, x_t^*, \bh_t^*) \equiv \oavg{t} f_t^*(\bh_t^*)
+\end{equation}
+where $\bh_t^*$ is estimated exactly the same way as $\bh_t$:
+\begin{equation}\label{eq:10}
+  \hat\beta_t^* = \begin{cases}
+    \argmin_\beta \tfrac1t \sum_{s=1}^t q_{s}^*(\beta) & \text{recursive window} \\
+    \argmin_\beta \tfrac1R \sum_{s=t-R+1}^t q_{s}^*(\beta) & \text{rolling window} \\
+    \argmin_\beta \tfrac1R \sum_{s=1}^R q_{s}^*(\beta) & \text{fixed window}.
+  \end{cases}
+\end{equation}
+
+In general, let $\to^{p^{*}}$ and
 $\to^{d^{*}}$ refer to convergence in probability or distribution
 conditional on the observed data.  Similarly, $\E^{*}$, $\var^{*}$,
 and $\cov^{*}$ refer to the expectation, variance, and covariance with
@@ -78,59 +153,32 @@ $y_t^{*}$, etc. is the random variable $y_t$ but under the
 bootstrap-induced \cdf.
 
 \begin{asmp}\label{a1}
-  The estimator $\hat{\beta}_t$ of $\btrue$ is an $M$-estimator estimated with a
-  recursive, rolling, or fixed estimation window and satisfies
-  \begin{equation*}
-    \hat\beta_t = \begin{cases}
-      \argmin_\beta \tfrac1t \sum_{s=1}^t q_{s}(\beta) & \text{recursive window} \\
-      \argmin_\beta \tfrac1R \sum_{s=t-R+1}^t q_{s}(\beta) & \text{rolling window} \\
-      \argmin_\beta \tfrac1R \sum_{s=1}^R q_{s}(\beta) & \text{fixed window}.
-    \end{cases}
-  \end{equation*}
-  Similarly, the bootstrap estimator satisfies
-  \begin{equation*}
-    \hat\beta_t^* = \begin{cases}
-      \argmin_\beta \tfrac1t \sum_{s=1}^t q_{s}^*(\beta) & \text{recursive window} \\
-      \argmin_\beta \tfrac1R \sum_{s=t-R+1}^t q_{s}^*(\beta) & \text{rolling window} \\
-      \argmin_\beta \tfrac1R \sum_{s=1}^R q_{s}^*(\beta) & \text{fixed window}.
-    \end{cases}
-  \end{equation*}
-\end{asmp}
-
-\begin{asmp}\label{a2}
-  Define $\psi_t(\beta) = (f_t(\beta), h_t(\beta))$; $\psi_t(\beta)$
-  is covariance stationary and twice continuously differentiable in an
-  open neighborhood $N$ of $\btrue$.  Also, $\E \sup_{\beta \in N}
-  |\psi_t(\beta)|^r$ and $\E\sup_{\beta \in N}
-  |\frac{\partial}{\partial \beta} \psi_t(\beta)|^r$ are uniformly
-  bounded, and there exists a sequence of random variables $m_t$ such
-  that $\sup_{i,\beta \in N} |\tfrac{\partial^2}{\partial
-    \beta \partial \beta'} \psi_{it}(\beta)| \leq m_t$ almost surely
-  and $\E m_t^2$ is uniformly finite.
+  The estimators $\bh_t$ and $\bh_t^*$ are estimated as defined in
+  Equations~\eqref{eq:9} and~\eqref{eq:10}. Moreover $\btrue =
+  \argmin_\beta \E\, q_s(\beta)$ is unique.
 \end{asmp}
 
 \begin{asmp}\label{a3}
-  Both $\psi_t(\beta)$ and $\frac{\partial}{\partial \beta}
-  \psi_t(\beta)$ are $L_2$-\ned\ of size $-\frac12$ on the series
-  $V_t$ with bounded \ned-coefficients for $\beta$ uniformly in $N$;
-  $V_t$ is strong mixing of size $-\frac{r}{r-2}$ or uniform mixing of
-  size $-\frac{r}{2r-2}$ with $r > 2$.%
-  \footnote{For uniform mixing processes, $r = 2$ is also allowed as
-    long as $\sup_{\beta \in N} \psi_t(\beta)^2$ and $\sup_{\beta \in
-      N} (\partial \psi_t(\beta) / \partial \beta)^2$ are uniformly
-    integrable.} %
+  The stochastic process $(y_{t+1}, x_t)$ is strictly stationary and
+  strong-mixing of size $-r/(r-2)$ or uniform mixing of size
+  $-r/(2r-2)$ with $r>2$.
+\end{asmp}
+
+\begin{asmp}\label{a2}
+  Both $f_t$ and $q_t$ are twice continuously differentiable in an
+  open neighborhood $N$ of $\btrue$ and $\E \nabla^2 q_t(\beta)$ is
+  positive definite uniformly in $N$. Also there exists a sequence of
+  random variables $m_t$ such that $\sup_{i,\beta \in N} |\nabla_i^2
+  q(\beta)| \leq m_t$ and $\sup_{i,\beta \in N} |\nabla_i q(\beta)|
+  \leq m_t$ almost surely and $\E m_t$ is uniformly finite.
 \end{asmp}
 
 \begin{asmp}\label{a4}
-  The sequence $\hat f_1^{*},\dots,\hat f_T^{*}$ is constructed using
-  the same procedure as the original \oos\ analysis over the bootstrap
-  sample, where the bootstrap sample is generated by moving blocks,
-  circular blocks, or stationary bootstrap with block lengths drawn
-  from the geometric distribution.  The (expected) block length $b$
-  satisfies $b \to \infty$ and $\frac{b}{P} \to 0$.
-\end{asmp}
-
-\begin{asmp}\label{a5}
+  The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$ is
+  constructed using a moving blocks, circular blocks, or stationary
+  bootstrap with block lengths drawn from the geometric distribution.
+  The (expected) block length $\ell_1$ satisfies $\ell_1 \to \infty$
+  and $\ell_1/P \to 0$.
 \end{asmp}
 
 \begin{asmp}\label{a6}
@@ -143,7 +191,7 @@ bootstrap-induced \cdf.
 \end{asmp}
 
 \begin{thm}\label{res:3}
-  Under Assumptions~\ref{a1}--\ref{a7},
+  Under Assumptions~\ref{a1} -- \ref{a7},
   \begin{equation}
     \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\bar{f}^* - \bar{f}(\btrue[*])) \leq x]
     - \pr[\sqrt{P}( \bar{f} - \E f_t) \leq x] \big\rvert > \epsilon\big] \to 0
