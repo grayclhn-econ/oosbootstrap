@@ -195,25 +195,9 @@ The paper improves block bootstrap procedures of \oos\
 statistics.
 
 \appendix
-\section{Proofs of Main Theoretical Results}\label{sec:B}
+\section{Proofs}\label{sec:B}
 
-Define the additional notation
-$F_t(\beta) = \tfrac{\partial}{\partial \beta} f_t(\beta)$,
-$F_t = F_t(\btrue)$,
-$\hat f_t^* = f_t^*(\hat\beta_t^*)$,
-$F_t^*(\beta) = \tfrac{\partial}{\partial \beta} f_t^*(\beta)$,
-$F_t^* = F_t^*(\btrue[*])$,
-$h_t = h_t(\btrue)$,
-$h_t^* = h_t^*(\btrue[*])$,
-and
-\begin{equation*}
-      H_{t}^* = \begin{cases}
-        \tfrac1t \sum_{s=1}^t h_{s}^* & \text{recursive window} \\
-        \tfrac1R \sum_{s=t-R+1}^t h_{s}^* & \text{rolling window} \\
-        \tfrac1R \sum_{s=1}^R h_{s}^* & \text{fixed window} \\
-      \end{cases}
-\end{equation*}
-
+\subsection{Main theoretical results}
 \newcommand{\WesA}[1][]{\oclt{t}
   (F_t^{#1} - \E^{#1} F_t^{#1}) B^{#1} H_t^{#1}}
 \newcommand{\WesB}[1][]{\tfrac{1}{\sqrt{P}} \E^{#1} F_t^{#1} \osum{t} (B_t^{#1} -
@@ -221,37 +205,119 @@ and
 \newcommand{\WesC}[1][]{\oclt{t}
   (F_t^{#1} - \E^{#1} F_t^{#1}) (B_t^{#1} - B^{#1}) H_t^{#1}}
 \begin{proof}[Proof of Theorem~\ref{res:3}]
-  Expand $f_t^{*}(\hat{\beta}_t^{*})$ around $\btrue[*]$
+  Expand $f_t^{*}(\bh_t^*)$ around $\btrue[*]$
   to get
   \begin{align*}
-    \sqrt{P} \big(\bar{f}^{*} - \bar{f}(\btrue[*])\big) &= \oclt{t}
-    \big(f_t^{*} - \bar{f}(\btrue[*])\big) +
-    \E^* F_t^{*} B^{*} \oclt{t} H_t^* \\
-    & \quad + \WesA[*] + \WesB[*] \\ & \quad + \WesC[*] + \oclt{t} w_t^*
+    \sqrt{P} (\fb^* - \fb(\btrue[*]))
+    &= \oclt{t} (f_t^{*} - \bar{f}(\btrue[*]))
+     + \oclt{t} \nabla f_t^*(\btrue[*]) (\bh_t^* - \btrue[*])
+     + \oclt{t} w_t^* \\
+    &= \oclt{t} (f_t^{*} - \bar{f}(\btrue[*]))
+     + F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t \nabla q_t^*(\btrue[*]) + o_{p^*}(1)
   \end{align*}
   where (as in \citealp{Wes:96}) the $i$th element of $w_t^*$ is
   \begin{equation*}
-    w_{it} = \tfrac12 (\hat\beta_t^* - \hat\beta_{T+1})'
-    \Big[\tfrac{\partial^2}{\partial \beta \partial\beta'}
-    f_{it}^*(\tilde\beta_{it}^*) \Big]
-    (\hat\beta_t^* - \hat\beta_{T+1})
+    w_{it} = \tfrac12 (\bh_t^* - \btrue[*])' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue[*])
   \end{equation*}
-  and each $\tilde\beta_{it}^*$ lies between $\hat\beta_t^*$ and
-  $\hat\beta_{T+1}$.  The argument that $\oclt{t} w_t^* = o_{p^*}(1)$ is
-  identical to West's, using our Lemma~\ref{res:a2} in place of his
-  Lemma A3.  Then
-  \begin{gather}
-    \WesA[*] \to^{p^*} 0 \label{eq:7} \\
-    \WesB[*] \to^{p^*} 0 \label{eq:9} \\
-  \intertext{and}
-    \WesC[*] \to^{p^*} 0 \label{eq:10}
-  \end{gather}
-  from Lemma~\ref{res:a4} and the result follows from
-  Lemma~\ref{res:a3}, with the form of the asymptotic variance
-  following directly from \citet{Wes:96} and \citet{WeM:98}.
+  and each $b_{it}^*$ lies between $\bh_t^*$ and $\btrue[*]$. The second equality holds because
+  $\oclt{t} w_t^* = o_{p^*}(1)$ from Lemma xxx and
+  \begin{equation*}
+    \oclt{t} \nabla f_t^*(\btrue[*]) (\bh_t^* - \btrue[*])
+    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t \nabla q_t^* + o_{p^*}(1)
+  \end{equation*}
+  from Lemma yyyy.
+
+  Now we'll procede using arguments very similar to
+  \cite{Cal:14}. Define $u_1,\dots,u_J$ to be the first period of each
+  block of the circular bootstrap, and, for each $j = 1,\dots,J$,
+  define the $\sigma$-fields
+  \[
+  \Ms_j = \sigma(u_1,\dots,u_j)
+  \]
+  and
+  \[
+  \Ms_j^* = \sigma(u_1,\dots,u_j; y_1,\dots,y_T; x_1,\dots,x_T),
+  \]
+  and the vector
+  \[
+  Z_j^* = \tfrac{1}{\sqrt{P}} \sum_{s=(j-1) \ell + 1}^{j\ell}
+  \begin{pmatrix}
+    f_t^* - \fb(\btrue[*]) \\
+    a_t \nabla q_t^*
+  \end{pmatrix}.
+  \]
+  Also let $l = T - J \ell$ be the number of elements in the last block.
+  By construction, $\E^*(\nabla q_t^*) = \tfrac{1}{T-1}
+  \sum_{s=1}^{T-1} \nabla q_t^* = 0$ almost surely, so $\E(Z_j \mid
+  \Ms_{j-1}^*) = 0$ almost surely and $\{Z_j^*, \Ms_j^*\}$ is a
+  martingale difference sequence.
+
+  Now, let $\gamma$ be an arbitrary nonzero vector and define $z_j^* =
+  \gamma'Z_j^* / (\gamma'\Sigma^*\gamma)^{1/2}$ Lemma aaaa implies
+  that $z_j^{*2}$ is uniformly integrable, in the sense that
+  (clarify). From the \mds\ property, we have
+  \begin{equation*}
+    \sum_{j=1}^J z_j^* \to^d N(0, 1)
+  \end{equation*}
+  as long as the following properties hold:
+  \begin{equation}\label{eq:7}
+    \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Ms_{j-1}^*) \to^p 0
+  \end{equation}
+  and
+  \begin{equation}\label{eq:8}
+    \pr^*\Big[ \big| \sum_{j=1}^J z_j^{*2} - 1 \big| > \epsilon\Big] \to^p 0.
+  \end{equation}
+
+  For~\eqref{eq:8}, we have the usual bound
+  \begin{equation*}
+    \pr^*\Big[ \big|\sum_{j=1}^J z_j^{*2} - 1 \big| > \varepsilon\Big] \leq
+    \pr^*\Big[ 1\{\btrue[*] \in N\} \big| \sum_{j=1}^J z_j^{*2} - 1 \big| > \epsilon \Big]
+     + \pr^*[ \btrue[*] \notin N ]
+  \end{equation*}
+  and we can rewrite the summation in the first term as
+  \begin{equation*}
+    1\{\btrue[*] \in N\} \Big( \sum_{j=1}^J z_j^{*2} - 1 \Big)
+    =  \sum_{j=1}^J \big(z_j^{*2}1\{\btrue[*] \in N\} - \E(z_j^{*2} 1\{\btrue[*] \in N\} \mid \Ms_{j-1}^*) \big).
+   \end{equation*}
+   This term is the sum of a uniformly integrable martingale
+   difference sequence by Lemma aaaa and satisfies the \lln\
+   (i.e. Davidson's, 1994, Theorem 19.7), and so it converges in
+   (conditional) probability to zero.
+   The second term converges in probability to zero by consistency of $\btrue[*]$ (prove).
+
+   The convergence in probability in~\eqref{eq:7} is implied by
+   convergence in $L_1$, i.e.
+   \begin{equation*}
+     \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \to 0,
+   \end{equation*}
+   and we have, defining
+   \begin{equation*}
+     \zeta_{st}^* =
+     (\gamma'\Sigma^*\gamma)^{-1/2} \gamma'\begin{pmatrix}
+       f_t^* - \fb(\btrue[*]) \\
+       a_s \nabla q_t^*
+     \end{pmatrix},
+   \end{equation*}
+   \begin{align*}
+     \sum_{j=1}^J &\E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
+     &= \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
+     &= \sum_{j=1}^{J-1} \E\Big(\sum_{s,t =1}^{\ell_1} \zeta^*_{\ell_1 (j-1)+s,\ell_1 (j-1)+s}\zeta^*_{\ell_1 (j-1)+t,\ell_1 (j-1)+t}
+     1\Big\{ \sum_{s,t = 1}^{\ell_1} \zeta^*_{\ell_1 (j-1)+s,\ell_1 (j-1)+s}\zeta^*_{\ell_1 (j-1)+t,\ell_1 (j-1)+t} > \epsilon\Big\}\Big) \\
+     &\quad +
+     \E\Big(\sum_{s,t = T-\ell_2+1}^{T} \zeta^*_{ss}\zeta^*_{tt} 1\Big\{\sum_{s,t = T - \ell_2+1}^{T} \zeta^*_{ss}\zeta^*_{tt} > \epsilon\Big\}\Big) \\
+     &= \tfrac{1}{T} \sum_{u=1}^T \sum_{j=1}^{J-1} \E\Big(\sum_{s,t = 1}^{\ell_1} \zeta_{\ell_1(j-1) + s,u+s}\zeta_{\ell_1(j-1) + t,u+t}
+     1\Big\{\sum_{s,t = 1}^{\ell_1} \zeta_{\ell_1(j-1) + s,u+s}\zeta_{\ell_1(j-1) + t,u+t} > \epsilon\Big\}\Big) \\
+     &\quad +
+     \tfrac{1}{T} \sum_{u=1}^T \E\Big(\sum_{s,t = 1}^{\ell_2} \zeta_{T-\ell_2 + s,u+s}\zeta_{T-\ell_2+t,u+t}
+     1\Big\{\sum_{s,t = 1}^{\ell_2} \zeta_{T-\ell_2 + s,u+s}\zeta_{T-\ell_2+t,u+t} > \epsilon\Big\}\Big) \\
+     &\leq \sum_{j=1}^{J-1} B(\epsilon T / \ell_1) \ell_1 / T
+     + B(\epsilon T / \ell_2) \ell_2/T \\
+     &\to 0.
+   \end{align*}
+   The rest of the proof is fairly straightforward.
 \end{proof}
 
-\section{Supporting Results}
+\subsection{Supporting Results}
 
 Define the following notation to describe the bootstrap process. Let
 $u_1,\dots,u_{J}$ denote the starting periods of each block of the
@@ -268,6 +334,7 @@ of the bootstrap process, so
 \[
   t \in \{1 + \sum_{i=1}^{j^*_t-1} \ell_i, \sum_{i=1}^{j^*_t} \ell_i\}.
 \]
+
 
 \begin{lema}\label{res:a2}
   Suppose $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
