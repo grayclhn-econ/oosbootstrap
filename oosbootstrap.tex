@@ -283,17 +283,17 @@ statistics.
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
      + F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t \nabla q_t^*(\btrue^*) + o_{p^*}(1)
   \end{align*}
-  where (as in \citealp{Wes:96}) the $i$th element of $w_t^*$ is
+  where (similar to \citealp{Wes:96}) the $i$th element of $w_t^*$ is
   \begin{equation*}
     w_{it} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
   \end{equation*}
   and each $b_{it}^*$ lies between $\bh_t^*$ and $\btrue^*$. The second equality holds because
-  $\oclt{t} w_t^* = o_{p^*}(1)$ from Lemma xxx and
+  $\oclt{t} w_t^* = o_{p^*}(1)$ and
   \begin{equation*}
     \oclt{t} \nabla f_t^*(\btrue^*) (\bh_t^* - \btrue^*)
     = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t \nabla q_t^* + o_{p^*}(1)
   \end{equation*}
-  from Lemma yyyy.
+  from Lemma~\ref{res:a4}.
 
   Now we'll procede using arguments very similar to
   \cite{Cal:14}. Define $u_1,\dots,u_J$ to be the first period of each
@@ -537,21 +537,78 @@ of the bootstrap process, so
 \end{proof}
 
 \begin{lema}\label{res:a4}
-  Under the conditions of Theorem~\ref{res:3}, Equations
+  Under the conditions of Theorem~\ref{res:3},
+  \begin{equation}\label{eq:16}
+    \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \to^{p^*} 0
+  \end{equation}
+  and
+  \begin{equation}\label{eq:17}
+    \oclt{t} F_t^*(\btrue^*) (\bh_t^* - \btrue^*)
+    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t \nabla q_t^* + o_{p^*}(1)
+  \end{equation}
+Equations
   \eqref{eq:7}--\eqref{eq:10} and \eqref{eq:11}--\eqref{eq:13} hold.
 \end{lema}
 
 \begin{proof}[Proof of Lemma~\ref{res:a4}]
-We can write
+For~\eqref{eq:16}, we have
+\begin{align*}
+  \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  &\quad + \pr[\btrue^* \notin N] + \pr[\bh_t^* \notin N\ \text{for some}\ t\}
+\end{align*}
+The second two probabilities converge to zero by
+Lemma~\ref{res:a2}. And
+\begin{multline*}
+  1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
+  \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
+  \\ \leq
+  \big(\sup_t |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
+\end{multline*}
+The summation is $O_p(1)$ by assumption and the supremum converges to
+zero by Lemma~\ref{res:a2} again.
+
+For~\eqref{eq:17},
+\begin{multline*}
+  \big\lvert \oclt{t} \big(F_t^*(\btrue^*) (\bh_t^* - \btrue^*) - F^* B^* a_t \nabla q_t^*\big) \big\rvert \leq \\
+   \sup_s |\bh_s^* - \btrue^*|\; \oclt{t} (F_t^*(\btrue^*) - F^*)
+  + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t \nabla q_t^*\big) \big\rvert
+\end{multline*}
+The first term converges in conditional probability to zero by
+Lemma~\ref{res:a2}.  For the second, expand each $\sum_{s=1}^t \nabla
+q_s^*(\bh_t^*)$ around $\btrue^*$ to get
 \begin{equation*}
-  \Big\lvert \WesA[*] \Big\rvert \leq
-  \Big\lvert \oclt{t} (F_t^* - \E^* F^*_t) B^* \Big\rvert
-  \sup_t | H_t^* |.
+  \oclt{t} (\bh_t^* - \btrue^*)
+  = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t \nabla q_s^*
 \end{equation*}
-From Lemma~\ref{res:a2}, $\sup_t | H_t^* | \to^p 0$ and $\oclt{t}
-(F_t^* - \E^* F_t^*) = O_p(1)$, establishing~\eqref{eq:7}.  The proofs
-of~\eqref{eq:9}, \eqref{eq:10}, and \eqref{eq:11}--\eqref{eq:13} are
-similar.
+and then
+\begin{align*}
+  \big\lvert \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t \nabla q_t^*\big) \big\rvert
+  &\leq \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
+  \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t \nabla q_s^* \Big\rvert \\
+  &= \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert \cdot O_{p^*}(1)
+\end{align*}
+by Lemma~(fill in).
+
+Now,
+\begin{multline*}
+  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \epsilon \Big]
+  \leq
+  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \epsilon \Big] \\
+  + \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert
+  1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big] + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N]
+\end{multline*}
+As elsewhere, the last two probabilities converge to zero by (explain).
+
+- first probability converges by \lln;
+
+- second converges by continuity of $\nabla^2 q_s$ in a neighborhood of $\beta_0$.
+
+This implies that
+\begin{equation*}
+  \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* \to^{p^*} 0
+\end{equation*}
+for any $t > R$. Then need to establish \emph{uniform} \lln\ and you'll be done.
 \end{proof}
 
 \begin{lema}\label{res:a3}
