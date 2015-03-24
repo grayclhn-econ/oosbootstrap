@@ -565,48 +565,62 @@ For~\eqref{eq:16}, we have
   &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
   &\quad + \pr[\btrue^* \notin N] + \pr[\bh_t^* \notin N\ \text{for some}\ t = R,\dots,T-1\}
 \end{align*}
-The second two probabilities converge to zero by
-Lemma~\ref{res:a2}. And
+The second two probabilities on the rhs converge to zero by
+Lemma~\ref{res:a2} and the random variable inside the first probability is bounded by
 \begin{multline*}
   1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
   \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
   \\ \leq
-  \big(\sup_t |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
+  \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
 \end{multline*}
 The summation is $O_p(1)$ by assumption and the supremum converges to
-zero by Lemma~\ref{res:a2} again.
+zero by using Lemma~\ref{res:a2} again.
 
-For~\eqref{eq:17},
+For~\eqref{eq:17}, we have the upper bound
 \begin{multline*}
   \big\lvert \oclt{t} \big(F_t^* \cdot (\bh_t^* - \btrue^*) - F^* B^* a_t h_t^*\big) \big\rvert \leq \\
-   \sup_s |\bh_s^* - \btrue^*|\; \oclt{t} (F_t^* - F^*)
-  + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert
+   \sup_{s=R,\dots,T-1} |\bh_s^* - \btrue^*|\; \big\lvert \oclt{t} (F_t^* - F^*) \big\rvert
+  + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert.
 \end{multline*}
 The first term converges in conditional probability to zero by
 Lemma~\ref{res:a2}.  For the second, expand each $\sum_{s=1}^t \nabla
 q_s^*(\bh_t^*)$ around $\btrue^*$ to get
 \begin{equation*}
   \oclt{t} (\bh_t^* - \btrue^*)
-  = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t h_s^*
+  = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t h_s^*
 \end{equation*}
-and then
+where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
 \begin{align*}
   \big\lvert \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert
   &\leq \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
   \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
   &= \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert \cdot O_{p^*}(1)
 \end{align*}
-by Lemma~(fill in).
+by Lemma~\ref{res:a2}.
 
-Now,
+Now, for any $t = R,\dots,T-1$,
+\begin{align}\label{eq:18}
+  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t & \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \epsilon \Big] \\
+  &\leq \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \epsilon \Big]\\
+  &\quad + \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big] \\
+  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N]
+\end{align}
+As before, the last two probabilities converges to zero since
+$\btrue^*$ is consistent for $\btrue$ and $\bh_t^*$ is consistent for
+$\btrue^*$. Moreover, just as in the proof of Theorem~\ref{res:3},
+$(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can be reexpressed as the
+sum of a uniformly integrable \mds\ that obeys the \lln, so the first
+probability on the rhs of~\eqref{eq:18} converges to zero. Finally,
+since $\nabla^2 q_s$ is continuous uniformly in $N$, we can choose
+$\delta$ so that $|\beta_1 - \beta_2| < \delta$ implies that
+$|\nabla^2 q_s(\beta_1) - \nabla^2 q_s(\beta_2)| < \epsilon$. Then
 \begin{multline*}
-  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \epsilon \Big]
-  \leq
-  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \epsilon \Big] \\
-  + \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert
-  1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big] + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N]
+  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big]
+  \leq \\
+\pr[ \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N]
 \end{multline*}
-As elsewhere, the last two probabilities converge to zero by (explain).
+which again converges to zero by consistency of $\btrue^*$ and $\bh_t^*$.
+
 
 - first probability converges by \lln;
 
