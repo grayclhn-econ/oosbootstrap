@@ -594,43 +594,50 @@ where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
   \big\lvert \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert
   &\leq \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
   \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
-  &= \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert \cdot O_{p^*}(1)
+  &= O_{p^*}(1) \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
 \end{align*}
-by Lemma~\ref{res:a2}.
+by Lemma~\ref{res:a2} and it suffices to prove that the supremeum
+converges to zero in probability.
 
-Now, for any $t = R,\dots,T-1$,
+First, observe that for any $\Delta$
 \begin{align}\label{eq:18}
-  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t & \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \epsilon \Big] \\
-  &\leq \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \epsilon \Big]\\
-  &\quad + \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N]
+  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
+  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
+  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
 \end{align}
-As before, the last two probabilities converges to zero since
-$\btrue^*$ is consistent for $\btrue$ and $\bh_t^*$ is consistent for
-$\btrue^*$. Moreover, just as in the proof of Theorem~\ref{res:3},
-$(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can be reexpressed as the
-sum of a uniformly integrable \mds\ that obeys the \lln, so the first
-probability on the rhs of~\eqref{eq:18} converges to zero. Finally,
-since $\nabla^2 q_s$ is continuous uniformly in $N$, we can choose
-$\delta$ so that $|\beta_1 - \beta_2| < \delta$ implies that
-$|\nabla^2 q_s(\beta_1) - \nabla^2 q_s(\beta_2)| < \epsilon$. Then
+As before, the last two probabilities converges to zero by
+Lemma~\ref{res:a2}.  Moreover, just as in the proof of
+Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
+be reexpressed as the sum of a uniformly integrable \mds\ that obeys
+a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
+converges to zero. Finally, since $\nabla^2 q_s$ is continuous
+uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
+< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
+q_s(\beta_2)| < \Delta$. Then
 \begin{multline*}
-  \pr\Big[\big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \epsilon \Big]
+  \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
   \leq \\
-\pr[ \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N]
+\pr[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
 \end{multline*}
-which again converges to zero by consistency of $\btrue^*$ and $\bh_t^*$.
+which again converges to zero by Lemma~\ref{res:a2}.
 
-
-- first probability converges by \lln;
-
-- second converges by continuity of $\nabla^2 q_s$ in a neighborhood of $\beta_0$.
-
-This implies that
+Now choose $\Delta$ so that
 \begin{equation*}
-  \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* \to^{p^*} 0
+  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
 \end{equation*}
-for any $t > R$. Then need to establish \emph{uniform} \lln\ and you'll be done.
+implies that
+\begin{equation*}
+\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\end{equation*}
+Then
+\begin{multline*}
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
+  > \epsilon\Big] \leq \\
+  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
+  \to^{p^*} 0,
+\end{multline*}
+completing the proof.
 \end{proof}
 
 \subsection{Probably needs to be removed}
