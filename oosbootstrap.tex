@@ -568,17 +568,19 @@ completing the proof.
 
   We will use arguments very similar to \cite{Cal:14}. Define
   \[
-  z_j^* = \tfrac{1}{\sigma^* \sqrt{P}} \sum_{s=(j-1) \ell + 1}^{j\ell}
-  \big(\gamma_1'(f_s^* - \E^* f_s^*) + a_s \gamma_2' h_s^*\big)
+  \zeta_{st}^* = \gamma_1'(f_t^* - \E^* f_t^*) + a_s \gamma_2' h_t^*
   \]
-  where $\gamma_1$ and $\gamma_2$ are arbitrary nonzero vectors.
-  By construction, $\E^* h_t^* = 0$ almost surely, so $\E(z_j \mid
-  \Ms_{j-1}^*) = 0$ almost surely and $\{z_j^*, \Ms_j^*\}$ is a
-  martingale difference sequence.
+  where $\gamma_1$ and $\gamma_2$ are arbitrary nonzero vectors, and
+  also define
+  \[
+  z_j^* = \frac{1}{\sqrt{\gamma'\Sigma^*\gamma P}} \sum_{s=(j-1) \ell + 1}^{j\ell} \zeta_s^*
+  \]
+  where $\gamma = (\gamma_1', \gamma_2')'$. By construction, $\E^*
+  h_t^* = 0$ almost surely, so $\E(z_j \mid \Ms_{j-1}^*) = 0$ almost
+  surely and $\{z_j^*, \Ms_j^*\}$ is a martingale difference sequence.
+  Moreover, by Lemma vvv, $z_j^*$ is uniformly integrable.
 
-  Lemma aaaa implies
-  that $z_j^{*2}$ is uniformly integrable, in the sense that
-  (clarify). From the \mds\ property, we have
+  From the \mds\ property, we have
   \begin{equation*}
     \sum_{j=1}^J z_j^* \to^d N(0, 1)
   \end{equation*}
@@ -605,22 +607,16 @@ completing the proof.
    This term is the sum of a uniformly integrable martingale
    difference sequence by Lemma aaaa and satisfies the \lln\
    (i.e. Davidson's, 1994, Theorem 19.7), and so it converges in
-   (conditional) probability to zero.
-   The second term converges in probability to zero by consistency of $\btrue^*$ (prove).
+   (conditional) probability to zero.  The second term converges in
+   probability to zero by consistency of $\btrue^*$
+   (Lemma~\ref{res:a3}).
 
    The convergence in probability in~\eqref{eq:7} is implied by
    convergence in $L_1$, i.e.
    \begin{equation*}
      \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \to 0,
    \end{equation*}
-   and we have, defining
-   \begin{equation*}
-     \zeta_{st}^* =
-     (\gamma'\Sigma^*\gamma)^{-1/2} \gamma'\begin{pmatrix}
-       f_t^* - \E^* f_t^* \\
-       a_s h_t^*
-     \end{pmatrix},
-   \end{equation*}
+   and we have,
    \begin{align*}
      \sum_{j=1}^J &\E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
      &= \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
