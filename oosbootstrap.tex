@@ -186,14 +186,6 @@ bootstrap-induced \cdf.
   \leq m_t$ almost surely and $\E m_t$ is uniformly finite.
 \end{asmp}
 
-\begin{asmp}\label{a4}
-  The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$ is
-  constructed using a moving blocks, circular blocks, or stationary
-  bootstrap with block lengths drawn from the geometric distribution.
-  The (expected) block length $\ell_1$ satisfies $\ell_1 \to \infty$
-  and $\ell_1/P \to 0$.
-\end{asmp}
-
 \begin{asmp}\label{a6}
   The asymptotic variance matrix of $\bar{f}(\btrue)$ is uniformly
   positive definite.
@@ -203,11 +195,19 @@ bootstrap-induced \cdf.
   $R, P \to \infty$ as $T \to \infty$.
 \end{asmp}
 
+\begin{asmp}\label{a4}
+  The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$ is
+  constructed using a moving blocks, circular blocks, or stationary
+  bootstrap with block lengths drawn from the geometric distribution.
+  The (expected) block length $\ell_1$ satisfies $\ell_1 \to \infty$
+  and $\ell_1/P \to 0$.
+\end{asmp}
+
 Then the main result is proving consistency of the bootstrap
 distribution and the bootstrap variance.
 
 \begin{thm}\label{res:3}
-  Under Assumptions~\ref{a1} -- \ref{a7},
+  Under Assumptions~\ref{a1} -- \ref{a4},
   \begin{equation}\label{eq:14}
     \var(\fb)/\var^*(\fb^*) \to^p 1
   \end{equation}
@@ -257,6 +257,28 @@ distribution and the bootstrap variance.
   setup of \citet{ClM:05,ClM:01} and \citet{Mcc:07}.  That question is
   left to future research.
 \end{rem}
+
+Often economic theory will imply that $f_t$ should be a martingale
+difference sequence, at least under the null hypothesis of interest.
+Under this stronger null hypothesis, the bootstrap procedure can be
+simplified somewhat: the bootstrap is consistent with a block length
+of 1.
+\begin{thm}
+  Suppose that Assumptions \ref{a1} -- \ref{a7} hold; moreover, assume
+  that $f_t - \E f_t$ is an \mds\ and that the i.i.d.\ bootstrap is
+  used instead of the block bootstraps of Theorem~\ref{res:3}. Then
+  \begin{equation}\label{eq:14}
+    \var(\fb)/\var^*(\fb^*) \to^p 1
+  \end{equation}
+  and
+  \begin{equation}\label{eq:15}
+    \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x]
+    - \pr[\sqrt{P}( \bar{f} - \E f_t) \leq x] \big\rvert > \epsilon\big] \to 0
+  \end{equation}
+  for all $\epsilon > 0$.
+\end{thm}
+The proof is a straightforward modification of that of
+Theorem~\ref{res:3} and is omitted.
 
 \section{Conclusion}\label{sec:4}
 The paper improves block bootstrap procedures of \oos\
