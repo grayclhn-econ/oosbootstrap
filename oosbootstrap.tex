@@ -70,7 +70,7 @@ Section~\ref{sec:4} concludes.
 \section{The Bootstrap for Out-of-Sample Statistics}
 
 We'll develop our theoretical results in a fairly general
-framework. Let $y_{t+1}$ be the target variable of interest --- the
+framework. Let $y_{t+1}$ be a target variable of interest --- a
 variable that is being predicted --- and let $x_t$ be a vector of
 other variables that are potentially informative about $y_{t+1}$ ---
 these are our predictors. The forecast $\hat y_{t+1}$ depends on the
@@ -81,36 +81,50 @@ is our test statistic.
 
 In symbols, we're interested in statistics of the form
 \begin{equation*}
-  \fb = \oclt{t} f(y_{t+1}, x_t, \bh_t).
+  \fb = \oclt{t} f(y_{t+1}, x_t, \bh_{1t},\dots,\bh_{kt})
+  \equiv \oclt{t} f_t(\bh_{1t},\dots,\bh_{kt}),
 \end{equation*}
-To make the notation cleaner, we'll define $f_t(\beta) \equiv f(y_{t+1},
-x_t, \beta)$. We're also going to assume that $(y_{t+1}, x_t)$ is
-strictly stationary to simplify our presentation. One could derive the
-same results under the marginally weaker assumption that certain
-functions of these variables are weakly stationary.
+where each $\bh_{kt}$ corresponds to a different forecasting model.
+To make the notation cleaner, we'll define $f_t(\beta_1,\dots,\beta_k)
+\equiv f(y_{t+1}, x_t, \beta_1,\dots,\beta_k)$. We're also going to
+assume that $(y_{t+1}, x_t)$ is strictly stationary to simplify our
+presentation. One could derive the same results under the marginally
+weaker assumption that certain functions of these variables are weakly
+stationary.
 
 The coefficients are updated each period to mimic a true \oos\
-forecasting exercise. In this paper, we're going to assume that
-$\bh_t$ is an $M$-estimator. We expect that other classes of
+forecasting exercise. In this paper, we're going to assume that each
+$\bh_{it}$ is an $M$-estimator. We expect that other classes of
 estimators can be used as well, as long as they are amenable to the
 bootstrap.
 
-Using standard terminology, the estimator $\bh_t$ is defined as
+Using standard terminology, the estimator $\bh_{it}$ is defined as
 \begin{equation}\label{eq:9}
-  \hat\beta_t = \begin{cases}
-    \argmin_\beta \sum_{s=1}^{t-1} q(y_{s+1}, x_s, \beta) & \text{recursive window} \\
-    \argmin_\beta \sum_{s=t-R+1}^{t-1} q(y_{s+1}, x_s, \beta) & \text{rolling window} \\
-    \argmin_\beta \sum_{s=1}^{R-1} q(y_{s+1}, x_s, \beta) & \text{fixed window},
+  \hat\beta_{it} = \begin{cases}
+    \argmin_\beta \sum_{s=1}^{t-1} q_i(y_{s+1}, x_s, \beta) & \text{recursive window} \\
+    \argmin_\beta \sum_{s=t-R+1}^{t-1} q_i(y_{s+1}, x_s, \beta) & \text{rolling window} \\
+    \argmin_\beta \sum_{s=1}^{R-1} q_i(y_{s+1}, x_s, \beta) & \text{fixed window},
   \end{cases}
 \end{equation}
-and, as before, to make the notation cleaner, define $q_s(\beta)
-\equiv q(y_{s+1},x_s,\beta)$. Obviously, for this to be a reasonable
-estimation approach $q_s$ will need to satisfy standard assumptions
-that we'll discuss soon.
+and, as before, to make the notation cleaner, define $q_{is}(\beta)
+\equiv q_i(y_{s+1},x_s,\beta)$. Obviously, for this to be a reasonable
+estimation approach $q_{is}$ will need to satisfy standard assumptions
+that we'll discuss soon. The implicit assumption is that the
+researcher is interested in conducting inference on $\E
+f_t(\beta_{10},\dots,\beta_{k0})$, where
+\begin{equation*}
+  \beta_{i0} = \argmin_\beta \E q_i(y_{s+1}, x_s, \beta)
+\end{equation*}
+is the pseudotrue equivalent of $\bh_{it}$,
 
-So far, this is is a very standard setup. Our novelty is in how we
-propose bootstrapping $\fb$. We're going to use a block bootstrap
-here. For the moment, consider the circular block bootstrap, which is
+So far, this is is a very standard setup. Our ``novelty'' is in how we
+propose bootstrapping $\fb$. Of course, people familiar with the
+bootstrap should not find it novel at all --- we use a standard block
+bootstrap and replace parameters with their equivalents under the
+bootstrap-induced distribution. But this is not how the bootstrap has
+been applied in this literature in the past.
+
+For the moment, consider the circular block bootstrap, which is
 implemented by drawing blocks of $\ell_1$ consecutive observations
 from the original dataset. For the circular block bootstrap, if the
 block extends beyond the dataset it is ``wrapped around,'' so, for
@@ -131,11 +145,11 @@ to have the same asymptotic distribution and to give reliable
 confidence intervals, etc. where, for the circular and stationary
 block bootstraps,
 \begin{equation*}
-  \E^* f_t^*(\beta) = \tfrac{1}{T-1} \sum_{t=1}^{T-1} f_t(\beta)
+  \E^* f_t^*(\beta_1,\dots,\beta_k) = \tfrac{1}{T-1} \sum_{t=1}^{T-1} f_t(\beta_1,\dots,\beta_k)
 \end{equation*}
 and
 \begin{equation*}
-  \btrue^* = \argmin_\beta \sum_{s=1}^{T-1} q_s(y_{s+1}, x_s, \beta).
+  \beta_{i0}^* = \argmin_\beta \sum_{s=1}^{T-1} q_i(y_{s+1}, x_s, \beta).
 \end{equation*}
 For the moving blocks bootstrap, a slight correction is necessary
 since observations at the ends of the sample are less likely to be
@@ -144,16 +158,18 @@ spelling out our specific assumptions, that's what we'll show!
 
 But, just to spell it out first, here
 \begin{equation}
-  \fb^* = \oavg{t} f(y_{t+1}^*, x_t^*, \bh_t^*) \equiv \oavg{t} f_t^*(\bh_t^*)
+  \fb^* = \oavg{t} f(y_{t+1}^*, x_t^*, \bh_{1t}^*,\dots,\bh_{kt}^*)
+  \equiv \oavg{t} f_t^*(\bh_{1t}^*,\dots,\bh_{kt}^*)
 \end{equation}
-where $\bh_t^*$ is estimated exactly the same way as $\bh_t$:
+where $\bh_{it}^*$ is estimated exactly the same way as $\bh_t$:
 \begin{equation}\label{eq:10}
-  \hat\beta_t^* = \begin{cases}
-    \argmin_\beta \sum_{s=1}^t q_{s}^*(\beta) & \text{recursive window} \\
-    \argmin_\beta \sum_{s=t-R+1}^t q_{s}^*(\beta) & \text{rolling window} \\
-    \argmin_\beta \sum_{s=1}^R q_{s}^*(\beta) & \text{fixed window}.
+  \hat\beta_{it}^* = \begin{cases}
+    \argmin_\beta \sum_{s=1}^{t-1} q_{is}^*(\beta) & \text{recursive window} \\
+    \argmin_\beta \sum_{s=t-R}^{t-1} q_{is}^*(\beta) & \text{rolling window} \\
+    \argmin_\beta \sum_{s=1}^{R-1} q_{is}^*(\beta) & \text{fixed window}
   \end{cases}
 \end{equation}
+and $q_{is}^*(\beta) \equiv q_i(y_{s+1}^*, x_s^*, \beta)$.
 
 In general, let $\to^{p^{*}}$ and
 $\to^{d^{*}}$ refer to convergence in probability or distribution
@@ -164,54 +180,85 @@ $y_t^{*}$, etc. is the random variable $y_t$ but under the
 bootstrap-induced \cdf.
 
 \begin{asmp}\label{a1}
-  The estimators $\bh_t$ and $\bh_t^*$ are estimated as defined in
-  Equations~\eqref{eq:9} and~\eqref{eq:10}. Moreover $\btrue =
-  \argmin_\beta \E\, q_s(\beta)$ is unique.
+  The estimators $\bh_{it}$ and $\bh_{it}^*$ are estimated as defined in
+  Equations~\eqref{eq:9} and~\eqref{eq:10}. Moreover each $\beta_{i0} =
+  \argmin_\beta \E\, q_{is}(\beta)$ is uniquely identified.
 \end{asmp}
 
-\begin{asmp}\label{a3}
-  The stochastic process $(y_{t+1}, x_t)$ is strictly stationary and
-  strong-mixing of size $-r/(r-2)$ or uniform mixing of size
-  $-r/(2r-2)$ with $r>2$.
-\end{asmp}
+For the next result, let $\nabla h(\beta)$ and $\nabla^2 h(\beta)$
+refer to the first and second derivative of the function $h$. If
+$\beta$ is a $K$-vector, $\nabla h(\beta)$ will be $K \times 1$ and
+$\nabla^2 h(\beta)$ will be $K \times K$. Also let $\nabla_i h(\beta)$
+refer to the $i$th element of $\nabla h(\beta)$ and $\nabla_{ij}^2
+h(\beta)$ to the $(i,j)$ element of $\nabla^2 h(\beta)$.
+
+This assumption imposes standard moment and smoothness conditions on
+the underlying functions $f_t(\cdot)$ and $q_{it}(\cdot)$. It is quite
+likely that these are stronger than necessary and could be weakend to
+smoothness conditions on $\E f_t(\cdot)$ and $\E q_{it}(\cdot)$, as in
+\cite{Mcc:00}, but we leave that for future work.%
+\footnote{Extending our results in this way would be equivalent to
+  extending \cite{JoD:00} in the same way, which appears feasible but
+  nontrivial.} %
 
 \begin{asmp}\label{a2}
-  Both $f_t$ and $q_t$ are twice continuously differentiable in an
-  open neighborhood $N$ of $\btrue$ and $\E \nabla^2 q_t(\beta)$ is
-  positive definite uniformly in $N$. Also there exists a sequence of
-  random variables $m_t$ such that $\sup_{i,\beta \in N} |\nabla_i^2
-  q_t(\beta)| \leq m_t$, $\sup_{i,\beta \in N} |\nabla_i^2
-  f_t(\beta)| \leq m_t$, $\sup_{i,\beta \in N} |\nabla_i q_t(\beta)|
-  \leq m_t$, and $\sup_{i,\beta \in N} |\nabla_i f_t(\beta)|
-  \leq m_t$ almost surely and $\E m_t$ is uniformly finite.
+  The functions $f_t(\beta_1,\dots,\beta_k)$ and $q_{it}(\beta)$ are
+  almost surely twice continuously differentiable in an open
+  neighborhood $N$ of $(\beta_{10},\dots,\beta_{k0})$ and $\E \nabla^2
+  q_{it}(\beta)$ is positive definite uniformly in $N$. There also
+  exists a sequence of random variables $m_t$ such that
+  $\sup_{\beta \in N} |\nabla_i^2 q_{jt}(\beta)| \leq m_t$,
+  $\sup_{\beta \in N} |\nabla_{ij}^2 f_t(\beta_1,\dots,\beta_k)| \leq m_t$,
+  $\sup_{\beta \in N} |\nabla_i q_{jt}(\beta)| \leq m_t$, and
+  $\sup_{\beta \in N} |\nabla_i f_t(\beta_1,\dots,\beta_k)| \leq m_t$
+  almost surely and $\E m_t^r$ is uniformly finite, with $r > 2$
+  defined further in Assumption~\ref{a3}.
 \end{asmp}
 
-\begin{asmp}\label{a6}
-  The asymptotic variance matrix of $\bar{f}(\btrue)$ is uniformly
-  positive definite.
+The next assumptions handle weak dependence and stationarity. These
+assumptions are weaker than are typically used in this literature
+because of advances in the underlying \clt\ and bootstrap theory used.
+For Assumption~\ref{a3}, define
+\[
+  g_t(\beta_0) = (f_t(\beta_0), \nabla q_{1t}(\beta_1),\dots,\nabla q_{kt}(\beta_i))'.
+\]
+
+\begin{asmp}\label{a3}
+  The stochastic process $(g_t(\beta_0), vec(\nabla g_t(\beta_0)))$ is
+  weakly stationary. Moreover, $(y_{t+1},x_t)$ is strong-mixing of
+  size $-r/(r-2)$ or uniform mixing of size $-r/(2r-2)$ with $r>2$.
 \end{asmp}
+
+The next assumption seriously limits the practical applicability of
+these results, but is difficult to relax in general. (Well, we can
+relax it for nested models, but not for ``overlapping'' models.)
+
+\begin{asmp}\label{a6}
+  The asymptotic variance matrix of $\fb$ is uniformly positive definite.
+\end{asmp}
+
+Standard assumption on the relative sizes of the test and training samples.
 
 \begin{asmp}\label{a7}
   $R, P \to \infty$ as $T \to \infty$.
 \end{asmp}
 
+Standard assumption on block length for the bootstrap.
+
 \begin{asmp}\label{a4}
   The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$ is
   constructed using a moving blocks, circular blocks, or stationary
   bootstrap with block lengths drawn from the geometric distribution.
-  The (expected) block length $\ell_1$ satisfies $\ell_1 \to \infty$
-  and $\ell_1/P \to 0$.
+  The (expected) block length $\ell$ satisfies $\ell \to \infty$
+  and $\ell/T \to 0$.
 \end{asmp}
 
 Then the main result is proving consistency of the bootstrap
 distribution and the bootstrap variance.
 
 \begin{thm}\label{res:3}
-  Under Assumptions~\ref{a1} -- \ref{a4},
-  \begin{equation}\label{eq:14}
-    \var(\fb)/\var^*(\fb^*) \to^p 1
-  \end{equation}
-  and
+  Under Assumptions~\ref{a1} -- \ref{a4}, $\var(\fb)/\var^*(\fb^*)
+  \to^p 1$ and
   \begin{equation}\label{eq:15}
     \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x]
     - \pr[\sqrt{P}( \bar{f} - \E f_t) \leq x] \big\rvert > \epsilon\big] \to 0
@@ -264,14 +311,12 @@ Under this stronger null hypothesis, the bootstrap procedure can be
 simplified somewhat: the bootstrap is consistent with a block length
 of 1.
 \begin{thm}
-  Suppose that Assumptions \ref{a1} -- \ref{a7} hold; moreover, assume
+  Suppose that Assumptions \ref{a1} -- \ref{a7} hold and also assume
   that $f_t - \E f_t$ is an \mds\ and that the i.i.d.\ bootstrap is
   used instead of the block bootstraps of Theorem~\ref{res:3}. Then
-  \begin{equation}\label{eq:14}
-    \var(\fb)/\var^*(\fb^*) \to^p 1
-  \end{equation}
+  $\var(\fb)/\var^*(\fb^*) \to^p 1$
   and
-  \begin{equation}\label{eq:15}
+  \begin{equation}\label{eq:20}
     \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x]
     - \pr[\sqrt{P}( \bar{f} - \E f_t) \leq x] \big\rvert > \epsilon\big] \to 0
   \end{equation}
