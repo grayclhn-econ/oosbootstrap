@@ -77,7 +77,7 @@ names(results.data)[1] <- " "
 
 integer.macros <- c(nboot = nboot, bootsize = 100 * bootsize,
                        windowlength = windowlength)
-real.macros <- c(empiricalcriticalvalue = stepm.results$rightcrit)
+real.macros <- c(empiricalcriticalvalue = unname(stepm.results$rightcrit))
 
 cat(file = "tex/ap.tex", sep = "\n",
     sprintf("\\newcommand{\\%s}{%.2f}", names(real.macros), real.macros),
