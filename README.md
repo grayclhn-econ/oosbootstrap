@@ -59,6 +59,11 @@ All of the code in this directory is licensed under the
 > CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
+Note that the code in the dbframe-R-library and oosanalysis-R-library
+repos is available elsewhere under the GPL license; but I am the
+author of those packages and am releasing them here under the MIT
+license.
+
 Errors and contact information
 ------------------------------
 

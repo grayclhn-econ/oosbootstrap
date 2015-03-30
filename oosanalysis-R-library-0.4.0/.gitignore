@@ -1,0 +1,10 @@
+*~
+*.Rout
+*.Rcheck
+*.tar.gz
+*.o
+*.so
+*.done
+*.local
+*.db
+.Rhistory
