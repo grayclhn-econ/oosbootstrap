@@ -398,19 +398,52 @@ statistics.
 \section*{Appendix: Additional mathematical results}\label{sec:B}
 \renewcommand{\thesubsection}{\Alph{subsection}}
 
+We will prove our results under the simplifying assumption that there
+is a single sequence of $M$-estimators $\bh_t$. Since we are assuming
+non-degeneracy of the models, this assumption does not appreciably
+change our arguments. This also implies that we will drop the $i$
+index for the estimators $\bh_{it}$, estimation criteria
+$q_{it}(\beta)$ etc.
+
 To make the mathematical results in this appendix clearer, we will
 introduce the following additional notation:
 \begin{itemize}
-\item $F_t(\beta) = \nabla f_t(\beta)$ and $F_t^*(\beta) = \nabla f_t^*(\beta)$,
+\item $f_t = f_t(\btrue)$ and $f_t^* = f_t^*(\btrue^*)$
+\item $F_t(\beta) = \nabla f_t(\beta)$ and $F_t^*(\beta) = \nabla
+  f_t^*(\beta)$,
+\item $F_t = F_t(\beta_0)$ and $F_t^* = F_t^*(\beta_1^*)$,
 \item $F = \E F_t$ and $F^* = \E^* F_t^*$,
 \item $h_t(\beta) = \nabla q_t(\beta)$ and $h_t^*(\beta) = \nabla q_t^*(\beta)$,
 \item $h_t = h_t(\btrue)$ and $h_t^* = h_t^*(\btrue^*)$.
 \end{itemize}
+Where it is feasible, we will reuse notation from \cite{Wes:96} and
+\cite{WeM:98}.
 
-Moreover, we will also prove our results under the simplifying
-assumption that there is a single sequence of $M$-estimators
-$\bh_t$. Since we are assuming non-degeneracy of the models, this
-assumption does not appreciably change our arguments.
+Also define
+\begin{align*}
+  S_{ff} &= \sum_{j=-\infty}^\infty \E f_t f_{t-j}' \\
+  S_{fh} &= \sum_{j=-\infty}^\infty \E f_t h_{t-j}' \\
+  S_{hh} &= \sum_{j=-\infty}^\infty \E h_t h_{t-j}',
+\end{align*}
+$\pi = \lim P/R$, and
+\begin{align*}
+  \lambda_{fh} &=
+  \begin{cases}
+    1 - \pi^{-1} \ln(1 + \pi) & \text{recursive window}, \pi \in (0, \infty) \\
+    ?                        & \text{recursive window}, \pi = 0 \\
+    ?                        & \text{recursive window}, \pi = \infty \\
+    \pi / 2 & \text{rolling window}, \pi \leq 1 \\
+    1 - \pi / 2 & \text{rolling window}, \pi > 1 \\
+    0 & \text{fixed window},
+  \end{cases} \\
+  \lambda_{hh} &=
+  \begin{cases}
+    2 \lambda_{fh} & \text{recursive window} \\
+    \pi - \pi^2/3 & \text{rolling window}, \pi \leq 1 \\
+    \pi - 1/3\pi & \text{rolling window} , \pi > 1 \\
+    \pi & \text{fixed window}.
+  \end{cases}
+\end{align*}
 
 Also define $u_1,\dots,u_J$ to be the first period of each
 block of the circular bootstrap, and, for each $j = 1,\dots,J$,
@@ -432,36 +465,70 @@ Also let $l = T - J \ell$ be the number of elements in the last block.
   (F_t^{#1} - \E^{#1} F_t^{#1}) (B_t^{#1} - B^{#1}) H_t^{#1}}
 
 \subsection*{Proof of Theorem~\ref{res:3}}
-  As in much of this literature, we begin by expanding
-  $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
+We start by proving normality of the bootstrap \oos\ statistic. As in
+much of this literature, this holds after expanding $f_t^{*}(\bh_t^*)$
+around $\btrue^*$ to get
   \begin{align*}
     \sqrt{P} (\fb^* - \E^* f_t^*)
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
      + \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
      + \oclt{t} w_t^* \\
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
-     + \E^*(F^*) B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
+     + F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
   \end{align*}
   where (similar to \citealp{Wes:96})
-  \begin{equation*}
-    w_{t} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{t}^*(b_{t}^*) (\bh_t^* - \btrue^*)
-  \end{equation*}
+  \begin{equation}
+    w_{t} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{t}^*(b_{t}^*) (\bh_t^* - \btrue^*),
+  \end{equation}
+  \begin{equation}\label{eq:1}
+    a_t =
+    \begin{cases}
+      \sum_{s=\max(R-1, t)}^{T-1} 1/s & \text{recursive window} \\
+      \min(\tfrac{t}{R-1}, \tfrac{T - t}{R-1}, 1) & \text{rolling window} \\
+      \tfrac{P}{R-1} 1\{t < R-1\} &  \text{fixed window},
+    \end{cases}
+  \end{equation}
   and each $b_{t}^*$ lies between $\bh_t^*$ and $\btrue^*$. The second equality holds because
   $\oclt{t} w_t^* = o_{p^*}(1)$ and
   \begin{equation*}
     \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
     = \E^*(F^*) B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
   \end{equation*}
-  from Lemma~\ref{res:a4}. By Lemma~?,
+  from Lemma~\ref{res:a4}.
+
+  By Lemma~?,
   \begin{equation}\label{eq:19}
-    \oclt{t} \begin{pmatrix}
-      f_t^* - \E^* f_t^* \\ a_t h_t^*
-    \end{pmatrix} \to^d N(0, \Sigma^*)
+    \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} \begin{pmatrix}
+      (f_t^* - \E^* f_t^*) 1\{t \geq R\} \\ a_t h_t^*
+    \end{pmatrix} \to^{d^*}
+    N\!
+    \begin{pmatrix}
+      \begin{pmatrix} 0 \\ 0 \end{pmatrix},
+      \begin{pmatrix}
+        S_{ff} & \lambda_{fh} S_{fh} \\
+        \lambda_{fh} S_{fh}' &  \lambda_{hh} S_{hh}
+      \end{pmatrix}
+    \end{pmatrix}
   \end{equation}
-  and, by Lemma~?, $\E^* F^* \to^p \E F$, $\Sigma^* \to^p \Sigma$, and
-  $B^* \to^p B$.  Since the original \oos\ statistic converges in
-  distribution to $N(0, V)$ as well, the proof follows from standard
-  arguments. (See \citealp{Cal:14}, for an example of the details.)\qed
+  and, by Lemma~?, $F^* \to^p F$, and $B^* \to^p B$, so
+  \begin{equation}\label{eq:2}
+    \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) < x] - \pr[Z < x] \to^p 0
+  \end{equation}
+  for all $x$, with
+  \begin{equation*}
+    Z \sim N(0, S_{ff} + \lambda_{fh} (F B S_{fh} + S_{fh}' B'F') + \lambda_{hh} F B S_{hh} B' F').
+  \end{equation*}
+
+  Next, normality for the original \oos\ average follows essentially
+  the same argument (which is in turn essentially the same argument as
+  in \citealp{Wes:96}), so
+  \begin{equation}\label{eq:3}
+    \pr^*[\sqrt{P} (\fb - \E^* f_t) < x] - \pr[Z < x] \to 0
+  \end{equation}
+  for all $x$. Finally, an argument attributed to Poly{\`a} ensures
+  that~\eqref{eq:15} follows from~\eqref{eq:2} and~\eqref{eq:3}. (See
+  the proof of Theorem~1 in \citealp{Cal:14}, for a detailed proof of
+  the remaining steps.)  \qed
 
 \subsection{Supporting Results}
 
