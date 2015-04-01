@@ -532,136 +532,176 @@ around $\btrue^*$ to get
 
 \subsection{Supporting Results}
 
-\begin{lema}\label{res:a2}
-  Suppose $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
-  hold.
-  \begin{enumerate}
-  \item $P^a \sup_t | H_{t} | \to^p 0$ and $P^a \sup_t | H_{t}^{*} |
-    \to^{p^{*}} 0$.
-  \item $P^a \sup_t | \hat{\beta}_{t} - \beta_{0} | \to^{p} 0$ and
-    $P^a \sup_t | \hat{\beta}^{*}_{t} - \hat{\beta}_T |
-    \to^{p^{*}} 0$.
-  \item $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t) = O_{p}(1)$
-    and $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t^* - \E F_t^*) =
-    O_{p^*}(1)$.
-  \end{enumerate}
+\begin{lema}\label{res:a1}
+  Under the assumptions of Theorem~\ref{res:3}, $\btrue^* = \btrue +
+  O_p(1/\sqrt{T})$.
 \end{lema}
 
-\begin{proof}[Proof of Lemma~\ref{res:a2}]
-  \begin{enumerate}
-  \item Convergence for the original process is essentially the same
-    as the proof in \citet{Wes:96}, with minor tweaks as in
-    \citet{Cal:15}; we will repeat it here for completeness. Our
-    assumptions ensure that $h_t$ is an $L_2$-mixingale of size $-1/2$;
-    let $c_t$ and $\zeta_k$ denote its mixingale constants and
-    coefficients and note that $h_t/t$ is also an $L_2$-mixingale array
-    with constants $c_s/t$ and coefficients $\zeta_k$, since
-    \begin{align*}
-      \| \E_{t-k} h_t / t \| = t^{-1} \| \E_{t-k} h_t \| \leq (c_t/t)\, \zeta_k
-    \end{align*}
-    and
-    \begin{equation*}
-      \| h_t/t - \E_{t+k} h_t/t \| = t^{-1} \|  h_t - \E_{t+k} h_t \| \leq (c_t/t)\, \zeta_{k+1}.
-    \end{equation*}
+\begin{proof}[Proof of Lemma~\ref{res:a1}]
+  Duh.
+\end{proof}
 
-    Then
-    \begin{align*}
-      P^{2a} \E\Bigg[\omax{t} \Big| \sum_{s=1}^t h_s/t \Big|^2\Bigg]
-      &\leq P^{2a} \E\Bigg[\omax{t} \Big| \sum_{s=1}^t h_s/s \Big|^2\Bigg] \\
-      &= O(P^{2a}) \sum_{s=1}^{T-1} s^{-2}
-    \end{align*}
-    where the second line follows from \citepos{Mcl:75} maximal
-    inequality (also available as \citealp{Dav:94}, Theorem 16.9 and
-    Corollary 16.10). This term converges to zero from \citepos{Wes:96} Lemma A1.
+\begin{lema}\label{res:a2}
+  If $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
+  hold, then
+  \begin{gather}
+    \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s \big\rvert \to^p 0 \label{eq:6}\\
+    \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big\rvert \to^{p^{*}} 0 \label{eq:11}\\
+    \omax{t} t^a | \hat{\beta}_{t} - \beta_{0} | \to^{p} 0 \label{eq:12}
+    \intertext{and}
+    \omax{t} t^a | \hat{\beta}^{*}_{t} - \hat{\beta}_T | \to^{p^{*}} 0. \label{eq:13}
+  \end{gather}
+\end{lema}
 
-    For the bootstrap process, we will use an argument similar to
-    those in \cite{Cal:14} and make liberal use of the
-    LIE. Define $\Hs_i^* = \sum_{t=K_{i-1}+1}^{K_i}
-    h_t^*/t$, so
-    \begin{align*}
-      \omax{t} | H_t^* |
-      &\leq \omax{t} \Big| \sum_{i=1}^{j^*_t - 1}\Hs_i^* \Big| + \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big|
-    \end{align*}
-    Now observe that $\{\sum_{i=1}^j \Hs_i^*; \Ms_j^*\}$ is a martingale, so
-    \begin{equation*}
-      \pr^*\Bigg[ \omax{t} \Big| \sum_{i=1}^{j^*_t - 1}\Hs_i^* \Big| > \epsilon \Bigg]
-      \leq \epsilon^{-2} \E^* \sum_{i=1}^J \E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*).
-    \end{equation*}
+\noindent%
+The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
+as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:15}
+and are omitted.
 
-    We can deal with this last term as follows. The expectation
-    $\E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*; \ell_i)$ only averages over the
-    start of the block used by $\Hs_i^*$, so
-    \begin{align*}
-      \E^*(\Hs_i^{*2} \mid \Ms_{i-1}^*; \ell_i)
-      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}} \tilde{h}_{u + t}(\btrue^*) / (K_{i-1} + t + 1)\Bigg]^2 \\
-      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 0}^{\ell_{i}-1}
-      (\tilde{h}_{u + t}(\btrue) + \tilde{h}_{u + t}(\btrue^*) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t + 1)\Bigg]^2
-    \end{align*}
-    and we want to show that
-    \begin{equation}\label{eq:4}
-      P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t = 1}^{\ell_{i}}
-      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \to^p 0
-    \end{equation}
-    and
-    \begin{equation}\label{eq:5}
-      P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
-      (\tilde{h}_{u + t}(\btrue^*) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t)\Bigg]^2
-      \to^p 0.
-    \end{equation}
+\begin{proof}[Proof of~\eqref{eq:11}.]
+We will present this proof under the assumption that $h_t$ is
+univariate to reduce the notational clutter. Otherwise the argument
+holds element-by-element.
 
-    For~\eqref{eq:4}, the $L_2$-mixingale property again ensures that
-    \begin{align*}
-      \E\Bigg|P^a \tfrac{1}{T-1} &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t = 1}^{\ell_{i}}
-      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \Bigg| \\
-      &= P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J \E\Bigg(\Bigg[\sum_{t = 1}^{\ell_{i}}
-      \tilde{h}_{u + t}(\btrue)/ (K_{i-1} + t)\Bigg]^2 \,\Big|\, \Ms_{i-1}, \ell_i\Bigg) \\
-      &\leq P^a \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J C \sum_{t = 1}^{\ell_{i}} (K_{i-1} + t)^{-2} \\
-      &\leq P^a \sum_{t=1}^{T-1} t^{-2}
-    \end{align*}
-    (should be $2a$ in all of the above)
-    which converges to zero as before. For~\eqref{eq:5},
-    \begin{align*}
-      \tfrac{1}{T-1} &\sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
-      (\tilde{h}_{u + t}(\btrue^*) - \tilde{h}_{u + t}(\btrue))/ (K_{i-1} + t)\Bigg]^2 \\
-      &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
-      \nabla \tilde{h}_{u + t}(\tilde \beta_T)'(\btrue^* - \btrue)/ (K_{i-1} + t)\Bigg]^2 \\
-      &= O_p(1/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Bigg[\sum_{t = 1}^{\ell_{i}}
-      \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T) \rVert / (K_{i-1} + t)\Bigg]^2
-    \end{align*}
-    and
-    \begin{align*}
-      \E \Bigg| (P^{2a}/T) &\tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Bigg[\sum_{t =
-        1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
-      \rVert / (K_{i-1} + t)\Bigg]^2 \Bigg| \\
-      &= (P^{2a}/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J
-      \E \Bigg(\Bigg[\sum_{t =
-        1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
-      \rVert / (K_{i-1} + t)\Bigg]^2 \,\Bigg|\, \Ms_{i-1}; \ell_i \Bigg) \\
-      &\leq (P^{2a}/T) \E \sum_{i=1}^J \ell_i^2/K_{i-1}^2
-    \end{align*}
-    which converges to zero by Lemma~[add!].
+Then let $\delta$ be a positive number less than $1/2 - a$ and define
+$H_i^* = \sum_{t=K_{i-1}+1}^{K_i} h_t^*/t^{1-\delta}$, so
+\begin{align*}
+  \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big|
+  &\leq R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
+  + R^{-\delta} \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* / (t-1)^{1-\delta} \big|,
+\end{align*}
+where $j_s^*$ is defined to be the index of the block containing
+observation $s$ of the bootstrap sequence.  (So, for example, $j_1^* =
+1$.) Now observe that $\{H_i^*, \Ms_i^*\}$ is a martingale difference
+sequence, so
+\begin{equation*}
+  \pr^*\Big[ \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_{i}^* \big| > \epsilon \Big]
+  \leq (1/\epsilon^2) \sum_{i=1}^J \E^*(H_{i}^{*2} \mid \Ms_{i-1}^*)
+\end{equation*}
+with
+\begin{align*}
+  \E^*(H_i^{*2} \mid \Ms_{i-1}^*)
+  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2}
+  \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue^*) / (K_{i-1} + t + 1)^{1-\delta} \Big]^2 \\
+  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Big[\sum_{t = 0}^{\ell-1}
+  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t + 1)^{1-\delta}\Big]^2.
+\end{align*}
+Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
+\begin{gather}
+  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell_{i}}
+  h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
+  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
+  \Big[\sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big]^2  = O_p(1)
+  \label{eq:5}
+  \intertext{and}
+  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).
+\end{gather}
 
-    Since
-    \[
-    \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big| \leq \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \Big| \sum_{s=K_{i-1}+1}^t h_s^*/t \Big|
-    \]
-    the proof that the second component converges to zero is similar.
-  \item We have
-    \begin{multline}
-      P^a \sup_t | \hat{\beta}_t - \btrue | = P^a \sup_t |\hat{B}_{t}
-      H_{t}| \\ \leq \sup_{t,u} \Big| [ \hat{B}_u - B]
-      \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big| + \sup_{t} \Big|
-      B \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big|
-    \end{multline}
-    and both terms converge to zero in (conditional) probability by
-    the previous argument and by assumption.  The same argument holds
-    for $\hat{\beta}_t^{*} - \btrue^*$ as well.
-  \item $\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
-    \citepos{Jon:97} \clt, so the result is trivial. For the
-    bootstrapped process, we know that the bootstrap variance is
-    equivalent to (...HAC estimator...) which is consistent by
-    \citepos{JoD:00} Theorem (2?).\qedhere
-  \end{enumerate}
+First we'll prove~\eqref{eq:4}. As in \citet{Cal:15}, our assumptions
+ensure that $h_t$ is an $L_2$-mixingale of size $-1/2$. If $c_t$ and
+$\zeta_j$ denote its mixingale constants and coefficients,
+$h_t/t^{1-a-\delta}$ is also an $L_2$-mixingale of size $-1/2$ with
+constants $c_t/t^{1-a-\delta}$. Then \citepos{Mcl:75} maximal
+inequality implies that
+\begin{align*}
+  \E\Big|\tfrac{1}{T-1}
+  &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell} h_{u + t}/ (K_{i-1} + t)^{1-a-\delta}\Big]^2 \Big| \\
+  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \E \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue)/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 \\
+  &= O\big(\tfrac{1}{T-1}\big) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{t = 1}^{\ell} (K_{i-1} + t)^{2a + 2\delta-2} \\
+  &= O(1) \sum_{t=1}^{T-1} t^{2a+2\delta-2}.
+\end{align*}
+Since $\delta$ was chosen to ensure that $2a+2\delta-2 < -1$, this
+last summation is finite as required.
+
+For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
+\begin{align*}
+  \tfrac{1}{T-1} & \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t}(\btrue))/ (K_{i-1} + t)^{1-a-\delta} \Big)^2 \\
+  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell}
+  \nabla h_{u + t}(b_{u+t}) \cdot (\btrue^* - \btrue) / (K_{i-1} + t)^{1-a-\delta}\Big)^2 \\
+  &= (\btrue^* - \btrue)' \Big[\tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \nabla h_{u + t}(b_{u+t}) \nabla h_{u + s}(b_{u+s})' \Big] (\btrue^* - \btrue) \\
+  &= O_p\big(\tfrac{1}{T^2}\big) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s})
+\end{align*}
+where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
+\begin{align*}
+  \pr\Big[& \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
+  \Big(\sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \epsilon \Big] \\
+  & \leq \pr\Big[ \tfrac{1}{T^2} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
+  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \epsilon \Big] \\
+  &\quad + \pr[\btrue^* \notin N].
+\end{align*}
+The second probability, $\pr[\btrue^* \notin N]$, converges to zero by
+Lemma~\ref{res:a1}. For the first, we have
+\begin{align*}
+  \E \tfrac{1}{T^2} &\sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
+  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} \\
+  &\leq \tfrac{1}{T^2} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \E \sup_{\beta \in N} \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
+  \nabla h_{u + t}(\beta)' \nabla h_{u + s}(\beta) \big\rvert \\
+  &\leq O(\tfrac{1}{T^2}) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
+  \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \E | m_{u+t} m_{u+s} | \\
+  &\leq O(1) \sum_{i=1}^J \ell^2 / T K_{i-1}^{2-2a-2\delta}
+\end{align*}
+
+\begin{align*}
+  &\leq \pr\Big[\tfrac{P^{2a}}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell}
+  (h_{u + t}(\btrue^*) - h_{u + t}(\btrue))/ (K_{i-1} + t)\Big)^2 1\{\beta_0^* \in N\} > \epsilon^2 \Big] \\
+  &\quad + \pr[\beta_0^* \notin N] \\
+  &\leq \epsilon^{-2} \tfrac{P^{2a}}{T-1} \sum_{u = 0}^{T-2}  \sum_{i=1}^J \E \sup_{\beta \in N} \Big(\sum_{t = 1}^{\ell}
+  \nabla h_{u + t}(\beta) \cdot (\btrue^* - \btrue)/ (K_{i-1} + t)\Big)^2 + o(1) \\
+  &\leq O(1/T^2) \sum_{u = 0}^{T-2} \sum_{i=1}^J \E \Big(\sum_{t = 1}^{\ell} m_{u + t} / (K_{i-1} + t)\Big)^2 + o(1) \\
+  &\leq O(P^{2a}/T) \sum_{t = 1}^{T-1}
+  \ell c^2/t^2 + o(1)
+\end{align*}
+and (need $m_t$ to be NED)
+\begin{align*}
+  \E \Bigg| (P^{2a}/T) &\tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
+  \Bigg[\sum_{t = 1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
+  \rVert / (K_{i-1} + t)\Bigg]^2 \Bigg| \\
+  &= (P^{2a}/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J
+  \E \Bigg(\Bigg[\sum_{t = 1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
+  \rVert / (K_{i-1} + t)\Bigg]^2 \,\Bigg|\, \Ms_{i-1}; \ell_i \Bigg) \\
+  &\leq (P^{2a}/T) \E \sum_{i=1}^J \ell_i^2/K_{i-1}^2
+\end{align*}
+which converges to zero by Lemma~[add!].
+
+Since
+\begin{equation*}
+  \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big| \leq \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \Big| \sum_{s=K_{i-1}+1}^t h_s^*/t \Big|
+\end{equation*}
+the proof that the second component converges to zero is similar.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:12} and~\eqref{eq:13}.]
+We have
+\begin{multline}
+  P^a \sup_t | \hat{\beta}_t - \btrue | = P^a \sup_t |\hat{B}_{t} H_{t}| \\
+  \leq \sup_{t,u} \Big| [ \hat{B}_u - B]
+  \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big| + \sup_{t} \Big|
+  B \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big|
+\end{multline}
+and both terms converge to zero in (conditional) probability by the
+previous argument and by assumption.  The same argument holds for
+$\hat{\beta}_t^{*} - \btrue^*$ as well.
+\end{proof}
+
+\begin{lema}\label{res:a2}
+  Under the conditions of Theorem~\ref{res:3},
+  \begin{gather}
+    \tfrac{1}{\sqrt{P}} \osum{t} (F_t - F) = O_{p}(1)
+    \intertext{and}
+    \tfrac{1}{\sqrt{P}} \osum{t} (F_t^* - F^*) = O_{p^*}(1).
+  \end{gather}
+\end{lema}
+\begin{proof}[Proof of Lemma~\ref{res:a2}.]
+$\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
+\citepos{Jon:97} \clt, so the result is trivial. For the
+bootstrapped process, we know that the bootstrap variance is
+equivalent to (...HAC estimator...) which is consistent by
+\citepos{JoD:00} Theorem (2?).\qedhere
 \end{proof}
 
 \begin{lema}\label{res:a4}
