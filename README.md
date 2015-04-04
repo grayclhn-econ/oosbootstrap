@@ -1,12 +1,17 @@
 oosbootstrap overview
 =====================
 
-This repository contains the code and data for my in-progress paper *A
-simple block bootstrap for asymptotically normal out-of-sample test
-statistics*. You can find the latest version of this repository at
+This repository contains the code and data for my (Gray Calhoun's)
+unreleased paper *A simple block bootstrap for asymptoticall normal
+out-of-sample test statistics*. The current version of the paper is
+very preliminary and the mathematical results almost certainly have
+errors. You can find the latest version of this repository at
 <https://git.ece.iastate.edu/gcalhoun/oosbootstrap>.
 
-This repository is for an early, unreleased version of the paper.
+This repository is for development after the "2014-04-01" version of
+the paper.  The paper is an offshoot of another paper,
+"An asymptotically normal out-of-sample test based on mixed estimation
+windows."
 
 Main files
 ----------
@@ -34,10 +39,10 @@ from Julia with the command
 License and copying
 -------------------
 
-Copyright (c) 2013-2015, Gray Calhoun.
+Copyright (c) 2011-2015, Gray Calhoun.
 
-All of the code in this directory is licensed under the
-[MIT "Expat" License](http://opensource.org/licenses/MIT):
+All of the R and Julia source code for this project is licensed under
+the [MIT "Expat" License](http://opensource.org/licenses/MIT):
 
 > Permission is hereby granted, free of charge, to any person
 > obtaining a copy of this software and associated documentation
