@@ -538,7 +538,7 @@ around $\btrue^*$ to get
 \end{lema}
 
 \begin{proof}[Proof of Lemma~\ref{res:a1}]
-  Duh.
+  Duh. (but need some sort of compactness argument)
 \end{proof}
 
 \begin{lema}\label{res:a2}
@@ -547,23 +547,30 @@ around $\btrue^*$ to get
   \begin{gather}
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s \big\rvert \to^p 0 \label{eq:6}\\
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big\rvert \to^{p^{*}} 0 \label{eq:11}\\
-    \omax{t} t^a | \hat{\beta}_{t} - \beta_{0} | \to^{p} 0 \label{eq:12}
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_{st}) - B^{-1} \big\rvert \to^p 0 \label{eq:21}\\
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_{st}^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}\\
+    \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12}
     \intertext{and}
-    \omax{t} t^a | \hat{\beta}^{*}_{t} - \hat{\beta}_T | \to^{p^{*}} 0. \label{eq:13}
+    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:13}
   \end{gather}
+  where each $b_{st}$ is any array a.s. between $\bh_t$ and $\btrue$
+  and each $b_{st}^*$ is any array a.s. between $\bh_t^*$ and
+  $\btrue^*$.
 \end{lema}
 
 \noindent%
 The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
 as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:15}
-and are omitted.
+and are omitted. The proof of~\eqref{eq:21} follows from standard
+arguments for $M$-estimators and is also omitted.
 
 \begin{proof}[Proof of~\eqref{eq:11}.]
 We will present this proof under the assumption that $h_t$ is
 univariate to reduce the notational clutter. Otherwise the argument
 holds element-by-element.
 
-Then let $\delta$ be a positive number less than $1/2 - a$ and define
+Let $\delta$ be a positive number less than $1/2 - a$ and
+define
 $H_i^* = \sum_{t=K_{i-1}+1}^{K_i} h_t^*/t^{1-\delta}$, so
 \begin{align*}
   \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big|
@@ -591,18 +598,37 @@ Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell_{i}}
   h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \Big[\sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big]^2  = O_p(1)
+  \sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})^2 / (K_{i-1} + t)^{2-2a-2\delta}  = O_p(1)
   \label{eq:5}
   \intertext{and}
-  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).
+  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).\label{eq:14}
 \end{gather}
+As in \citet{Cal:15}, our assumptions ensure that $h_t$ is an
+$L_2$-mixingale of size $-1/2$. And if $c_t$ and $\zeta_j$ denote its
+mixingale constants and coefficients, $h_t/t^{1-a-\delta}$ is also an
+$L_2$-mixingale of size $-1/2$ with constants $c_t/t^{1-a-\delta}$.
 
-First we'll prove~\eqref{eq:4}. As in \citet{Cal:15}, our assumptions
-ensure that $h_t$ is an $L_2$-mixingale of size $-1/2$. If $c_t$ and
-$\zeta_j$ denote its mixingale constants and coefficients,
-$h_t/t^{1-a-\delta}$ is also an $L_2$-mixingale of size $-1/2$ with
-constants $c_t/t^{1-a-\delta}$. Then \citepos{Mcl:75} maximal
-inequality implies that
+For~\eqref{eq:14}, we have
+\begin{align*}
+  \E^* \big(\omax{t} &\big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|\big)^2 \\
+  &\leq \E^* \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|^2 \\
+  &= O_p\Big(\tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_{s+u} /(t-1)^{1-a-\delta} \big|^2 \\
+  &\quad+ \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t (h_{s+u}(\btrue^*) - h_{s+u}) /(t-1)^{1-a-\delta} \big|^2\Big).
+\end{align*}
+\citepos{Mcl:75} maximal inequality for mixingales implies that
+\begin{equation*}
+  \E \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_{s+u} /(t-1)^{1-a-\delta} \big|^2
+  \leq \E \big| \sum_{s=K_{i-1}+1}^{K_i} h_{s+u} /(s-1)^{1-a-\delta} \big|^2.
+\end{equation*}
+Moreover,
+\begin{multline*}
+  \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t (h_{s+u}(\btrue^*) - h_{s+u}) /(t-1)^{1-a-\delta} \big|^2 \\
+  \leq \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \sum_{s=K_{i-1}+1}^{K_i} (h_{s+u}(\btrue^*) - h_{s+u})^2 /(t-1)^{2-2a-2\delta},
+\end{multline*}
+so~\eqref{eq:14} holds whenever~\eqref{eq:4} and~\eqref{eq:5} do.
+
+We'll prove~\eqref{eq:4} first. Using \citepos{Mcl:75} maximal
+inequality (again) implies that
 \begin{align*}
   \E\Big|\tfrac{1}{T-1}
   &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell} h_{u + t}/ (K_{i-1} + t)^{1-a-\delta}\Big]^2 \Big| \\
@@ -643,49 +669,71 @@ Lemma~\ref{res:a1}. For the first, we have
   \nabla h_{u + t}(\beta)' \nabla h_{u + s}(\beta) \big\rvert \\
   &\leq O(\tfrac{1}{T^2}) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \E | m_{u+t} m_{u+s} | \\
-  &\leq O(1) \sum_{i=1}^J \ell^2 / T K_{i-1}^{2-2a-2\delta}
+  &\leq O(\tfrac{1}{T^2}) \sum_{u=0}^{T-2} \sum_{i=1}^J \sum_{s = 1}^{\ell} (K_{i-1} + s)^{2a + 2\delta - 2} \E m_{u+s}^2
 \end{align*}
-
-\begin{align*}
-  &\leq \pr\Big[\tfrac{P^{2a}}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell}
-  (h_{u + t}(\btrue^*) - h_{u + t}(\btrue))/ (K_{i-1} + t)\Big)^2 1\{\beta_0^* \in N\} > \epsilon^2 \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] \\
-  &\leq \epsilon^{-2} \tfrac{P^{2a}}{T-1} \sum_{u = 0}^{T-2}  \sum_{i=1}^J \E \sup_{\beta \in N} \Big(\sum_{t = 1}^{\ell}
-  \nabla h_{u + t}(\beta) \cdot (\btrue^* - \btrue)/ (K_{i-1} + t)\Big)^2 + o(1) \\
-  &\leq O(1/T^2) \sum_{u = 0}^{T-2} \sum_{i=1}^J \E \Big(\sum_{t = 1}^{\ell} m_{u + t} / (K_{i-1} + t)\Big)^2 + o(1) \\
-  &\leq O(P^{2a}/T) \sum_{t = 1}^{T-1}
-  \ell c^2/t^2 + o(1)
-\end{align*}
-and (need $m_t$ to be NED)
-\begin{align*}
-  \E \Bigg| (P^{2a}/T) &\tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \Bigg[\sum_{t = 1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
-  \rVert / (K_{i-1} + t)\Bigg]^2 \Bigg| \\
-  &= (P^{2a}/T) \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \E \sum_{i=1}^J
-  \E \Bigg(\Bigg[\sum_{t = 1}^{\ell_{i}} \lVert \nabla \tilde{h}_{u + t}(\tilde \beta_T)
-  \rVert / (K_{i-1} + t)\Bigg]^2 \,\Bigg|\, \Ms_{i-1}; \ell_i \Bigg) \\
-  &\leq (P^{2a}/T) \E \sum_{i=1}^J \ell_i^2/K_{i-1}^2
-\end{align*}
-which converges to zero by Lemma~[add!].
-
-Since
-\begin{equation*}
-  \omax{t} \Big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/t \Big| \leq \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \Big| \sum_{s=K_{i-1}+1}^t h_s^*/t \Big|
-\end{equation*}
-the proof that the second component converges to zero is similar.
+where the second inequality holds by assumption and the third follows
+from repeated application of the Cauchy-Schwarz inequality. Since $\E
+m_{u+s}^2$ is bounded, the large summation is $O(T)$ and this final
+term converges to zero, completing the proof.
 \end{proof}
 
-\begin{proof}[Proof of~\eqref{eq:12} and~\eqref{eq:13}.]
-We have
+\begin{proof}[Proof of \eqref{eq:22}.]
+First, observe that for any $\Delta$
+\begin{align}\label{eq:18}
+  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
+  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
+  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
+\end{align}
+As before, the last two probabilities converges to zero by
+Lemma~\ref{res:a2}.  Moreover, just as in the proof of
+Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
+be reexpressed as the sum of a uniformly integrable \mds\ that obeys
+a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
+converges to zero. Finally, since $\nabla^2 q_s$ is continuous
+uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
+< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
+q_s(\beta_2)| < \Delta$. Then
+\begin{multline*}
+  \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
+  \leq \\
+\pr[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
+\end{multline*}
+which again converges to zero by Lemma~\ref{res:a2}.
+
+Now choose $\Delta$ so that
+\begin{equation*}
+  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
+\end{equation*}
+implies that
+\begin{equation*}
+\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\end{equation*}
+Then
+\begin{multline*}
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
+  > \epsilon\Big] \leq \\
+  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
+  \to^{p^*} 0,
+\end{multline*}
+completing the proof.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:13}.]
+Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
+\begin{equation*}
+\bh_t^* - \btrue^* = \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) / (t-1)
+\end{equation*}
+with each $b_s^*$ a.s. between $\bh_t^*$ and $\btrue^*$. Then
 \begin{multline}
-  P^a \sup_t | \hat{\beta}_t - \btrue | = P^a \sup_t |\hat{B}_{t} H_{t}| \\
-  \leq \sup_{t,u} \Big| [ \hat{B}_u - B]
-  \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big| + \sup_{t} \Big|
-  B \tfrac{P^a}{t} \sum_{s=1}^t h_{s} \Big|
+  \omax{t} (t-1)^a | \hat{\beta}_t - \btrue |
+  \leq
+  \omax{t,u} \Big|\Big[ \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} - B^* \Big]
+  (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) \Big|\\
+  + \omax{t} \big| B^*   (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) \big|
 \end{multline}
 and both terms converge to zero in (conditional) probability by the
-previous argument and by assumption.  The same argument holds for
-$\hat{\beta}_t^{*} - \btrue^*$ as well.
+previous arguments.
 \end{proof}
 
 \begin{lema}\label{res:a2}
@@ -743,8 +791,10 @@ For~\eqref{eq:17}, we have the upper bound
   + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert.
 \end{multline*}
 The first term converges in conditional probability to zero by
-Lemma~\ref{res:a2}.  For the second, expand each $\sum_{s=1}^t \nabla
-q_s^*(\bh_t^*)$ around $\btrue^*$ to get
+Lemma~\ref{res:a2}.
+
+For the second, expand each $\sum_{s=1}^t \nabla q_s^*(\bh_t^*)$
+around $\btrue^*$ to get
 \begin{equation*}
   \oclt{t} (\bh_t^* - \btrue^*)
   = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t h_s^*
@@ -756,48 +806,8 @@ where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
   \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
   &= O_{p^*}(1) \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
 \end{align*}
-by Lemma~\ref{res:a2} and it suffices to prove that the supremeum
-converges to zero in probability.
-
-First, observe that for any $\Delta$
-\begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
-\end{align}
-As before, the last two probabilities converges to zero by
-Lemma~\ref{res:a2}.  Moreover, just as in the proof of
-Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
-be reexpressed as the sum of a uniformly integrable \mds\ that obeys
-a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
-converges to zero. Finally, since $\nabla^2 q_s$ is continuous
-uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
-< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
-q_s(\beta_2)| < \Delta$. Then
-\begin{multline*}
-  \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
-  \leq \\
-\pr[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
-\end{multline*}
-which again converges to zero by Lemma~\ref{res:a2}.
-
-Now choose $\Delta$ so that
-\begin{equation*}
-  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
-\end{equation*}
-implies that
-\begin{equation*}
-\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
-\end{equation*}
-Then
-\begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-  > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
-  \to^{p^*} 0,
-\end{multline*}
-completing the proof.
+by Lemma~\ref{res:a2} and the supremum converges to zero in
+probability by Lemma~\ref{res:a2} as well.
 \end{proof}
 
 \begin{lema}
