@@ -13,6 +13,29 @@ the paper.  The paper is an offshoot of another paper,
 "An asymptotically normal out-of-sample test based on mixed estimation
 windows."
 
+Main files
+----------
+
+* `oosbootstrap.tex` is the LaTeX source for the paper itself.
+
+Generating the pdf file and dependencies
+----------------------------------------
+
+To make the paper, you need LaTeX and Julia (version 0.3 or higher).
+If you install GNU Make and latexmk, you can streamline the process by
+typing `make` in this directory, which will call all of the necessary
+commands in the right order.
+
+Other dependencies
+------------------
+
+The `OutOfSampleBootstrap.jl` julia package, which can be installed
+from Julia with the command
+
+```
+   Pkg.clone("https://github.com/grayclhn/OutOfSampleBootstrap.jl")
+```
+
 License and copying
 -------------------
 
@@ -41,10 +64,15 @@ the [MIT "Expat" License](http://opensource.org/licenses/MIT):
 > CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 
+Note that the code in the dbframe-R-library and oosanalysis-R-library
+repos is available elsewhere under the GPL license; but I am the
+author of those packages and am releasing them here under the MIT
+license.
+
 Errors and contact information
 ------------------------------
 
-Please let me know if you find errors. You can email
+Please let me know if you find errors. (Bearing in mind that this
+isn't even the first version of the paper.) You can email
 <gcalhoun@iastate.edu> or file an issue at
-<https://git.ece.iastate.edu/gcalhoun/oosbootstrap/issues>.
-Thanks!
+<https://git.ece.iastate.edu/gcalhoun/oosbootstrap/issues>. Thanks!
