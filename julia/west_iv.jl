@@ -63,7 +63,7 @@ function oosstat!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Flo
             ZW_t[2,1,i] += z[boot_t,i]
             ZW_t[2,2,i] += w[boot_t,i] * z[boot_t,i]
             ZY_t[1,i] += y[boot_t]
-            ZY_t[2,i] += w[boot_t,i]
+            ZY_t[2,i] += z[boot_t,i] * y[boot_t]
         end
         f[t-R] = l_t[1] - l_t[2]
     end
