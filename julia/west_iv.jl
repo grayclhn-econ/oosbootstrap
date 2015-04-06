@@ -70,25 +70,7 @@ function oosstat!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Flo
     mean(f)
 end
 
-# bootmean! calculates the centering term for our bootstrap using
-# West's OOS statistic. The arguments are simliar to those in oosstat!
-function bootmean!(ZW::Array{Float64,3}, ZY::Matrix{Float64}, l::Vector{Float64},
-                   y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
-    _,k = size(z)
-    for i in 1:k
-        ZW[1,1,i] = 1.
-        ZW[1,2,i] = mean(w[:,i])
-        ZW[2,1,i] = mean(z[:,i])
-        ZW[2,2,i] = mean(z[:,i] .* w[:,i])
-        ZY[1,i] = mean(y)
-        ZY[2,i] = mean(y .* z)
-        coef = ZW[:,:,i] \ ZY[:,i]
-        l[i] = mean((y - (coef[1] + coef[2] * w[:,i])).^2)
-    end
-    l[1] - l[2]
-end
-
-function runmc!(mcresults, nboot, P, R, α, oosstat!)
+function runmc!(oosstat::Vector{Float64}, oostest::BitVector, nboot, P, R, α)
     n = P + R
     y = Array(Float64, n)
     w = Array(Float64, n, 2)
@@ -100,24 +82,22 @@ function runmc!(mcresults, nboot, P, R, α, oosstat!)
     wboot = similar(w)
     zboot = similar(z)
     f = Array(Float64,  P)
-    ffull = Array(Float64, n)
-    bootvalue = Array(Float64, nboot)
     bootindex = Array(Int, n)
-    
-    for i in 1:length(mcresults)
+    oosboot = Array(Float64, nboot)
+    for i in 1:length(oosstat)
         makedata!(y, w, z)
-        oosvalue = oosstat!(ZW, ZY, l, f, y, w, z)
-        ## Does my bootstrap; need to modify it to do the others.
-        ##bootnull = bootmean!(ZW, ZY, l, y, w, z)
+        oosstat[i] = oosstat!(ZW, ZY, l, f, y, w, z)
         for j in 1:nboot
             rand!(1:n, bootindex)
-            bootvalue[j] = oosstat!(ZW, ZY, l, f, y, w, z, bootindex)
+            oosboot[j] = oosstat!(ZW, ZY, l, f, y, w, z, bootindex)
         end
-        bootnull = mean(bootvalue)
-        crit = quantile(bootvalue - bootnull, [α/2, 1 - α/2])
-        mcresults[i] = oosvalue < crit[1] || oosvalue > crit[2]
+        bootcrit = quantile(oosboot - mean(oosboot), [α/2, 1 - α/2])
+        oostest[i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
     end
 end
 
-mcresults1 = Array(Bool, 600)
-@time runmc!(mcresults1, 599, 120, 240, 0.05, oosstat!)
+nsim = 600
+mcstat = Array(Float64, nsim)
+mctest = BitArray(nsim)
+@time runmc!(mcstat, mctest, 499, 120, 240, 0.1)
+mean(mctest)
