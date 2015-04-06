@@ -7,7 +7,7 @@ function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     # alias for y.
     v = y
     randn!(v); randn!(w); randn!(z)
-    for i in 1:n
+    for i in 1:length(y)
         w[i,1] = z[i,1] + v[i]
         w[i,2] = z[i,2] + v[i]
         y[i] = w[i,1] + w[i,2] + v[i] # This line writes over v[i] as well.
