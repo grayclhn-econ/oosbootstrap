@@ -67,10 +67,19 @@ function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Flo
         end
         f[t-R] = l_t[1] - l_t[2]
     end
-    mean(f)
+    return mean(f)
 end
 
-function runmc!(oosstat::Vector{Float64}, oostest::BitVector, nboot, P, R, α)
+function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
+    P = length(f)
+    bootstat = 0.0
+    for t in bootindex
+        bootstat += f[t] / P
+    end
+    return bootstat
+end
+
+function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     n = P + R
     y = Array(Float64, n)
     w = Array(Float64, n, 2)
