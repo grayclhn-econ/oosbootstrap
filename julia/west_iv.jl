@@ -91,22 +91,30 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     wboot = similar(w)
     zboot = similar(z)
     f = Array(Float64,  P)
-    bootindex = Array(Int, n)
-    oosboot = Array(Float64, nboot)
+    myindex = Array(Int, n)
+    naiveindex = Array(Int, P)
+    oosboot = Array(Float64, 3, nboot)
+    bootmean = Vector(Float64, 1)
     for i in 1:length(oosstat)
         makedata!(y, w, z)
         oosstat[i] = oosmine!(ZW, ZY, l, f, y, w, z)
         for j in 1:nboot
-            rand!(1:n, bootindex)
-            oosboot[j] = oosstat!(ZW, ZY, l, f, y, w, z, bootindex)
+            rand!(1:n, myindex)
+            rand!(1:P, naiveindex)
+            oosboot[1,j] = oosnaive(f, naiveindex)
+            oosboot[2,j] = oosmine!(ZW, ZY, l, f, y, w, z, myindex) # overwrites f, suckers
         end
-        bootcrit = quantile(oosboot - mean(oosboot), [α/2, 1 - α/2])
-        oostest[i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
+        bootmean[1] = mean(oosboot[1,:])
+        bootmean[2] = mean(oosboot[2,:])
+        for l in 1:2
+            bootcrit = quantile(vec(oosboot[l,:]), [α/2, 1 - α/2]) - bootmean[l]
+            oostest[l,i] = oosstat[l,i] < bootcrit[1] || oosstat[l,i] > bootcrit[2]
+        end
     end
 end
 
-nsim = 600
-mcstat = Array(Float64, nsim)
-mctest = BitArray(nsim)
+nsim = 60
+oosstat = Array(Float64, nsim)
+oostest = BitArray(3, nsim)
 @time runmc!(mcstat, mctest, 499, 120, 240, 0.1)
 mean(mctest)
