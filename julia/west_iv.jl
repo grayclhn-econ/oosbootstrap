@@ -14,7 +14,7 @@ function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     end
 end
 
-# oosmine! constructs the OOS test statistic corresponding to example
+# oosstat! constructs the OOS test statistic corresponding to example
 # 5.2 in his 1996 Econometrica paper
 #
 # f - the vector that will hold the out-of-sample statistics; this vector
@@ -28,15 +28,15 @@ end
 # ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
 #        this matrix is written over by the function, (2 × k)
 # l_t  - preallocated storage for the period t forecast loss, k-vector
-function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
-                  f::Vector{Float64}, y::Vector{Float64}, w::Matrix{Float64},
-                  z::Matrix{Float64})
-    oosmine!(ZW_t, ZY_t, l_t, f, y, w, z, [1:length(y)])
+function oosstat!(βhat::Matrix{Float64}, f::Vector{Float64},
+                  ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
+                  y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
+    oosstat!(βhat, f, ZW_t, ZY_t, l_t, y, w, z, [1:length(y)])
 end
 
-function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
-                  f::Vector{Float64}, y::Vector{Float64}, w::Matrix{Float64},
-                  z::Matrix{Float64}, bootindex::Vector{Int})
+function oosstat!(βhat::Matrix{Float64}, f::Vector{Float64},
+                  ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
+                  y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64}, bootindex::Vector{Int})
     R = length(y) - length(f)
     _,_,k = size(ZW_t)
     # Initialize ZW_t and ZY_t
@@ -53,9 +53,10 @@ function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Flo
     for t = (R+1):length(y)
         boot_t = bootindex[t]
         for i in 1:k
-            # Calculate the loss for the previously estimated model
-            coef = ZW_t[:,:,i] \ ZY_t[:,i]
-            l_t[i] = (y[boot_t] - (coef[1] + coef[2] * w[boot_t,i]))^2
+            # Construct the coefficient estimator from its previously
+            # calculated components and forecast
+            βhat[:,t-R,i] = ZW_t[:,:,i] \ ZY_t[:,i]
+            l_t[i] = (y[boot_t] - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[boot_t,i]))^2
             t == length(y) && break
             # Update estimates with the current observation.
             ZW_t[1,1,i] += 1.
@@ -80,7 +81,7 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
 end
 
 function ooscs07!(ZW_t::Array{Float64,3}, l_t::Vector{Float64},
-                  f::Vector{Float64}, βhat::Matrix{Float64},
+                  βhat::Matrix{Float64},
                   y::Vector{Float64}, w::Matrix{Float64},
                   z::Matrix{Float64}, boot::Vector{Int})
     T = length(y)
@@ -97,14 +98,14 @@ function ooscs07!(ZW_t::Array{Float64,3}, l_t::Vector{Float64},
         for i in 1:2
             ## need βhat[t,:] to be the coefficients used to predict
             ## period t's y
-            mAdj_it = mean(y - (βhat[boot[t],1,j] + βhat[boot[t],2,i] * w[i,:]))
+            mAdj_it = mean(y - (βhat[1,boot[t],j] + βhat[2,boot[t],i] * w[i,:]))
             βh_it = ZW_t[:,:,i] \ (z[boot[1:(t+R-1)],i] '* (y[boot[1:(t+R-1)]] - mAdj_it))
-            l_t[i] = (y[boot[t]] - (βh_it[1] + βh_it[2] * w[i,t]))^2 - mean((y - (βhat[t,1,j] + βhat[t,2,j] * w[i,:]))^2)
+            l_t[i] = (y[boot[t]] - (βh_it[1] + βh_it[2] * w[i,t]))^2 - mean((y - (βhat[1,t,j] + βhat[2,t,j] * w[i,:]))^2)
             ## Update Z'W matrix
             ZW_t[1,1,i] += 1.
-            ZW_t[1,2,i] += w[boot_t,i]
-            ZW_t[2,1,i] += z[boot_t,i]
-            ZW_t[2,2,i] += w[boot_t,i] * z[boot_t,i]
+            ZW_t[1,2,i] += w[boot[t],i]
+            ZW_t[2,1,i] += z[boot[t],i]
+            ZW_t[2,2,i] += w[boot[t],i] * z[boot[t],i]
         end
         fboot += (l_t[1] - l_t[2]) / P
     end
@@ -123,22 +124,30 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     wboot = similar(w)
     zboot = similar(z)
     f = Array(Float64,  P)
+    βhat = Array(Float64, 2, P, 2)
     myindex = Array(Int, n)
     naiveindex = Array(Int, P)
     oosboot = Array(Float64, 3, nboot)
     bootmean = Vector(Float64, 1)
     for i in 1:length(oosstat)
         makedata!(y, w, z)
-        oosstat[i] = oosmine!(ZW, ZY, l, f, y, w, z)
+        oosstat!(βhat, f, ZW, ZY, l_t, y, w, z)
+        ## Do "non-destructive" bootstraps (still overwrites some of
+        ## the arguments, though)
         for j in 1:nboot
-            rand!(1:n, myindex)
             rand!(1:P, naiveindex)
             oosboot[1,j] = oosnaive(f, naiveindex)
-            oosboot[2,j] = oosmine!(ZW, ZY, l, f, y, w, z, myindex) # overwrites f, suckers
+            oosboot[2,j] = ooscs07!(ZW, l, βhat, y, w, z, boot)
         end
         bootmean[1] = mean(oosboot[1,:])
-        bootmean[2] = mean(oosboot[2,:])
-        for l in 1:2
+        bootmean[2] = 0 ## second bootstrap is centered inside ooscs07!
+        ## Destructive bootstrap (overwrites f)
+        for j in 1:nboot
+            rand!(1:n, myindex)
+            oosboot[3,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, myindex)
+        end
+        bootmean[3] = mean(oosboot[3,:])
+        for l in 1:3
             bootcrit = quantile(vec(oosboot[l,:]), [α/2, 1 - α/2]) - bootmean[l]
             oostest[l,i] = oosstat[l,i] < bootcrit[1] || oosstat[l,i] > bootcrit[2]
         end
