@@ -79,6 +79,38 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     return bootstat
 end
 
+function ooscs07!(ZW_t::Array{Float64,3}, l_t::Vector{Float64},
+                  f::Vector{Float64}, βhat::Matrix{Float64},
+                  y::Vector{Float64}, w::Matrix{Float64},
+                  z::Matrix{Float64}, boot::Vector{Int})
+    T = length(y)
+    P = length(f)
+    ## Intialize Z'W matrix
+    for i in 1:k
+        ZW_t[1, 1, i] = R
+        ZW_t[1, 2, i] = sum(w[boot[1:R],i])
+        ZW_t[2, 1, i] = sum(z[boot[1:R],i])
+        ZW_t[2, 2, i] = sum(w[boot[1:R], i] .* z[boot[1:R], i])
+    end
+    fboot = 0.0
+    for t in 1:P
+        for i in 1:2
+            ## need βhat[t,:] to be the coefficients used to predict
+            ## period t's y
+            mAdj_it = mean(y - (βhat[boot[t],1,j] + βhat[boot[t],2,i] * w[i,:]))
+            βh_it = ZW_t[:,:,i] \ (z[boot[1:(t+R-1)],i] '* (y[boot[1:(t+R-1)]] - mAdj_it))
+            l_t[i] = (y[boot[t]] - (βh_it[1] + βh_it[2] * w[i,t]))^2 - mean((y - (βhat[t,1,j] + βhat[t,2,j] * w[i,:]))^2)
+            ## Update Z'W matrix
+            ZW_t[1,1,i] += 1.
+            ZW_t[1,2,i] += w[boot_t,i]
+            ZW_t[2,1,i] += z[boot_t,i]
+            ZW_t[2,2,i] += w[boot_t,i] * z[boot_t,i]
+        end
+        fboot += (l_t[1] - l_t[2]) / P
+    end
+    return fboot
+end
+
 function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     n = P + R
     y = Array(Float64, n)
