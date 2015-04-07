@@ -14,7 +14,7 @@ function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     end
 end
 
-# oosstat! constructs the OOS test statistic corresponding to example
+# oosmine! constructs the OOS test statistic corresponding to example
 # 5.2 in his 1996 Econometrica paper
 #
 # f - the vector that will hold the out-of-sample statistics; this vector
@@ -28,13 +28,13 @@ end
 # ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
 #        this matrix is written over by the function, (2 × k)
 # l_t  - preallocated storage for the period t forecast loss, k-vector
-function oosstat!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
+function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
                   f::Vector{Float64}, y::Vector{Float64}, w::Matrix{Float64},
                   z::Matrix{Float64})
-    oosstat!(ZW_t, ZY_t, l_t, f, y, w, z, [1:length(y)])
+    oosmine!(ZW_t, ZY_t, l_t, f, y, w, z, [1:length(y)])
 end
 
-function oosstat!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
+function oosmine!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
                   f::Vector{Float64}, y::Vector{Float64}, w::Matrix{Float64},
                   z::Matrix{Float64}, bootindex::Vector{Int})
     R = length(y) - length(f)
@@ -86,7 +86,7 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitVector, nboot, P, R, α)
     oosboot = Array(Float64, nboot)
     for i in 1:length(oosstat)
         makedata!(y, w, z)
-        oosstat[i] = oosstat!(ZW, ZY, l, f, y, w, z)
+        oosstat[i] = oosmine!(ZW, ZY, l, f, y, w, z)
         for j in 1:nboot
             rand!(1:n, bootindex)
             oosboot[j] = oosstat!(ZW, ZY, l, f, y, w, z, bootindex)
