@@ -102,6 +102,24 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     return bootstat
 end
 
+# newbootmean! calculates the centering term for our bootstrap using
+# West's OOS statistic. The arguments are simliar to those in oosstat!
+function newbootmean!(ZW::Array{Float64,3}, ZY::Matrix{Float64}, l::Vector{Float64},
+                      y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
+    _,k = size(z)
+    for i in 1:k
+        ZW[1,1,i] = 1.
+        ZW[1,2,i] = mean(w[:,i])
+        ZW[2,1,i] = mean(z[:,i])
+        ZW[2,2,i] = mean(z[:,i] .* w[:,i])
+        ZY[1,i] = mean(y)
+        ZY[2,i] = mean(y .* z)
+        coef = ZW[:,:,i] \ ZY[:,i]
+        l[i] = mean((y - (coef[1] + coef[2] * w[:,i])).^2)
+    end
+    l[1] - l[2]
+end
+
 ## ooscs07! constructs the bootstrapped OOS test statistic corresponding to example
 ## 5.2 West's 1996 Econometrica paper, using Corradi and Swanson's bootstrap.
 ##
@@ -191,12 +209,12 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
         end
         bootmean[1] = mean(oosboot[1,:])
         bootmean[2] = 0 ## second bootstrap is centered inside ooscs07!
-        ## Destructive bootstrap (overwrites f and βhat)
+        ## Destructive bootstrap (overwrites f and βhat as well as ZW and ZY)
         for j in 1:nboot
             rand!(1:n, myindex)
             oosboot[3,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, myindex)
         end
-        bootmean[3] = mean(oosboot[3,:])
+        bootmean[3] = newbootmean!(ZW, ZY, l, y, w, z)
         for j in 1:3
             bootcrit = quantile(vec(oosboot[j,:]), [α/2, 1 - α/2]) - bootmean[j]
             oostest[j,i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
