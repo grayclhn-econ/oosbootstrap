@@ -64,7 +64,6 @@ function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
             # calculated components and forecast
             βhat[:,t-R,i] = ZW_t[:,:,i] \ ZY_t[:,i]
             l_t[i] = (y[boot_t] - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[boot_t,i]))^2
-            t == length(y) && break
             # Update estimates with the current observation.
             ZW_t[1,1,i] += 1.
             ZW_t[1,2,i] += w[boot_t,i]
@@ -100,13 +99,29 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     return bootstat
 end
 
+@doc """
+ooscs07! constructs the bootstrapped OOS test statistic corresponding to example
+5.2 West's 1996 Econometrica paper, using Corradi and Swanson's bootstrap.
+
+ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
+       this array is written over by the function (2 × 2 × k)
+ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
+       this matrix is written over by the function, (2 × k)
+l_t  - preallocated storage for the period t forecast loss, k-vector.
+βhat - The original recursive coefficient estimates. Not overwritten here.
+y -    Data: the target varable, n-vector.
+w -    A matrix with the predictors; (n × k) each column corresponds to
+       a different forecasting model. The models will be estimated with IV
+z -    A matrix with the instruments for each model (n × k).
+boot - A vector of the bootstrap-generated index. Defaults to no bootstrap.""" ->
+
 function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
                   l_t::Vector{Float64}, βhat::Array{Float64,3},
                   y::Vector{Float64}, w::Matrix{Float64},
                   z::Matrix{Float64}, boot::Vector{Int})
-    P = length(f)
+    _,P,k = size(βhat)
+    R = length(y) - P
     ## Intialize Z'W matrix
-    _,_,k = size(ZW_t)
     for i in 1:k
         ZW_t[1, 1, i] = R
         ZW_t[1, 2, i] = sum(w[boot[1:R], i])
@@ -114,7 +129,7 @@ function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
         ZW_t[2, 2, i] = sum(w[boot[1:R], i] .* z[boot[1:R], i])
     end
     fboot = 0.0
-    for t = (R+1):length(y)
+    for t = (R+1):(R+P)
         for i in 1:2
             ## need βhat[t,:] to be the coefficients used to predict
             ## period t's y
