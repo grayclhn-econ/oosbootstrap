@@ -1,11 +1,16 @@
 # General code to execute the Monte Carlo simulations for the paper.
 # Copyright 2015 Gray Calhoun
 
-using Docile
-@docstrings
+## Use this (without the addprocs line) to reproduce the exact same
+## results as in the paper
+srand(89713564)
 
-@doc """
-""" ->
+## addprocs(7) ## <- may want to use more cores if you don't need exact
+##             ##    reproduciblity
+
+@everywhere begin ## Define functions and variables on each processor
+
+## Generate data for Monte Carlo based on West's (1996) IV simulation
 function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     # We're storing the initial errors v in the vector y to save
     # memory. The code matches the mathematics better using v as an
@@ -19,27 +24,25 @@ function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     end
 end
 
-oosstat_description = """
-oosstat! constructs the OOS test statistic corresponding to example
-5.2 West's 1996 Econometrica paper. It also accomodates a data reordering
-a la the block bootstrap, which is what my paper proposes.
+## oosstat! constructs the OOS test statistic corresponding to example
+## 5.2 West's 1996 Econometrica paper. It also accomodates a data reordering
+## a la the block bootstrap, which is what my paper proposes.
+##
+## βhat - An array that stores the recursive parameter estimates after the
+##        function exectes. This array is overwritten.
+## f -    The vector that will hold the out-of-sample statistics; this vector
+##        is overwritten by the function.
+## ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
+##        this array is written over by the function (2 × 2 × k)
+## ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
+##        this matrix is written over by the function, (2 × k)
+## l_t  - preallocated storage for the period t forecast loss, k-vector.
+## y -    Data: the target varable, n-vector.
+## w -    A matrix with the predictors; (n × k) each column corresponds to
+##        a different forecasting model. The models will be estimated with IV
+## z -    A matrix with the instruments for each model (n × k).
+## bootindex - A vector of the bootstrap-generated index. Defaults to no bootstrap.
 
-βhat - An array that stores the recursive parameter estimates after the
-       function exectes. This array is overwritten.
-f -    The vector that will hold the out-of-sample statistics; this vector
-       is overwritten by the function.
-ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
-       this array is written over by the function (2 × 2 × k)
-ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
-       this matrix is written over by the function, (2 × k)
-l_t  - preallocated storage for the period t forecast loss, k-vector.
-y -    Data: the target varable, n-vector.
-w -    A matrix with the predictors; (n × k) each column corresponds to
-       a different forecasting model. The models will be estimated with IV
-z -    A matrix with the instruments for each model (n × k).
-bootindex - A vector of the bootstrap-generated index. Defaults to no bootstrap."""
-
-@doc oosstat_description ->
 function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
                   ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
                   y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64},
@@ -77,18 +80,18 @@ function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
     return mean(f)
 end
 
-@doc oosstat_description ->
+
 function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
                   ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
                   y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     return oosstat!(βhat, f, ZW_t, ZY_t, l_t, y, w, z, [1:length(y)])
 end
 
-@doc """oosnaive constructs bootstrapped OOS test statistic that one
-gets by just bootstrapping the observed out-of-sample loss differences.
-
-f -  A vector holding the original out-of-sample statistics.
-bootindex - A vector of the bootstrap-generated index.""" ->
+## oosnaive constructs bootstrapped OOS test statistic that one
+## gets by just bootstrapping the observed out-of-sample loss differences.
+##
+## f -  A vector holding the original out-of-sample statistics.
+## bootindex - A vector of the bootstrap-generated index.
 
 function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     P = length(f)
@@ -99,21 +102,20 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     return bootstat
 end
 
-@doc """
-ooscs07! constructs the bootstrapped OOS test statistic corresponding to example
-5.2 West's 1996 Econometrica paper, using Corradi and Swanson's bootstrap.
-
-ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
-       this array is written over by the function (2 × 2 × k)
-ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
-       this matrix is written over by the function, (2 × k)
-l_t  - preallocated storage for the period t forecast loss, k-vector.
-βhat - The original recursive coefficient estimates. Not overwritten here.
-y -    Data: the target varable, n-vector.
-w -    A matrix with the predictors; (n × k) each column corresponds to
-       a different forecasting model. The models will be estimated with IV
-z -    A matrix with the instruments for each model (n × k).
-boot - A vector of the bootstrap-generated index. Defaults to no bootstrap.""" ->
+## ooscs07! constructs the bootstrapped OOS test statistic corresponding to example
+## 5.2 West's 1996 Econometrica paper, using Corradi and Swanson's bootstrap.
+##
+## ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
+##        this array is written over by the function (2 × 2 × k)
+## ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
+##        this matrix is written over by the function, (2 × k)
+## l_t  - preallocated storage for the period t forecast loss, k-vector.
+## βhat - The original recursive coefficient estimates. Not overwritten here.
+## y -    Data: the target varable, n-vector.
+## w -    A matrix with the predictors; (n × k) each column corresponds to
+##        a different forecasting model. The models will be estimated with IV
+## z -    A matrix with the instruments for each model (n × k).
+## boot - A vector of the bootstrap-generated index. Defaults to no bootstrap.
 
 function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
                   l_t::Vector{Float64}, βhat::Array{Float64,3},
@@ -150,20 +152,14 @@ function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
     return fboot
 end
 
-@doc """
-runmc! runs the West (1996)-based Monte Carlo for a particular value of P, R, and α.
-
-- oosstat: preallocated vector that stores the oos test statistics for
-  each run. The length of this array is the number of simulations.
-
-- oostest: preallocated array that contains the result of each oos
-  bootstrap based test.
-
-- nboot: number of bootstrap replications (Integer).
-
-- P, R: number of oos and number of in-sample observations (both Integers).
-
-- α: nominal test size.""" ->
+## runmc! runs the West (1996)-based Monte Carlo for a particular value of P, R, and α.
+## - oosstat: preallocated vector that stores the oos test statistics for
+##   each run. The length of this array is the number of simulations.
+## - oostest: preallocated array that contains the result of each oos
+##   bootstrap based test.
+## - nboot: number of bootstrap replications (Integer).
+## - P, R: number of oos and number of in-sample observations (both Integers).
+## - α: nominal test size.
 
 function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     n = P + R
@@ -208,17 +204,12 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     end
 end
 
-@doc """
-allmcs! runs the West (1996)-based Monte Carlo for several different values of P and R;
-it basically wraps `runmc!`
-
-- nsim: number of simulations to run
-
-- nboot: number of bootstrap replications (Integer).
-
-- Ps, Rs: vectors with different values of P and R
-
-- α: nominal test size.""" ->
+## allmcs! runs the West (1996)-based Monte Carlo for several
+## different values of P and R; it basically wraps `runmc!`
+## - nsim: number of simulations to run
+## - nboot: number of bootstrap replications (Integer).
+## - Ps, Rs: vectors with different values of P and R
+## - α: nominal test size
 
 function allmcs(nsim, nboot, Ps, Rs, α)
     results = Array(Float64, length(Ps), length(Rs), 3)
@@ -231,4 +222,13 @@ function allmcs(nsim, nboot, Ps, Rs, α)
     return results
 end
 
-mcres = allmcs(30, 99, [25, 50, 100, 150, 175], [25, 50, 100], 0.05)
+nboot = 499
+Ps = [25, 50, 100, 150, 175]
+Rs = [25, 50, 100]
+α = 0.05
+
+eachmc(x) = allmcs(x, nboot, Ps, Rs, α)
+end
+
+nsims = 40
+mcres = pmap(eachmc, fill(integer(nsims / nprocs()), nprocs()))
