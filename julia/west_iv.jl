@@ -230,5 +230,6 @@ Rs = [25, 50, 100]
 eachmc(x) = allmcs(x, nboot, Ps, Rs, α)
 end
 
-nsims = 40
+nsims = 2000
 mcres = pmap(eachmc, fill(integer(nsims / nprocs()), nprocs()))
+mean(mcres)
