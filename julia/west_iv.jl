@@ -28,15 +28,16 @@ end
 # ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
 #        this matrix is written over by the function, (2 × k)
 # l_t  - preallocated storage for the period t forecast loss, k-vector
-function oosstat!(βhat::Matrix{Float64}, f::Vector{Float64},
+function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
                   ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
                   y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
-    oosstat!(βhat, f, ZW_t, ZY_t, l_t, y, w, z, [1:length(y)])
+    return oosstat!(βhat, f, ZW_t, ZY_t, l_t, y, w, z, [1:length(y)])
 end
 
-function oosstat!(βhat::Matrix{Float64}, f::Vector{Float64},
+function oosstat!(βhat::Array{Float64,3}, f::Vector{Float64},
                   ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64}, l_t::Vector{Float64},
-                  y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64}, bootindex::Vector{Int})
+                  y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64},
+                  bootindex::Vector{Int})
     R = length(y) - length(f)
     _,_,k = size(ZW_t)
     # Initialize ZW_t and ZY_t
@@ -80,27 +81,30 @@ function oosnaive(f::Vector{Float64}, bootindex::Vector{Int})
     return bootstat
 end
 
-function ooscs07!(ZW_t::Array{Float64,3}, l_t::Vector{Float64},
-                  βhat::Matrix{Float64},
+function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
+                  l_t::Vector{Float64}, βhat::Array{Float64,3},
                   y::Vector{Float64}, w::Matrix{Float64},
                   z::Matrix{Float64}, boot::Vector{Int})
-    T = length(y)
     P = length(f)
     ## Intialize Z'W matrix
+    _,_,k = size(ZW_t)
     for i in 1:k
         ZW_t[1, 1, i] = R
-        ZW_t[1, 2, i] = sum(w[boot[1:R],i])
-        ZW_t[2, 1, i] = sum(z[boot[1:R],i])
+        ZW_t[1, 2, i] = sum(w[boot[1:R], i])
+        ZW_t[2, 1, i] = sum(z[boot[1:R], i])
         ZW_t[2, 2, i] = sum(w[boot[1:R], i] .* z[boot[1:R], i])
     end
     fboot = 0.0
-    for t in 1:P
+    for t = (R+1):length(y)
         for i in 1:2
             ## need βhat[t,:] to be the coefficients used to predict
             ## period t's y
-            mAdj_it = mean(y - (βhat[1,boot[t],j] + βhat[2,boot[t],i] * w[i,:]))
-            βh_it = ZW_t[:,:,i] \ (z[boot[1:(t+R-1)],i] '* (y[boot[1:(t+R-1)]] - mAdj_it))
-            l_t[i] = (y[boot[t]] - (βh_it[1] + βh_it[2] * w[i,t]))^2 - mean((y - (βhat[1,t,j] + βhat[2,t,j] * w[i,:]))^2)
+            mAdj_it = mean(y - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[:,i]))
+            ZY_t[1,i] = sum(y[boot[1:(t-1)]] - mAdj_it)
+            ZY_t[2,i] = (z[boot[1:(t-1)],i] '* (y[boot[1:(t-1)]] - mAdj_it))[1]
+            βh_it = ZW_t[:,:,i] \ ZY_t[:,i]
+            l_t[i] = ((y[boot[t]] - (βh_it[1] + βh_it[2] * w[t,i]))^2 -
+                      mean((y - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[:,i])).^2))
             ## Update Z'W matrix
             ZW_t[1,1,i] += 1.
             ZW_t[1,2,i] += w[boot[t],i]
@@ -128,34 +132,39 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     myindex = Array(Int, n)
     naiveindex = Array(Int, P)
     oosboot = Array(Float64, 3, nboot)
-    bootmean = Vector(Float64, 1)
+    bootmean = Array(Float64, 3)
     for i in 1:length(oosstat)
         makedata!(y, w, z)
-        oosstat!(βhat, f, ZW, ZY, l_t, y, w, z)
+        oosstat[i] = oosstat!(βhat, f, ZW, ZY, l, y, w, z)
         ## Do "non-destructive" bootstraps (still overwrites some of
         ## the arguments, though)
         for j in 1:nboot
             rand!(1:P, naiveindex)
             oosboot[1,j] = oosnaive(f, naiveindex)
-            oosboot[2,j] = ooscs07!(ZW, l, βhat, y, w, z, boot)
+            rand!(1:n, myindex)
+            oosboot[2,j] = ooscs07!(ZW, ZY, l, βhat, y, w, z, myindex)
         end
         bootmean[1] = mean(oosboot[1,:])
         bootmean[2] = 0 ## second bootstrap is centered inside ooscs07!
-        ## Destructive bootstrap (overwrites f)
+        ## Destructive bootstrap (overwrites f and βhat)
         for j in 1:nboot
             rand!(1:n, myindex)
             oosboot[3,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, myindex)
         end
         bootmean[3] = mean(oosboot[3,:])
-        for l in 1:3
-            bootcrit = quantile(vec(oosboot[l,:]), [α/2, 1 - α/2]) - bootmean[l]
-            oostest[l,i] = oosstat[l,i] < bootcrit[1] || oosstat[l,i] > bootcrit[2]
+        for j in 1:3
+            bootcrit = quantile(vec(oosboot[j,:]), [α/2, 1 - α/2]) - bootmean[j]
+            oostest[j,i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
         end
     end
 end
 
-nsim = 60
-oosstat = Array(Float64, nsim)
-oostest = BitArray(3, nsim)
-@time runmc!(mcstat, mctest, 499, 120, 240, 0.1)
-mean(mctest)
+nsim =  3;
+nboot = 19;
+P =     120;
+R =     240;
+α =       0.1;
+mcstat = Array(Float64, nsim);
+mctest = BitArray(3, nsim);
+@time runmc!(mcstat, mctest, nboot, P, R, α)
+mean(mctest, 2)
