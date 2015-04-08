@@ -1,6 +1,3 @@
-## Taken from version 0.4
-cld{T<:Integer }(x::T, y::T) = div(x,y)+(!signbit(x$y)&(rem(x,y)!=0))
-
 function makedata!(y::Vector{Float64}, w::Matrix{Float64}, z::Matrix{Float64})
     # We're storing the initial errors v in the vector y to save
     # memory. The code matches the mathematics better using v as an
