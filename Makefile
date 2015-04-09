@@ -16,7 +16,14 @@ tex db:
 tex/ap.tex: R/ap.R | tex
 	$(Rscript) $(RSCRIPTFLAGS) $< &> $<out
 
-oosbootstrap.pdf: oosbootstrap.tex tex/ap.tex
+montecarlo.out/west_iv.csv: montecarlo.src/west_iv.jl | montecarlo.out
+	julia $< $@
+montecarlo.out/west_iv.tex: montecarlo.out/west_iv.csv | montecarlo.out
+	touch $@
+montecarlo.out:
+	mkdir -p $@
+
+oosbootstrap.pdf: oosbootstrap.tex tex/ap.tex montecarlo.out/west_iv.tex
 	$(latexmk) $(LATEXMKFLAGS) $<
 
 clean: 

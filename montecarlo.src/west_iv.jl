@@ -8,6 +8,7 @@ srand(89713564)
 ## addprocs(7) ## <- may want to use more cores if you don't need exact
 ##             ##    reproduciblity
 
+outputfile = ARGS[1]
 @everywhere begin ## Define functions and variables on each processor
 
 ## Generate data for Monte Carlo based on West's (1996) IV simulation
@@ -249,5 +250,12 @@ eachmc(x) = allmcs(x, nboot, Ps, Rs, α)
 end
 
 nsims = 2000
-mcres = pmap(eachmc, fill(integer(nsims / nprocs()), nprocs()))
-mean(mcres)
+mcres = mean(pmap(eachmc, fill(integer(nsims / nprocs()), nprocs())))
+
+stats = ["Naive", "CS07", "Ours"]
+f = open(outputfile, "w")
+write(f, "R,P,Method,Size\n")
+for r in 1:length(Rs), p in 1:length(Ps), m in 1:length(stats)
+    write(f, "$(Rs[r]),$(Ps[p]),$(stats[m]),$(mcres[p,r,m])\n")
+end
+close(f)
