@@ -11,9 +11,13 @@ SHELL := /bin/bash
 ifeq ($(MAKECMDGOALS),test)
   empiricsconfig = empirics.src/config.test
   empiricsdir = empirics.test
+  montecarloconfig = montecarlo.src/config.test
+  montecarlodir = montecarlo.test
 else
   empiricsconfig = empirics.src/config.full
   empiricsdir = empirics.full
+  montecarloconfig = montecarlo.src/config.full
+  montecarlodir = montecarlo.full
 endif
 
 dirs: tex db
@@ -26,14 +30,18 @@ $(empiricsdir)/excessreturns.tex: empirics.src/excessreturns.R \
 empirics.staged/excessreturns.tex: empirics.staged/%: $(empiricsdir)/% | empirics.staged
 	cp $< $@
 
-montecarlo.out/west_iv.csv: montecarlo.src/west_iv.jl | montecarlo.out
-	julia $< $@
-montecarlo.out/west_iv.tex: montecarlo.out/west_iv.csv | montecarlo.out
+$(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl $(montecarloconfig) | $(montecarlodir)
+	julia $< $@ $(notdir $(montecarloconfig))
+$(montecarlodir)/west_iv.tex: $(montecarlodir)/west_iv.csv | $(montecarlodir)
 	touch $@
-empirics.staged $(empiricsdir) montecarlo.out:
+montecarlo.staged/west_iv.tex: montecarlo.staged/%: $(montecarlodir)/% | montecarlo.staged
+	cp $< $@
+
+empirics.staged $(empiricsdir) montecarlo.staged $(montecarlodir):
 	mkdir -p $@
 
-oosbootstrap.pdf: oosbootstrap.tex empirics.staged/excessreturns.tex montecarlo.out/west_iv.tex
+oosbootstrap.pdf: oosbootstrap.tex empirics.staged/excessreturns.tex \
+  montecarlo.staged/west_iv.tex
 	$(latexmk) $(LATEXMKFLAGS) $<
 
 clean: 

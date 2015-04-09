@@ -1,0 +1,11 @@
+## Use this (without addprocs) to reproduce the exact same results as
+## in the paper
+# srand(89713564)
+@everywhere begin
+    ncore = 8
+    nsims = 2000
+    nboot = 499
+    Ps = [25, 50, 100, 150, 175]
+    Rs = [25, 50, 100]
+    α = 0.05
+end

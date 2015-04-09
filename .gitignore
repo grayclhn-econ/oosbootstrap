@@ -1,7 +1,9 @@
 empirics.full/*
 empirics.test/*
 empirics.staged/*
-montecarlo.out/*
+montecarlo.full/*
+montecarlo.test/*
+montecarlo.staged/*
 
 .juliahistory
 .Rhistory
