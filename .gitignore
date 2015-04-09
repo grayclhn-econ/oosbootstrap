@@ -1,3 +1,4 @@
+empirics.out/*
 montecarlo.out/*
 
 .juliahistory
@@ -27,9 +28,3 @@ _region_.tex
 *.tot
 
 lib/
-auto/
-db/
-floats/
-tex/
-mc1
-mc2

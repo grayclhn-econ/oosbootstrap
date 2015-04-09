@@ -1,5 +1,8 @@
 # Copyright (c) 2011-2015 Gray Calhoun.
 
+args <- commandArgs(trailingOnly = TRUE)
+outputfile = args[1]
+datafile = args[2]
 library(oosanalysis, lib.loc = "lib")
 library(dbframe, lib.loc = "lib")
 
@@ -8,7 +11,7 @@ nboot <- 599
 bootsize <- 0.10
 windowlength <- 10
 
-gwdata <- ts(read.csv("data/yearlyData2009.csv")[,-1], start = 1871, frequency = 1)
+gwdata <- ts(read.csv(datafile)[,-1], start = 1871, frequency = 1)
 stock.returns <- ((gwdata[,"price"] + gwdata[,"dividend"]) / 
                                            lag(gwdata[,"price"], -1) - 1)
 financial.data <- 
@@ -79,7 +82,7 @@ integer.macros <- c(nboot = nboot, bootsize = 100 * bootsize,
                        windowlength = windowlength)
 real.macros <- c(empiricalcriticalvalue = unname(stepm.results$rightcrit))
 
-cat(file = "tex/ap.tex", sep = "\n",
+cat(file = outputfile, sep = "\n",
     sprintf("\\newcommand{\\%s}{%.2f}", names(real.macros), real.macros),
     sprintf("\\newcommand{\\%s}{%d}", names(integer.macros), integer.macros),
     sprintf("\\newcommand{\\empiricaltable}{%s}",

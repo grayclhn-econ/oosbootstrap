@@ -13,17 +13,18 @@ dirs: tex db
 tex db:
 	mkdir -p $@
 
-tex/ap.tex: R/ap.R | tex
-	$(Rscript) $(RSCRIPTFLAGS) $< &> $<out
+empirics.out/excessreturns.tex: empirics.src/excessreturns.R \
+  empirics.src/yearlyData2009.csv | empirics.out
+	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$?)
 
 montecarlo.out/west_iv.csv: montecarlo.src/west_iv.jl | montecarlo.out
 	julia $< $@
 montecarlo.out/west_iv.tex: montecarlo.out/west_iv.csv | montecarlo.out
 	touch $@
-montecarlo.out:
+empirics.out montecarlo.out:
 	mkdir -p $@
 
-oosbootstrap.pdf: oosbootstrap.tex tex/ap.tex montecarlo.out/west_iv.tex
+oosbootstrap.pdf: oosbootstrap.tex empirics.out/excessreturns.tex montecarlo.out/west_iv.tex
 	$(latexmk) $(LATEXMKFLAGS) $<
 
 clean: 
@@ -31,7 +32,7 @@ clean:
 	rm -f *~ slides/*~ data/*~
 burn: clean
 	$(latexmk) -C oosbootstrap.tex
-	rm -rf R auto floats tex slides/*.tex lib 
+	rm -rf R auto lib montecarlo.out empirics.out
 
 ROPTS = --byte-compile
 libs: 
