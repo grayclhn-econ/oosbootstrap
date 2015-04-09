@@ -3,11 +3,10 @@
 args <- commandArgs(trailingOnly = TRUE)
 outputfile = args[1]
 datafile = args[2]
+configfile = args[3]
 library(oosanalysis, lib.loc = "lib")
 library(dbframe, lib.loc = "lib")
-
-## These parameters are going to be reported in the paper as well.
-nboot <- 599
+source(configfile)
 bootsize <- 0.10
 windowlength <- 10
 

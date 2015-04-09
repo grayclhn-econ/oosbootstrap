@@ -1,6 +1,5 @@
-.PHONY: all clean burn libs dirs
-all: oosbootstrap.pdf
-
+.PHONY: all test clean burn libs dirs
+all test: oosbootstrap.pdf
 .DELETE_ON_ERROR:
 
 latexmk := latexmk
@@ -9,22 +8,32 @@ sqlite  := sqlite3
 LATEXMKFLAGS := -pdf -silent
 SHELL := /bin/bash
 
+ifeq ($(MAKECMDGOALS),test)
+  empiricsconfig = empirics.src/config.test
+  empiricsdir = empirics.test
+else
+  empiricsconfig = empirics.src/config.full
+  empiricsdir = empirics.full
+endif
+
 dirs: tex db
 tex db:
 	mkdir -p $@
 
-empirics.out/excessreturns.tex: empirics.src/excessreturns.R \
-  empirics.src/yearlyData2009.csv | empirics.out
-	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$?)
+$(empiricsdir)/excessreturns.tex: empirics.src/excessreturns.R \
+  empirics.src/yearlyData2009.csv $(empiricsconfig) | $(empiricsdir)
+	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$^)
+empirics.staged/excessreturns.tex: empirics.staged/%: $(empiricsdir)/% | empirics.staged
+	cp $< $@
 
 montecarlo.out/west_iv.csv: montecarlo.src/west_iv.jl | montecarlo.out
 	julia $< $@
 montecarlo.out/west_iv.tex: montecarlo.out/west_iv.csv | montecarlo.out
 	touch $@
-empirics.out montecarlo.out:
+empirics.staged $(empiricsdir) montecarlo.out:
 	mkdir -p $@
 
-oosbootstrap.pdf: oosbootstrap.tex empirics.out/excessreturns.tex montecarlo.out/west_iv.tex
+oosbootstrap.pdf: oosbootstrap.tex empirics.staged/excessreturns.tex montecarlo.out/west_iv.tex
 	$(latexmk) $(LATEXMKFLAGS) $<
 
 clean: 

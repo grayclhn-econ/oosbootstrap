@@ -1,4 +1,6 @@
-empirics.out/*
+empirics.full/*
+empirics.test/*
+empirics.staged/*
 montecarlo.out/*
 
 .juliahistory
