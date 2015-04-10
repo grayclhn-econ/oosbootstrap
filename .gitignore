@@ -1,9 +1,9 @@
 empirics.full/*
 empirics.test/*
-empirics.staged/*
+empirics/*
 montecarlo.full/*
 montecarlo.test/*
-montecarlo.staged/*
+montecarlo/*
 
 *.zip
 *.stamp

@@ -45,19 +45,19 @@ dirs: tex db
 tex db:
 	mkdir -p $@
 
-empirics.staged/excessreturns.tex: empirics.staged/%: $(empiricsdir)/% | empirics.staged
+empirics/excessreturns.tex: empirics/%: $(empiricsdir)/% | empirics
 	cp $< $@
-montecarlo.staged/west_iv.tex: montecarlo.staged/%: $(montecarlodir)/% | montecarlo.staged
+montecarlo/west_iv.tex: montecarlo/%: $(montecarlodir)/% | montecarlo
 	cp $< $@
 
 $(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl $(montecarloconfig) | $(montecarlodir)
 	julia $< $@ $(notdir $(montecarloconfig))
 
-empirics.staged $(empiricsdir) montecarlo.staged $(montecarlodir):
+empirics $(empiricsdir) montecarlo $(montecarlodir):
 	mkdir -p $@
 
-oosbootstrap.pdf: oosbootstrap.tex empirics.staged/excessreturns.tex \
-  montecarlo.staged/west_iv.tex
+oosbootstrap.pdf: oosbootstrap.tex empirics/excessreturns.tex \
+  montecarlo/west_iv.tex
 	$(latexmk) $(LATEXMKFLAGS) $<
 
 # For `make zip` we're going to make a zipfile with the monte carlo
