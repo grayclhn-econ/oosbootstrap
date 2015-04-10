@@ -5,6 +5,9 @@ montecarlo.full/*
 montecarlo.test/*
 montecarlo.staged/*
 
+*.zip
+*.stamp
+
 .juliahistory
 .Rhistory
 _region_.tex
