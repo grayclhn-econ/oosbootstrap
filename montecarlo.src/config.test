@@ -1,6 +1,6 @@
 @everywhere begin
-    ncore = 8
-    nsims = 16
+    ncore = 2
+    nsims = 4
     nboot =  9
     Ps = [25, 150]
     Rs = [25, 50]
