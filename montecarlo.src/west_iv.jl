@@ -1,12 +1,17 @@
 # General code to execute the Monte Carlo simulations for the paper.
 # Copyright 2015 Gray Calhoun
 
-## Use this (without the addprocs line) to reproduce the exact same
-## results as in the paper
-srand(89713564)
+outputfile = ARGS[1]
+configfile = ARGS[2]
 
-## addprocs(7) ## <- may want to use more cores if you don't need exact
-##             ##    reproduciblity
+# The next lines define the parameters of the monte carlo exercise,
+# including `ncore`, the number of processors to use for the
+# calculations, start the additional processors, and then define the
+# parameters again on each of the individual processors. (Everything
+# in `configfile` is wrapped in an `@everywhere` macro.)
+include(configfile)
+addprocs(ncore - 1)
+include(configfile) # define variables on other processors
 
 @everywhere begin ## Define functions and variables on each processor
 
@@ -240,14 +245,15 @@ function allmcs(nsim, nboot, Ps, Rs, α)
     return results
 end
 
-nboot = 499
-Ps = [25, 50, 100, 150, 175]
-Rs = [25, 50, 100]
-α = 0.05
-
 eachmc(x) = allmcs(x, nboot, Ps, Rs, α)
 end
 
-nsims = 2000
-mcres = pmap(eachmc, fill(integer(nsims / nprocs()), nprocs()))
-mean(mcres)
+mcres = mean(pmap(eachmc, fill(integer(nsims / nprocs()), nprocs())))
+
+stats = ["Naive", "CS07", "Ours"]
+f = open(outputfile, "w")
+write(f, "R,P,Method,Size\n")
+for r in 1:length(Rs), p in 1:length(Ps), m in 1:length(stats)
+    write(f, "$(Rs[r]),$(Ps[p]),$(stats[m]),$(mcres[p,r,m])\n")
+end
+close(f)

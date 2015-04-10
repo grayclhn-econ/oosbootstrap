@@ -1,3 +1,13 @@
+empirics.full/*
+empirics.test/*
+empirics/*
+montecarlo.full/*
+montecarlo.test/*
+montecarlo/*
+
+*.zip
+*.stamp
+
 .juliahistory
 .Rhistory
 _region_.tex
@@ -25,9 +35,3 @@ _region_.tex
 *.tot
 
 lib/
-auto/
-db/
-floats/
-tex/
-mc1
-mc2
