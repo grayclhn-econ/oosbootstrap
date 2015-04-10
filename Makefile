@@ -6,7 +6,7 @@ Rscript := Rscript
 sqlite  := sqlite3
 LATEXMKFLAGS := -pdf -silent
 SHELL := /bin/bash
-version := $(shell git describe --tags)
+version := $(shell git describe --tags --abbrev=0)
 
 dl all test: oosbootstrap.pdf
 
