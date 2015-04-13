@@ -36,6 +36,13 @@ from Julia with the command
    Pkg.clone("https://github.com/grayclhn/OutOfSampleBootstrap.jl")
 ```
 
+Known errors and bugs
+---------------------
+
+* See the issue tracker at
+  <https://git.ece.iastate.edu/gcalhoun/oosbootstrap/issues> for a
+  list of known problems.
+
 License and copying
 -------------------
 
