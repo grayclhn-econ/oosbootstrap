@@ -4,7 +4,6 @@
 latexmk := latexmk
 Rscript := Rscript
 sqlite  := sqlite3
-LATEXMKFLAGS := -pdf -silent
 SHELL := /bin/bash
 version := $(shell git describe --tags --abbrev=0)
 
@@ -58,7 +57,10 @@ empirics $(empiricsdir) montecarlo $(montecarlodir):
 
 oosbootstrap.pdf: oosbootstrap.tex empirics/excessreturns.tex \
   montecarlo/west_iv.tex
-	$(latexmk) $(LATEXMKFLAGS) $<
+	pdflatex $(basename $<)
+	bibtex $(basename $<)
+	pdflatex $(basename $<)
+	pdflatex $(basename $<)
 
 # For `make zip` we're going to make a zipfile with the monte carlo
 # and empirical results, then upload it to an accessible location.
