@@ -219,7 +219,7 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
             rand!(1:n, myindex)
             oosboot[3,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, myindex)
         end
-        bootmean[3] = newbootmean!(ZW, ZY, l, y, w, z)
+        bootmean[3] = mean(oosboot[3,:])
         for j in 1:3
             bootcrit = quantile(vec(oosboot[j,:]), [α/2, 1 - α/2]) - bootmean[j]
             oostest[j,i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
