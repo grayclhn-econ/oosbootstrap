@@ -8,7 +8,7 @@ very preliminary and the mathematical results almost certainly have
 errors. You can find the latest version of this repository at
 <https://git.ece.iastate.edu/gcalhoun/oosbootstrap>.
 
-This repository is for development after the "2014-04-01" version of
+This repository is for development after the "2015-04-13" version of
 the paper.  The paper is an offshoot of another paper,
 "An asymptotically normal out-of-sample test based on mixed estimation
 windows."
@@ -35,6 +35,13 @@ from Julia with the command
 ```
    Pkg.clone("https://github.com/grayclhn/OutOfSampleBootstrap.jl")
 ```
+
+Known errors and bugs
+---------------------
+
+* See the issue tracker at
+  <https://git.ece.iastate.edu/gcalhoun/oosbootstrap/issues> for a
+  list of known problems.
 
 License and copying
 -------------------
