@@ -51,8 +51,9 @@ empirics/excessreturns.tex: empirics/%: $(empiricsdir)/% | empirics
 montecarlo/west_iv.pdf: montecarlo/%: $(montecarlodir)/% | montecarlo
 	cp $< $@
 
-$(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl $(montecarloconfig) | $(montecarlodir)
-	julia $< $@ $(notdir $(montecarloconfig))
+$(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl \
+  montecarlo.src/west_iv_functions.jl $(montecarloconfig) | $(montecarlodir)
+	julia $< $@ $(notdir $(filter-out $<,$^))
 
 empirics $(empiricsdir) montecarlo $(montecarlodir):
 	mkdir -p $@
