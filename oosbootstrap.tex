@@ -185,7 +185,8 @@ bootstrap-induced \cdf.
 \begin{asmp}\label{a1}
   The estimators $\bh_{it}$ and $\bh_{it}^*$ are estimated as defined in
   Equations~\eqref{eq:9} and~\eqref{eq:10}. Moreover each $\beta_{i0} =
-  \argmin_\beta \E\, q_{is}(\beta)$ is uniquely identified.
+  \argmin_\beta \E\, q_{is}(\beta)$ is uniquely identified and the vector
+  $(\beta_{10},\dots,\beta_{k0})$ is an element of a compact set $\Theta$.
 \end{asmp}
 
 For the next result, let $\nabla h(\beta)$ and $\nabla^2 h(\beta)$
@@ -566,19 +567,18 @@ $\btrue^*$ to get
 
 \begin{lema}\label{res:a3}
   Under the conditions of Theorem~\ref{res:3}, $\btrue^* \to^p
-  \btrue$, $B^* \to^p B$, $F^* \to^p F$, and $\Sigma^* \to^p \Sigma$.
+  \btrue$, $B^* \to^p B$, $F^* \to^p F$.
 \end{lema}
 
 \begin{proof}[Proof of Lemma~\ref{res:a3}]
   We'll present proofs of these results for the circular block
   bootstrap; the proofs for the moving blocks and stationary
   bootstraps are similar. For $\btrue^*$, by definition $\btrue^* =
-  \argmin_\beta \sum_{s=2}^T q_s(\beta)$ and $\sum_{s=2}^T q_s(\beta)$
+  \argmin_\beta \sum_{s=2}^T q_s(\beta)$. Our smoothness and moment conditions
+  ensure that $\sum_{s=2}^T q_s(\beta)$
   obeys a uniform \lln\ and converges in probability to $\E
   q_s(\beta)$ for all $\beta \in \Theta$. Then consistency of
   $\btrue^*$ follows from, for example, Theorem~2.1 of \cite{NeM:94}.
-  Moreover, $\Sigma^* \to^p \Sigma$ by Theorem 2.2 of
-  \citet{JoD:00}.
 
   For $F^*$, we have
   \begin{equation*}
