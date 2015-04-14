@@ -28,16 +28,18 @@ endif
 ifeq ($(MAKECMDGOALS),dl)
 oosbootstrap_$(version).zip: %: ~/Desktop/%
 	cp $< ./
-$(montecarlodir)/west_iv.tex $(empiricsdir)/excessreturns.tex: oosbootstrap_$(version).zip
+$(montecarlodir)/west_iv.pdf $(empiricsdir)/excessreturns.tex: oosbootstrap_$(version).zip
 	unzip -u $< $@
 else
-oosbootstrap_$(version).zip: oosbootstrap.pdf empirics.full/excessreturns.tex montecarlo.full/west_iv.tex
+oosbootstrap_$(version).zip: oosbootstrap.pdf empirics.full/excessreturns.tex montecarlo.full/west_iv.pdf
 	zip $@ $^
 $(empiricsdir)/excessreturns.tex: empirics.src/excessreturns.R \
   empirics.src/yearlyData2009.csv $(empiricsconfig) | $(empiricsdir)
+$(montecarlodir)/west_iv.pdf: montecarlo.src/west_iv_table.R \
+  $(montecarlodir)/west_iv.csv | $(montecarlodir)
+
+$(montecarlodir)/west_iv.pdf $(empiricsdir)/excessreturns.tex:
 	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$^)
-$(montecarlodir)/west_iv.tex: $(montecarlodir)/west_iv.csv | $(montecarlodir)
-	touch $@
 endif
 
 dirs: tex db
@@ -46,17 +48,18 @@ tex db:
 
 empirics/excessreturns.tex: empirics/%: $(empiricsdir)/% | empirics
 	cp $< $@
-montecarlo/west_iv.tex: montecarlo/%: $(montecarlodir)/% | montecarlo
+montecarlo/west_iv.pdf: montecarlo/%: $(montecarlodir)/% | montecarlo
 	cp $< $@
 
-$(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl $(montecarloconfig) | $(montecarlodir)
-	julia $< $@ $(notdir $(montecarloconfig))
+$(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl \
+  montecarlo.src/west_iv_functions.jl $(montecarloconfig) | $(montecarlodir)
+	julia $< $@ $(notdir $(filter-out $<,$^))
 
 empirics $(empiricsdir) montecarlo $(montecarlodir):
 	mkdir -p $@
 
 oosbootstrap.pdf: oosbootstrap.tex empirics/excessreturns.tex \
-  montecarlo/west_iv.tex
+  montecarlo/west_iv.pdf
 	pdflatex $(basename $<)
 	bibtex $(basename $<)
 	pdflatex $(basename $<)
