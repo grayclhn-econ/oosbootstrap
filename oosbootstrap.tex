@@ -461,11 +461,11 @@ Also define $u_1,\dots,u_J$ to be the first period of each
 block of the circular bootstrap, and, for each $j = 1,\dots,J$,
 define the $\sigma$-fields
 \[
-\Ms_j = \sigma(u_1,\dots,u_j)
+\Hs_j = \sigma(u_1,\dots,u_j)
 \]
 and
 \[
-\Ms_j^* = \sigma(u_1,\dots,u_j; y_1,\dots,y_T; x_1,\dots,x_T).
+\Hs_j^* = \sigma(u_1,\dots,u_j; y_1,\dots,y_T; x_1,\dots,x_T).
 \]
 Also let $l = T - J \ell$ be the number of elements in the last block.
 
@@ -587,7 +587,7 @@ $\btrue^*$ to get
   \end{equation*}
   The second probability converges to zero by consistency of
   $\btrue^*$.  Now $F^* - F = F^* - F(\btrue^*) + F(\btrue^*) - F$,
-  and $F^* - F(\btrue^*) \to^p 0$ by the uniform \lln. Now choose
+  and $F^* - F(\btrue^*) \to^p 0$ by the uniform \lln. Choose
   $\Delta$ so that $|\beta_1 - \beta_2| < \Delta$ implies that
   $|F(\beta_1) - F(\beta_2) | < \epsilon$. Then
   \begin{equation*}
@@ -635,26 +635,26 @@ $H_i^* = \sum_{t=K_{i-1}+1}^{K_i} h_t^*/t^{1-\delta}$, so
 \end{align*}
 where $j_s^*$ is defined to be the index of the block containing
 observation $s$ of the bootstrap sequence.  (So, for example, $j_1^* =
-1$.) Now observe that $\{H_i^*, \Ms_i^*\}$ is a martingale difference
-sequence, so
+1$.) Now observe that $\{H_i^*, \Hs_i^*\}$ is a martingale difference
+sequence, so the maximal inequality implies that
 \begin{equation*}
   \pr^*\Big[ \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_{i}^* \big| > \epsilon \Big]
-  \leq (1/\epsilon^2) \sum_{i=1}^J \E^*(H_{i}^{*2} \mid \Ms_{i-1}^*)
+  \leq (1/\epsilon^2) \sum_{i=1}^J \E^*(H_{i}^{*2} \mid \Hs_{i-1}^*).
 \end{equation*}
-with
+By definition
 \begin{align*}
-  \E^*(H_i^{*2} \mid \Ms_{i-1}^*)
+  \E^*(H_i^{*2} \mid \Hs_{i-1}^*)
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2}
-  \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue^*) / (K_{i-1} + t + 1)^{1-\delta} \Big]^2 \\
-  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Big[\sum_{t = 0}^{\ell-1}
-  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t + 1)^{1-\delta}\Big]^2.
+  \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue^*) / (K_{i-1} + t)^{1-\delta} \Big]^2 \\
+  &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Big[\sum_{t = 1}^{\ell}
+  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-\delta}\Big]^2.
 \end{align*}
 Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
 \begin{gather}
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell_{i}}
   h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})^2 / (K_{i-1} + t)^{2-2a-2\delta}  = O_p(1)
+  \sum_{t = 1}^{\ell_{i}} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
   \label{eq:5}
   \intertext{and}
   \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).\label{eq:14}
@@ -881,8 +881,8 @@ probability by Lemma~\ref{res:a2} as well.
   z_j^* = \frac{1}{\sqrt{\gamma'\Sigma^*\gamma P}} \sum_{s=(j-1) \ell + 1}^{j\ell} \zeta_s^*
   \]
   where $\gamma = (\gamma_1', \gamma_2')'$. By construction, $\E^*
-  h_t^* = 0$ almost surely, so $\E(z_j \mid \Ms_{j-1}^*) = 0$ almost
-  surely and $\{z_j^*, \Ms_j^*\}$ is a martingale difference sequence.
+  h_t^* = 0$ almost surely, so $\E(z_j \mid \Hs_{j-1}^*) = 0$ almost
+  surely and $\{z_j^*, \Hs_j^*\}$ is a martingale difference sequence.
   Moreover, by Lemma vvv, $z_j^*$ is uniformly integrable.
 
   From the \mds\ property, we have
@@ -891,7 +891,7 @@ probability by Lemma~\ref{res:a2} as well.
   \end{equation*}
   as long as the following properties hold:
   \begin{equation}\label{eq:7}
-    \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Ms_{j-1}^*) \to^p 0
+    \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0
   \end{equation}
   and
   \begin{equation}\label{eq:8}
@@ -907,7 +907,7 @@ probability by Lemma~\ref{res:a2} as well.
   and we can rewrite the summation in the first term as
   \begin{equation*}
     1\{\btrue^* \in N\} \Big( \sum_{j=1}^J z_j^{*2} - 1 \Big)
-    =  \sum_{j=1}^J \big(z_j^{*2}1\{\btrue^* \in N\} - \E(z_j^{*2} 1\{\btrue^* \in N\} \mid \Ms_{j-1}^*) \big).
+    =  \sum_{j=1}^J \big(z_j^{*2}1\{\btrue^* \in N\} - \E(z_j^{*2} 1\{\btrue^* \in N\} \mid \Hs_{j-1}^*) \big).
    \end{equation*}
    This term is the sum of a uniformly integrable martingale
    difference sequence by Lemma aaaa and satisfies the \lln\
