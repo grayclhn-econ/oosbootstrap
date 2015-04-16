@@ -679,9 +679,10 @@ For~\eqref{eq:14}, we have
 Moreover,
 \begin{multline*}
   \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t (h_{s+u}(\btrue^*) - h_{s+u}) /(t-1)^{1-a-\delta} \big|^2 \\
-  \leq \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \sum_{s=K_{i-1}+1}^{K_i} (h_{s+u}(\btrue^*) - h_{s+u})^2 /(t-1)^{2-2a-2\delta},
+  \leq \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \sum_{s=K_{i-1}+1}^{K_i} \big[(h_{s+u}(\btrue^*) - h_{s+u})/(t-1)^{1-a-\delta}\big]^2,
 \end{multline*}
-so~\eqref{eq:14} holds whenever~\eqref{eq:4} and~\eqref{eq:5} do.
+so the net result is that~\eqref{eq:14} holds whenever~\eqref{eq:4}
+and~\eqref{eq:5} do.
 
 We'll prove~\eqref{eq:4} first. Using \citepos{Mcl:75} maximal
 inequality (again) implies that
@@ -708,7 +709,7 @@ For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
 where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
 \begin{align*}
   \pr\Big[& \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \Big(\sum_{t = 1}^{\ell_{i}} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \epsilon \Big] \\
+  \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \epsilon \Big] \\
   & \leq \pr\Big[ \tfrac{1}{T^2} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
   \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \epsilon \Big] \\
@@ -736,9 +737,9 @@ term converges to zero, completing the proof.
 \begin{proof}[Proof of \eqref{eq:22}.]
 First, observe that for any $\Delta$
 \begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
+  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
+  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
   &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
 \end{align}
 As before, the last two probabilities converges to zero by
