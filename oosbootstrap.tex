@@ -666,9 +666,9 @@ $\btrue^*$ to get
   \begin{gather}
     \omax{t} | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:26} \\
     \omax{t}  | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:27} \\
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_t) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
+    \omax{t} \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_t) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
     \intertext{and}
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
+    \omax{t} \big\lvert -\tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
   \end{gather}
   where each $b_t$ is any array a.s. between $\bh_t$ and $\btrue$
   and each $b_t^*$ is any array a.s. between $\bh_t^*$ and
@@ -700,9 +700,9 @@ arguments for $M$-estimators and is also omitted.
 \begin{proof}[Proof of \eqref{eq:22}.]
 First, observe that for any $\Delta$
 \begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
+  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
+  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
   &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
 \end{align}
 The last two probabilities converges to zero by
@@ -714,7 +714,7 @@ converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
 uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
 < \delta$ implies that $|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \Delta$. Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
   (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
   \leq \\
   \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and }
@@ -724,17 +724,17 @@ which again converges to zero in probability.
 
 Now choose $\Delta$ so that
 \begin{equation*}
-  \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} < \Delta
+  - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} < \Delta
 \end{equation*}
 implies that
 \begin{equation*}
-\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\Big[- \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
 \end{equation*}
 Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[- \tfrac{1}{t} \sum_{s=1}^t
   \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big\rvert > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t
+  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert - \tfrac{1}{t} \sum_{s=1}^t
   \nabla h_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
   \to^{p^*} 0,
 \end{multline*}
@@ -880,15 +880,15 @@ term converges to zero, completing the proof.
 \begin{proof}[Proof of~\eqref{eq:13}.]
 Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
-\bh_t^* - \btrue^* = \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) / (t-1)
+\bh_t^* - \btrue^* = \Big(- \sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^* / (t-1)
 \end{equation*}
 with each $b_s^*$ a.s. between $\bh_t^*$ and $\btrue^*$. Then
 \begin{multline}
   \omax{t} (t-1)^a | \hat{\beta}_t - \btrue |
   \leq
   \omax{t,u} \Big|\Big[ \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} - B^* \Big]
-  (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) \Big|\\
-  + \omax{t} \big| B^*   (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^*(\bh_s^*) \big|
+  (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \Big|\\
+  + \omax{t} \big| B^*   (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big|
 \end{multline}
 and both terms converge to zero in (conditional) probability by the
 previous arguments.
