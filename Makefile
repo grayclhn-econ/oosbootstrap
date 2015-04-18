@@ -1,4 +1,4 @@
-.PHONY: all dl test zip clean burn libs dirs
+.PHONY: all dl full test zip clean burn libs dirs
 .DELETE_ON_ERROR:
 
 latexmk := latexmk
@@ -7,7 +7,7 @@ sqlite  := sqlite3
 SHELL := /bin/bash
 version := $(shell git describe --tags --abbrev=0)
 
-dl all test: oosbootstrap.pdf
+dl all full test: oosbootstrap.pdf
 
 # Use different configuration files for `make test` and store the
 # results in another directory
@@ -16,6 +16,11 @@ ifeq ($(MAKECMDGOALS),test)
   empiricsdir = empirics.test
   montecarloconfig = montecarlo.src/config.test
   montecarlodir = montecarlo.test
+else ifeq '$(MAKECMDGOALS)' ''
+  empiricsconfig = empirics.src/config.default
+  empiricsdir = empirics.default
+  montecarloconfig = montecarlo.src/config.default
+  montecarlodir = montecarlo.default
 else
   empiricsconfig = empirics.src/config.full
   empiricsdir = empirics.full
@@ -41,10 +46,6 @@ $(montecarlodir)/west_iv.pdf: montecarlo.src/west_iv_table.R \
 $(montecarlodir)/west_iv.pdf $(empiricsdir)/excessreturns.tex:
 	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$^)
 endif
-
-dirs: tex db
-tex db:
-	mkdir -p $@
 
 empirics/excessreturns.tex: empirics/%: $(empiricsdir)/% | empirics
 	cp $< $@
