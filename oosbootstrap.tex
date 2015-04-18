@@ -597,23 +597,40 @@ $\btrue^*$ to get
   for $B^*$ is similar.
 \end{proof}
 
-\begin{lema}\label{res:a1}
+\begin{lema}\label{res:a_1}
   Under the conditions of Theorem~\ref{res:3},
   \begin{gather}
     \omax{t} | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:26} \\
     \omax{t}  | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:27} \\
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_{st}) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_t) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
     \intertext{and}
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_{st}^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
   \end{gather}
-  where each $b_{st}$ is any array a.s. between $\bh_t$ and $\btrue$
-  and each $b_{st}^*$ is any array a.s. between $\bh_t^*$ and
+  where each $b_t$ is any array a.s. between $\bh_t$ and $\btrue$
+  and each $b_t^*$ is any array a.s. between $\bh_t^*$ and
   $\btrue^*$.
 \end{lema}
 The proof of~\eqref{eq:21} follows from standard
 arguments for $M$-estimators and is also omitted.
 \begin{proof}[Proof of~\eqref{eq:27}]
-  TBD
+  First, assume $t \to \infty$ as $T \to \infty$. We have $\pr^*[|
+  \hat{\beta}^{*}_t - \btrue^* | > \epsilon] \to^p 0$ if $\pr[|
+  \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$. To prove this
+  second convergence, we will first establish that
+  \begin{equation}\label{eq:28}
+    \sup_{\beta \in N} \tfrac{1}{t-1} \sum_{s=1}^{t-1} (q_s^*(\beta) - \E^*q_s^*(\beta)) \to^p 0.
+  \end{equation}
+  Pointwise convergence holds from the \lln\ \citep{Cal:14} and
+  stochastic equitcontinuity of this function is implied by our moment
+  and smoothness conditions, so~\eqref{eq:28} holds by standard
+  arguments. Then given uniform convergence and identification, 
+  $\pr[| \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$ follows.
+
+  Then extending this result to
+  \begin{equation*}
+    \pr[ \omax{t} | \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0
+  \end{equation*}
+  follows the same argument as used in Calhoun's (2014) uniform \clt.
 \end{proof}
 
 \begin{proof}[Proof of \eqref{eq:22}.]
@@ -626,33 +643,35 @@ First, observe that for any $\Delta$
 \end{align}
 The last two probabilities converges to zero by
 Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
-Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
+Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
 be reexpressed as the sum of a uniformly integrable \mds\ that obeys
 a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
-converges to zero. Finally, since $\nabla^2 q_s$ is continuous
+converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
 uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
-< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
-q_s(\beta_2)| < \Delta$. Then
+< \delta$ implies that $|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \Delta$. Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t
+  (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
   \leq \\
-\pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
+  \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and }
+  \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
 \end{multline*}
 which again converges to zero in probability.
 
 Now choose $\Delta$ so that
 \begin{equation*}
-  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
+  \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} < \Delta
 \end{equation*}
 implies that
 \begin{equation*}
-\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
 \end{equation*}
 Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-  > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t
+  \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big\rvert > \epsilon\Big] \leq \\
+  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t
+  \nabla h_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
   \to^{p^*} 0,
 \end{multline*}
 completing the proof.
@@ -673,7 +692,12 @@ completing the proof.
 \noindent%
 The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
 as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:15}
-and are omitted.
+and are omitted. Note that~\eqref{eq:12} and~\eqref{eq:13} are
+refinements of~\eqref{eq:26} and~\eqref{eq:27}; \eqref{eq:26}
+and~\eqref{eq:27} establish basic consistency results using standard
+arguments, and these results are used heavily in the other proofs,
+but~\eqref{eq:12} and~\eqref{eq:13} strengthen those results by adding
+rate of convergence conditions.
 
 \begin{proof}[Proof of~\eqref{eq:11}.]
 We will present this proof under the assumption that $h_t$ is
@@ -814,14 +838,12 @@ previous arguments.
   and
   \begin{equation}\label{eq:17}
     \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
-    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
+    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1).
   \end{equation}
-Equations
-  \eqref{eq:7}--\eqref{eq:10} and \eqref{eq:11}--\eqref{eq:13} hold.
 \end{lema}
 
-\begin{proof}[Proof of Lemma~\ref{res:a4}]
-For~\eqref{eq:16}, we have
+\begin{proof}[Proof of~\eqref{eq:16}]
+We have
 \begin{align*}
   \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
   &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
@@ -837,7 +859,8 @@ Lemma~\ref{res:a2} and the random variable inside the first probability is bound
 \end{multline*}
 The summation is $O_p(1)$ by assumption and the supremum converges to
 zero by using Lemma~\ref{res:a2} again.
-
+\end{proof}
+\begin{proof}[Proof of~\eqref{eq:17}]
 For~\eqref{eq:17}, we have the upper bound
 \begin{multline*}
   \big\lvert \oclt{t} \big(F_t^* \cdot (\bh_t^* - \btrue^*) - F^* B^* a_t h_t^*\big) \big\rvert \leq \\
@@ -876,67 +899,61 @@ probability by Lemma~\ref{res:a2} as well.
   where $\gamma_1$ and $\gamma_2$ are arbitrary nonzero vectors, and
   also define
   \[
-  z_j^* = \frac{1}{\sqrt{\gamma'\Sigma^*\gamma P}} \sum_{s=(j-1) \ell + 1}^{j\ell} \zeta_s^*
+  z_j^* = \tfrac{1}{\sqrt{P}} \sum_{s=(j-1) \ell + 1}^{j\ell} \zeta_s^*
+  \]
+  and
+  \[
+  v^{*2} = J \var^*(z_j^*)
   \]
   where $\gamma = (\gamma_1', \gamma_2')'$. By construction, $\E^*
   h_t^* = 0$ almost surely, so $\E(z_j \mid \Hs_{j-1}^*) = 0$ almost
   surely and $\{z_j^*, \Hs_j^*\}$ is a martingale difference sequence.
-  Moreover, by Lemma vvv, $z_j^*$ is uniformly integrable.
 
   From the \mds\ property, we have
   \begin{equation*}
-    \sum_{j=1}^J z_j^* \to^d N(0, 1)
+    \sum_{j=1}^J z_j^* / \sqrt{v^*} \to^d N(0, 1)
   \end{equation*}
   as long as the following properties hold:
   \begin{equation}\label{eq:7}
-    \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0
+    \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0
   \end{equation}
   and
   \begin{equation}\label{eq:8}
-    \pr^*\Big[ \big| \sum_{j=1}^J z_j^{*2} - 1 \big| > \epsilon\Big] \to^p 0.
+    \pr^*\Big[ \big| \sum_{j=1}^J z_j^{*2}/v^{*2} - 1 \big| > \epsilon\Big] \to^p 0.
   \end{equation}
 
   For~\eqref{eq:8}, we have the usual bound
   \begin{equation*}
-    \pr^*\Big[ \big|\sum_{j=1}^J z_j^{*2} - 1 \big| > \varepsilon\Big] \leq
-    \pr^*\Big[ 1\{\btrue^* \in N\} \big| \sum_{j=1}^J z_j^{*2} - 1 \big| > \epsilon \Big]
+    \pr^*\Big[ \big|\sum_{j=1}^J z_j^{*2}/v^{*2} - 1 \big| > \varepsilon\Big] \leq
+    \pr^*\Big[ 1\{\btrue^* \in N\} \big| \sum_{j=1}^J z_j^{*2}/v^{*2} - 1 \big| > \epsilon \Big]
      + \pr^*[ \btrue^* \notin N ]
   \end{equation*}
   and we can rewrite the summation in the first term as
   \begin{equation*}
-    1\{\btrue^* \in N\} \Big( \sum_{j=1}^J z_j^{*2} - 1 \Big)
-    =  \sum_{j=1}^J \big(z_j^{*2}1\{\btrue^* \in N\} - \E(z_j^{*2} 1\{\btrue^* \in N\} \mid \Hs_{j-1}^*) \big).
+    1\{\btrue^* \in N\} \Big( \sum_{j=1}^J z_j^{*2}/v^{*2} - 1 \Big)
+    =  \sum_{j=1}^J \big(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} -
+    \E(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} \mid \Hs_{j-1}^*) \big).
    \end{equation*}
    This term is the sum of a uniformly integrable martingale
-   difference sequence by Lemma aaaa and satisfies the \lln\
-   (i.e. Davidson's, 1994, Theorem 19.7), and so it converges in
-   (conditional) probability to zero.  The second term converges in
-   probability to zero by consistency of $\btrue^*$
-   (Lemma~\ref{res:a3}).
+   difference sequence and satisfies the \lln\ (i.e. Davidson's, 1994,
+   Theorem 19.7), and so it converges in (conditional) probability to
+   zero.  The second term converges in probability to zero by
+   consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
 
-   The convergence in probability in~\eqref{eq:7} is implied by
-   convergence in $L_1$, i.e.
+   Similary, \eqref{eq:7} holds if
    \begin{equation*}
-     \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \to 0,
+     1\{\beta_0^* \in N\} \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to 0,
    \end{equation*}
-   and we have,
-   \begin{align*}
-     \sum_{j=1}^J &\E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
-     &= \sum_{j=1}^J \E(z_j^{*2} 1\{z_j^{*2} > \epsilon\}) \\
-     &= \sum_{j=1}^{J-1} \E\Big(\sum_{s,t =1}^{\ell_1} \zeta^*_{\ell_1 (j-1)+s,\ell_1 (j-1)+s}\zeta^*_{\ell_1 (j-1)+t,\ell_1 (j-1)+t}
-     1\Big\{ \sum_{s,t = 1}^{\ell_1} \zeta^*_{\ell_1 (j-1)+s,\ell_1 (j-1)+s}\zeta^*_{\ell_1 (j-1)+t,\ell_1 (j-1)+t} > \epsilon\Big\}\Big) \\
-     &\quad +
-     \E\Big(\sum_{s,t = T-\ell_2+1}^{T} \zeta^*_{ss}\zeta^*_{tt} 1\Big\{\sum_{s,t = T - \ell_2+1}^{T} \zeta^*_{ss}\zeta^*_{tt} > \epsilon\Big\}\Big) \\
-     &= \tfrac{1}{T} \sum_{u=1}^T \sum_{j=1}^{J-1} \E\Big(\sum_{s,t = 1}^{\ell_1} \zeta_{\ell_1(j-1) + s,u+s}\zeta_{\ell_1(j-1) + t,u+t}
-     1\Big\{\sum_{s,t = 1}^{\ell_1} \zeta_{\ell_1(j-1) + s,u+s}\zeta_{\ell_1(j-1) + t,u+t} > \epsilon\Big\}\Big) \\
-     &\quad +
-     \tfrac{1}{T} \sum_{u=1}^T \E\Big(\sum_{s,t = 1}^{\ell_2} \zeta_{T-\ell_2 + s,u+s}\zeta_{T-\ell_2+t,u+t}
-     1\Big\{\sum_{s,t = 1}^{\ell_2} \zeta_{T-\ell_2 + s,u+s}\zeta_{T-\ell_2+t,u+t} > \epsilon\Big\}\Big) \\
-     &\leq \sum_{j=1}^{J-1} B(\epsilon T / \ell_1) \ell_1 / T
-     + B(\epsilon T / \ell_2) \ell_2/T \\
-     &\to 0.
-   \end{align*}
-   The rest of the proof is fairly straightforward.
+   which holds by uniform integrability of $1\{\beta_0^* \in N\} z_j^{*2}$.
+
+   Finally, since the variance of the bootstrapped statistic is
+   equivalent to a \hac\ estimator,
+   \begin{equation*}
+     v^{*2} \to^p \gamma_1' S_{ff} \gamma_1 + 2 \lambda_{fh} (\gamma_2' S_{fh}' \gamma_1)
+     + \lambda_{hh} \gamma_2' S_{hh} \gamma_2
+   \end{equation*}
+   holds by Theorem 2.2 of \cite{JoD:00}, using West's (1996)
+   arguments to handle the $a_s$ terms.
 \end{proof}
 
 \bibliography{texextra/references}
