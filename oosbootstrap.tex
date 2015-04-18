@@ -54,21 +54,85 @@ Bootstrap; Reality Check
 
 This paper develops a block bootstrap method that can be used to
 consistently estimate the distributions of asymptotically normal
-out-of-sample (\oos) test statistics. Since the asymptotic variance of
-these statistics can have a complicated formula in many applications,
-bootstrap methods have the potential to be very useful in applied
-work. However, existing bootstraps are either based on parametric
-models of the null hypothesis (typically using sieve arguments, so
-that the effect of imposing a functional form dies out in large
-samples; see [fill in]), only hold with strict restrictions on the
-size of the test sample \citep{Whi:00,Han:05}, or require complicated
-estimation strategies in the bootstrap \citep{CoS:07}, making this
-approach impractical. In this paper, we show that standard
-nonparametric block bootstraps are also consistent and derive the
-correct centering term to ensure consistency.
+out-of-sample (\oos) test statistics. We propose the ``obvious''
+approach of drawing a large number of bootstrap samples from the full
+dataset --- using the Moving Blocks, Circular Block, or Stationary
+bootstraps proposed by \cite{Kun:89}, \cite{LiS:92}, \cite{PoR:92},
+and \cite{PoR:94} (which we will define shortly) --- and then
+calculating the \oos\ statistic of interest for each bootstrap sample.
+We show that this approach is valid under conditions simliar to
+\citepos{Wes:96} and \citepos{Mcc:00}; i.e. when the \oos\ statistic
+itself is asymptotically normal.
 
-The next section presents our block bootstrap result.
-Section~\ref{sec:4} concludes.
+The block bootstraps mentioned in the previous paragraph are all
+nonparametric techniques: each of these bootstraps draws $J$ blocks of
+length $\ell$ at random from the original dataset, and assembles them
+into a new bootstrap time-series. If $\ell \to \infty$ as $T \to
+\infty$, the blocks capture the serial dependence in the original data
+without any additional effort by the researcher. (Under the right
+weak-dependence assumptions and other conditions on the \dgp,
+obviously.) These methods differ slightly in how they conduct this
+random sampling. For the \emph{Moving Blocks Bootstrap} developed by
+\cite{Kun:89} and \cite{LiS:92}, $\ell$ is set by the researcher, and
+each block of $\ell$ consectutive observations is equally likely to be
+chosen. The same principle applies for \citepos{PoR:92} \emph{Circular
+  Block Bootstrap}, but now the bootstrap is allowed to ``wrap
+around'' the endpoints of the original time series and choose, for
+example, the block with indices $T-1,T, 1, 2,\dots, \ell - 2$.%
+\footnote{This modification ensures that the mean of the distribution
+  induced by the bootstrap always equals the sample mean.} %
+\citepos{PoR:94} \emph{Stationary Bootstrap} extends the Circular
+Block Bootstrap by drawing the block length independently for each
+block from the geometric distribution.%
+\footnote{This additional source of randomization produces a strictly
+  stationary bootstrap sequence. It also reduces the efficiency of the
+  Stationary Bootstrap relative to the other block bootstraps, but by
+  less than was originally thought. See \cite{Nor:09} for a discussion
+  of this issue.}
+
+Although the nonparametric aspect of these block boostraps has led to
+their popularity in many areas of time-series econometrics, they have
+been relatively unpopular in the \oos\ testing literture. This is due
+to several factors. Although the first papers developing the
+theoretical properties of these statistics, \cite{DiM:95} and
+\cite{Wes:96}, prove asymptotic normality, subsequent papers show that
+asymptotic normality tends to hold only under restrictive conditions
+and fails otherwise. (See \citealp{ClM:01}, and \citealp{Mcc:07}, in
+particular.) Consequently, most papers focus on misspecification tests
+for nested models, where it is natural to impose that a restricted
+benchmark model holds under the null hypothesis and to use that
+restricted model to generate the bootstrap samples, as in
+\cite{Lut:99} and \cite{ClM:05}.
+However, \cite{GiW:06}, \cite{ClW:06,ClW:07}, and \cite{Cal:15} have
+proposed \oos\ test statistics that are asymptotically normal under
+general conditions, so it is worth exploring whether block bootstraps
+can be applied to these new statistics. This is especially true since
+researchers will often want to allow the benchmark model to be
+misspecified under the null hypothesis in forecasting applications and
+when comparing several models, which is straightforward with block
+bootstraps but more difficult with parametric bootstraps. (See in
+particular \citealp{Whi:00}, \citealp{Han:05}, and \citealp{RoW:05}.)
+
+Previous treatments of these bootstraps have focused on restricted or
+recentered bootstraps, but ours seems to be the first to study the
+theoretical properties of a standard boostrap applied to the entire
+dataset. \citet{Whi:00} and \citet{Han:05}, for example, require the
+out-of-sample period to be very small relative to the total sample
+size to remove the effects of estimating the unknown parameters of the
+forecasting models. \cite{CoS:07} propose a different bootstrap
+procedure that adds a recentering term to the parameter estimates and
+the \oos\ average; these adjustments can be somewhat awkward to
+implement and can add to the computation time, which reduces some of
+the block bootstrap's advantages. In our paper, in contrast, we show
+that standard nonparametric block bootstraps are consistent without
+modification and derive the correct centering term to ensure
+consistency.
+
+The next section presents our theoretical results. Section~\ref{sec:3}
+presents an empirical illustration of our approach based on
+\citepos{Cal:15} \oos\ statistic, and Section~\ref{sec:mc} presents a
+Monte Carlo experiment that studies the bootstrap's finite sample
+properties. Finally, Section~\ref{sec:4} concludes.
 
 \section{The Bootstrap for Out-of-Sample Statistics}
 
@@ -394,7 +458,7 @@ well, but not the corrected values.
 \label{tab:em1}
 \end{table}
 
-\section{Monte Carlo results}
+\section{Monte Carlo results}\label{sec:mc}
 \begin{figure}[t]
   \centering
   \includegraphics{montecarlo/west_iv.pdf}
