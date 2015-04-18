@@ -6,13 +6,12 @@ outputfile = args[1]
 datafile = args[2]
 
 library(dbframe, lib.loc = "lib")
-library(reshape2)
 library(lattice)
 
 d <- read.csv(datafile)
 d$P <- factor(d$P)
 d$R <- factor(d$R)
 pdf(outputfile, width = 4)
-dotplot(R:P ~ Size, d, groups = Method, auto.key = TRUE,
-        main = "Summary of Monte Carlo results")
+dotplot(P ~ Size | R, d, groups = Method, auto.key = TRUE,
+        main = "Summary of Monte Carlo results", layout = c(1,3))
 dev.off()
