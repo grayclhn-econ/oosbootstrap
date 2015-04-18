@@ -597,28 +597,83 @@ $\btrue^*$ to get
   for $B^*$ is similar.
 \end{proof}
 
+\begin{lema}\label{res:a1}
+  Under the conditions of Theorem~\ref{res:3},
+  \begin{gather}
+    \omax{t} | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:26} \\
+    \omax{t}  | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:27} \\
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_{st}) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
+    \intertext{and}
+    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_{st}^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
+  \end{gather}
+  where each $b_{st}$ is any array a.s. between $\bh_t$ and $\btrue$
+  and each $b_{st}^*$ is any array a.s. between $\bh_t^*$ and
+  $\btrue^*$.
+\end{lema}
+The proof of~\eqref{eq:21} follows from standard
+arguments for $M$-estimators and is also omitted.
+\begin{proof}[Proof of~\eqref{eq:27}]
+  TBD
+\end{proof}
+
+\begin{proof}[Proof of \eqref{eq:22}.]
+First, observe that for any $\Delta$
+\begin{align}\label{eq:18}
+  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
+  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
+  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
+\end{align}
+The last two probabilities converges to zero by
+Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
+Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
+be reexpressed as the sum of a uniformly integrable \mds\ that obeys
+a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
+converges to zero. Finally, since $\nabla^2 q_s$ is continuous
+uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
+< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
+q_s(\beta_2)| < \Delta$. Then
+\begin{multline*}
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
+  \leq \\
+\pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
+\end{multline*}
+which again converges to zero in probability.
+
+Now choose $\Delta$ so that
+\begin{equation*}
+  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
+\end{equation*}
+implies that
+\begin{equation*}
+\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\end{equation*}
+Then
+\begin{multline*}
+  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
+  > \epsilon\Big] \leq \\
+  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
+  \to^{p^*} 0,
+\end{multline*}
+completing the proof.
+\end{proof}
+
 \begin{lema}\label{res:a2}
   If $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
   hold, then
   \begin{gather}
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s \big\rvert \to^p 0 \label{eq:6}\\
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big\rvert \to^{p^{*}} 0 \label{eq:11}\\
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_{st}) - B^{-1} \big\rvert \to^p 0 \label{eq:21}\\
-    \omax{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_{st}^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}\\
     \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12}
     \intertext{and}
-    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:13}
+    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0. \label{eq:13}
   \end{gather}
-  where each $b_{st}$ is any array a.s. between $\bh_t$ and $\btrue$
-  and each $b_{st}^*$ is any array a.s. between $\bh_t^*$ and
-  $\btrue^*$.
 \end{lema}
 
 \noindent%
 The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
 as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:15}
-and are omitted. The proof of~\eqref{eq:21} follows from standard
-arguments for $M$-estimators and is also omitted.
+and are omitted.
 
 \begin{proof}[Proof of~\eqref{eq:11}.]
 We will present this proof under the assumption that $h_t$ is
@@ -734,48 +789,6 @@ m_{u+s}^2$ is bounded, the large summation is $O(T)$ and this final
 term converges to zero, completing the proof.
 \end{proof}
 
-\begin{proof}[Proof of \eqref{eq:22}.]
-First, observe that for any $\Delta$
-\begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
-\end{align}
-As before, the last two probabilities converges to zero by
-Lemma~\ref{res:a2}.  Moreover, just as in the proof of
-Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla^2 q_s(\btrue^*)$ can
-be reexpressed as the sum of a uniformly integrable \mds\ that obeys
-a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
-converges to zero. Finally, since $\nabla^2 q_s$ is continuous
-uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
-< \delta$ implies that $|\nabla^2 q_s(\beta_1) - \nabla^2
-q_s(\beta_2)| < \Delta$. Then
-\begin{multline*}
-  \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert \tfrac{1}{t} \sum_{s=1}^t (\nabla^2 q_s^*(b_t^*) - \nabla^2 q_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
-  \leq \\
-\pr[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and } \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
-\end{multline*}
-which again converges to zero by Lemma~\ref{res:a2}.
-
-Now choose $\Delta$ so that
-\begin{equation*}
-  \tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1} < \Delta
-\end{equation*}
-implies that
-\begin{equation*}
-\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
-\end{equation*}
-Then
-\begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-  > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
-  \to^{p^*} 0,
-\end{multline*}
-completing the proof.
-\end{proof}
-
 \begin{proof}[Proof of~\eqref{eq:13}.]
 Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
@@ -791,22 +804,6 @@ with each $b_s^*$ a.s. between $\bh_t^*$ and $\btrue^*$. Then
 \end{multline}
 and both terms converge to zero in (conditional) probability by the
 previous arguments.
-\end{proof}
-
-\begin{lema}\label{res:a2}
-  Under the conditions of Theorem~\ref{res:3},
-  \begin{gather}
-    \tfrac{1}{\sqrt{P}} \osum{t} (F_t - F) = O_{p}(1)
-    \intertext{and}
-    \tfrac{1}{\sqrt{P}} \osum{t} (F_t^* - F^*) = O_{p^*}(1).
-  \end{gather}
-\end{lema}
-\begin{proof}[Proof of Lemma~\ref{res:a2}.]
-$\tfrac{1}{\sqrt{P}} \sum_{t=R+1}^T (F_t - \E F_t)$ obeys
-\citepos{Jon:97} \clt, so the result is trivial. For the
-bootstrapped process, we know that the bootstrap variance is
-equivalent to (...HAC estimator...) which is consistent by
-\citepos{JoD:00} Theorem (2?).\qedhere
 \end{proof}
 
 \begin{lema}\label{res:a4}
