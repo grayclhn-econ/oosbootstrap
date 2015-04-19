@@ -123,10 +123,14 @@ forecasting models. \cite{CoS:07} propose a different bootstrap
 procedure that adds a recentering term to the parameter estimates and
 the \oos\ average; these adjustments can be somewhat awkward to
 implement and can add to the computation time, which reduces some of
-the block bootstrap's advantages. In our paper, in contrast, we show
-that standard nonparametric block bootstraps are consistent without
-modification and derive the correct centering term to ensure
-consistency.
+the block bootstrap's advantages. Moreover, \citepos{CoS:07} procedure
+is designed for $M$-estimators, and it is not obvious how to extend it
+to, for example, GMM. In our paper, in contrast, we show that standard
+nonparametric block bootstraps are consistent without modification and
+derive the correct centering term to ensure consistency. Although this
+paper presents results for $M$-estimators, like \citepos{CoS:07}, the
+bootstrap and mathematical arguments are standard and apply to other
+nonlinear estimation strategies as well, including GMM.
 
 The next section presents our theoretical results. Section~\ref{sec:3}
 presents an empirical illustration of our approach based on
@@ -160,11 +164,7 @@ weaker assumption that certain functions of these variables are weakly
 stationary.
 
 The coefficients are updated each period to mimic a true \oos\
-forecasting exercise. In this paper, we're going to assume that each
-$\bh_{it}$ is an $M$-estimator. We expect that other classes of
-estimators can be used as well, as long as they are amenable to the
-bootstrap.
-
+forecasting exercise.
 Using standard terminology, the estimator $\bh_{it}$ is defined as
 \begin{equation}\label{eq:9}
   \hat\beta_{it} = \begin{cases}
@@ -184,21 +184,7 @@ f_t(\beta_{10},\dots,\beta_{k0})$, where
 \end{equation*}
 is the pseudotrue equivalent of $\bh_{it}$,
 
-So far, this is is a very standard setup. Our ``novelty'' is in how we
-propose bootstrapping $\fb$. Of course, people familiar with the
-bootstrap should not find it novel at all --- we use a standard block
-bootstrap and replace parameters with their equivalents under the
-bootstrap-induced distribution. But this is not how the bootstrap has
-been applied in this literature in the past.
-
-For the moment, consider the circular block bootstrap, which is
-implemented by drawing blocks of $\ell_1$ consecutive observations
-from the original dataset. For the circular block bootstrap, if the
-block extends beyond the dataset it is ``wrapped around,'' so, for
-example, $(T-1, T, 1, 2, 3, 4)$ is a possible block of indices when
-the block length is 6.
-
-We know from West's (1996) paper that, under appropriate assumptions,
+We know from \citet{Wes:96} that, under appropriate assumptions,
 $\sqrt{P} (\fb - \E f_t(\btrue))$ is asymptotically normal with mean
 zero. The key insight in our paper is that we can match this result in
 the bootstrap, but we need to be careful about the exact centering
@@ -209,21 +195,8 @@ population mean. That means that we should expect
   \sqrt{P} (\fb^* - \E^* f_t^*(\btrue^*))
 \end{equation*}
 to have the same asymptotic distribution and to give reliable
-confidence intervals, etc. where, for the circular and stationary
-block bootstraps,
-\begin{equation*}
-  \E^* f_t^*(\beta_1,\dots,\beta_k) = \tfrac{1}{T-1} \sum_{t=1}^{T-1} f_t(\beta_1,\dots,\beta_k)
-\end{equation*}
-and
-\begin{equation*}
-  \beta_{i0}^* = \argmin_\beta \sum_{s=1}^{T-1} q_i(y_{s+1}, x_s, \beta).
-\end{equation*}
-For the moving blocks bootstrap, a slight correction is necessary
-since observations at the ends of the sample are less likely to be
-selected, but the same equations hold approximately. And, after
-spelling out our specific assumptions, that's what we'll show!
-
-But, just to spell it out first, here
+confidence intervals, etc. where a * denotes a quantity under the
+bootstrap distribution and
 \begin{equation}
   \fb^* = \oavg{t} f(y_{t+1}^*, x_t^*, \bh_{1t}^*,\dots,\bh_{kt}^*)
   \equiv \oavg{t} f_t^*(\bh_{1t}^*,\dots,\bh_{kt}^*)
@@ -237,14 +210,22 @@ where $\bh_{it}^*$ is estimated exactly the same way as $\bh_t$:
   \end{cases}
 \end{equation}
 and $q_{is}^*(\beta) \equiv q_i(y_{s+1}^*, x_s^*, \beta)$.
+For the circular and stationary block bootstraps,
+\begin{equation*}
+  \E^* f_t^*(\beta_1,\dots,\beta_k) = \tfrac{1}{T-1} \sum_{t=1}^{T-1} f_t(\beta_1,\dots,\beta_k)
+\end{equation*}
+and
+\begin{equation*}
+  \beta_{i0}^* = \argmin_\beta \sum_{s=1}^{T-1} q_i(y_{s+1}, x_s, \beta).
+\end{equation*}
+For the moving blocks bootstrap, a slight correction is necessary
+since observations at the ends of the sample are less likely to be
+selected, but the same equations hold approximately.
 
-In general, let $\to^{p^{*}}$ and
-$\to^{d^{*}}$ refer to convergence in probability or distribution
-conditional on the observed data.  Similarly, $\E^{*}$, $\var^{*}$,
-and $\cov^{*}$ refer to the expectation, variance, and covariance with
-respect to the probability measure induced by the bootstrap, and
-$y_t^{*}$, etc. is the random variable $y_t$ but under the
-bootstrap-induced \cdf.
+In general, let $\to^{p^{*}}$ and $\to^{d^{*}}$ refer to convergence
+in probability or distribution conditional on the observed data.
+We will present the required theoretical assumptions first, then
+present our results.
 
 \begin{asmp}\label{a1}
   The estimators $\bh_{it}$ and $\bh_{it}^*$ are estimated as defined in
@@ -297,23 +278,20 @@ For Assumption~\ref{a3}, define
   size $-r/(r-2)$ or uniform mixing of size $-r/(2r-2)$ with $r>2$.
 \end{asmp}
 
-The next assumption seriously limits the practical applicability of
-these results, but is difficult to relax in general. (Well, we can
-relax it for nested models, but not for ``overlapping'' models.)
+The next assumption limits the practical applicability of these
+results, but is difficult to relax in general. There are \oos\ test
+statistics that satisfy this condition (\citealp{GiW:06},
+\citealp{ClW:06,ClW:07}, and \citealp{Cal:15}) but many do not.
 
 \begin{asmp}\label{a6}
   The asymptotic variance matrix of $\fb$ is uniformly positive definite.
 \end{asmp}
 
-Standard assumption on the relative sizes of the test and training samples.
+Finally, we make standard assumptions on the size of the in-sample and
+out-of-sample sizes and on the block length of the bootstrap.
 
 \begin{asmp}\label{a7}
   $R, P \to \infty$ as $T \to \infty$.
-\end{asmp}
-
-Standard assumption on block length for the bootstrap.
-
-\begin{asmp}\label{a4}
   The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$ is
   constructed using a moving blocks, circular blocks, or stationary
   bootstrap with block lengths drawn from the geometric distribution.
@@ -321,11 +299,13 @@ Standard assumption on block length for the bootstrap.
   and $\ell/T \to 0$.
 \end{asmp}
 
-Then the main result is proving consistency of the bootstrap
-distribution and the bootstrap variance.
+Then the main result is quite simple: the bootstrap distribution is
+consistent for the asymptotic distribution of the statistic and the
+bootstrap variance is consistent for the asymptotic variance of the
+original \oos\ statistic.
 
 \begin{thm}\label{res:3}
-  Under Assumptions~\ref{a1} -- \ref{a4}, $\var(\fb)/\var^*(\fb^*)
+  Under Assumptions~\ref{a1} -- \ref{a7}, $\var(\fb)/\var^*(\fb^*)
   \to^p 1$ and
   \begin{equation}\label{eq:15}
     \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x]
@@ -334,51 +314,42 @@ distribution and the bootstrap variance.
   for all $\epsilon > 0$.
 \end{thm}
 
+A few quick remarks follow.
 \begin{rem}
-  \citet{Mcc:00} proves asymptotic normality under weaker smoothness
-  conditions on $f_t(\beta)$ and $h_t(\beta)$: only their expectations
-  must be continuously differentiable.  It may be possible to extend
-  Theorem~\ref{res:3} to those weaker conditions, but the current
-  proof relies on a theorem of \citepos{JoD:00} establishing the
-  consistency of \hac\ estimators and their theorem requires differentiability of
-  the observations.  Extending \citepos{JoD:00} result to
-  nondifferentiable functions should be possible, but is beyond the
-  scope of this paper.
+  Typically this result will be used to test the null hypothesis $\E
+  f_t = 0$. To generate critical values for this test, researchers
+  need to calculate $\E^* f_t^*$ so that it can be removed from the
+  bootstrapped \oos\ statistic. We can use the bootstrap average to
+  approximate $\E^* f_t^*$ as one would expect:
+  \begin{equation*}
+    \E^* f_t^* \approx \tfrac{1}{n} \sum_{i=1}^n \fb_i^*
+  \end{equation*}
+  where there are $n$ bootstrap replications and $\fb_i^*$ represents
+  the $i$th realization of the bootstrapped statistic.
 \end{rem}
 
 \begin{rem}
-  \citet{Whi:00} and \citet{Han:05} resample the forecasts but do not
-  reestimate any of them which requires the additional assumption that
-  $\tfrac{P}{R} \log \log R \to 0$ or that the forecasts themselves
-  have no estimated parameters.%
-\footnote{\citet{Whi:00} lists several
-    different sets of assumptions that give the same result, but these
-    seem to be the most general.} %
+  As mentioned earlier, this bootstrap procedure can be especially
+  useful when comparing multiple forecasting models.  \cite{Whi:00},
+  \cite{Han:05} and \cite{RoW:05} are substantial contributions to
+  this literature and \cite{RSW:08} review aspects of this literature
+  as well.
 \end{rem}
 
-\begin{rem}
-  \citet{CoS:07} use the distribution of $\sqrt{P}(\bar{f}^{*} -
-  \bar{f})$ to approximate that of $\sqrt{P}(\bar{f} - \E
-  \bar{f}(\btrue))$.  But it is clear that $\bar{f}(\btrue^*)$
-  is the bootstrap analogue of $\E \bar{f}(\btrue)$, the parameter of
-  interest.  Because their bootstrap is miscentered, \citet{CoS:07}
-  must redefine $\hat{\beta}_t^{*}$ to achieve consistency.  In this
-  paper, though, consistency arises naturally.
+\begin{rem}\label{rem1}
+  The issue of choosing the block length is clearly very important but
+  is beyond the scope of this paper. For some guidance, see
+  \cite{PoW:04}, \cite{RoW:06}, and \cite{PPW:09}.
 \end{rem}
 
-\begin{rem}
-  It may be unnecessary to assume that $\bar{f}(\btrue)$ has positive
-  definite asymptotic variance; if so, the bootstrap would work in the
-  setup of \citet{ClM:05,ClM:01} and \citet{Mcc:07}.  That question is
-  left to future research.
-\end{rem}
+Related to Remark~\ref{rem1}, economic theory will sometimes imply
+that $f_t$ should be a martingale difference sequence, at least under
+the null hypothesis of interest. Under this stronger null hypothesis,
+researchers can avoid choosing the block length and the procedure is
+simplified somewhat: the bootstrap is consistent with a block length 1.
+Theorem~\ref{thm2} formalizes this result.
 
-Often economic theory will imply that $f_t$ should be a martingale
-difference sequence, at least under the null hypothesis of interest.
-Under this stronger null hypothesis, the bootstrap procedure can be
-simplified somewhat: the bootstrap is consistent with a block length
-of 1.
-\begin{thm}
+\begin{thm}\label{thm2}
   Suppose that Assumptions \ref{a1} -- \ref{a7} hold and also assume
   that $f_t - \E f_t$ is an \mds\ and that the i.i.d.\ bootstrap is
   used instead of the block bootstraps of Theorem~\ref{res:3}. Then
@@ -390,8 +361,11 @@ of 1.
   \end{equation}
   for all $\epsilon > 0$.
 \end{thm}
+
 The proof is a straightforward modification of that of
-Theorem~\ref{res:3} and is omitted.
+Theorem~\ref{res:3} and is omitted. It is important to recognize that
+this result allows for other forms of serial dependence, as long as
+the \mds\ property holds.
 
 \section{Empirical Illustration}\label{sec:3}
 
