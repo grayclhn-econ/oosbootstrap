@@ -10,6 +10,7 @@ library(reshape2)
 
 d <- read.csv(datafile)
 d <- d[as.character(d$Method) != "Nominal",]
+d$Size <- 100 * d$Size
 cat(booktabs(dcast(d, T + P ~ Method), "r", c(0,0,1,1), numberformat = TRUE,
              tabular.environment = "tabular"),
     file = outputfile)

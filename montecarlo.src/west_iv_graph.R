@@ -15,6 +15,5 @@ d$T <- factor(d$T)
 pdf(outputfile, width = 3.5, height = 3)
 dotplot(P ~ Size | T, d, groups = Method,
         auto.key = list(space = "right"),
-        xlim = c(0, 1.1 * max(d$Size)),
         main = "Summary of Monte Carlo results")
 dev.off()
