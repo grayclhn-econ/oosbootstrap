@@ -197,13 +197,13 @@ end
 ## - Ps, Rs: vectors with different values of P and R
 ## - α: nominal test size
 
-function allmcs(nsim, nboot, Ps, Rs, α)
-    results = Array(Float64, length(Ps), length(Rs), 2)
+function allmcs(nsim, nboot, RP, α)
+    results = Array(Float64, size(RP)[1], 2)
     mcstat = Array(Float64, nsim)
     mctest = BitArray(2, nsim)
-    for r in 1:length(Rs), p in 1:length(Ps)
-        runmc!(mcstat, mctest, nboot, Ps[p], Rs[r], α)
-        results[p,r,:] = mean(mctest, 2)
+    for r in 1:size(RP)[1]
+        runmc!(mcstat, mctest, nboot, RP[r,1], RP[r,2], α)
+        results[r,:] = mean(mctest, 2)
     end
     return results
 end

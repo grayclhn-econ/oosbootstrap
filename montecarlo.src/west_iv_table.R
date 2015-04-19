@@ -10,8 +10,8 @@ library(lattice)
 
 d <- read.csv(datafile)
 d$P <- factor(d$P)
-d$R <- factor(d$R)
+d$T <- factor(d$T)
 pdf(outputfile, width = 4)
-dotplot(P ~ Size | R, d, groups = Method, auto.key = TRUE,
-        main = "Summary of Monte Carlo results", layout = c(1,3))
+dotplot(P ~ Size | T, d, groups = Method, auto.key = TRUE,
+        main = "Summary of Monte Carlo results")
 dev.off()
