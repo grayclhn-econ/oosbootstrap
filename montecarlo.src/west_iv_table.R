@@ -2,16 +2,14 @@
 # Copyright 2015 Gray Calhoun
 
 args <- commandArgs(trailingOnly = TRUE)
-outputfile = args[1]
-datafile = args[2]
+outputfile <- args[1]
+datafile <- args[2]
 
 library(dbframe, lib.loc = "lib")
-library(lattice)
+library(reshape2)
 
 d <- read.csv(datafile)
-d$P <- factor(d$P)
-d$T <- factor(d$T)
-pdf(outputfile, width = 4)
-dotplot(P ~ Size | T, d, groups = Method, auto.key = TRUE,
-        main = "Summary of Monte Carlo results")
-dev.off()
+d <- d[as.character(d$Method) != "Nominal",]
+cat(booktabs(dcast(d, T + P ~ Method), "r", c(0,0,1,1), numberformat = TRUE,
+             tabular.environment = "tabular"),
+    file = outputfile)

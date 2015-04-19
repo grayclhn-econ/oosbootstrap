@@ -19,10 +19,11 @@ include(codezfile) # define estimators, etc.
 @everywhere eachmc(x) = allmcs(x, nboot, RP, α)
 mcres = mean(pmap(eachmc, fill(integer(nsims / nprocs()), nprocs())))
 
-stats = ["Naive", "Full"]
+stats = ["Naive", "Ours"]
 f = open(outputfile, "w")
 write(f, "T,P,Method,Size\n")
 for r in 1:size(RP)[1], m in 1:length(stats)
     write(f, "$(RP[r,1] + RP[r,2]),$(RP[r,2]),$(stats[m]),$(mcres[r,m])\n")
+    write(f, "$(RP[r,1] + RP[r,2]),$(RP[r,2]),Nominal,$(α)\n")
 end
 close(f)
