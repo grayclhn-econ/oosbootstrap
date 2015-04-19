@@ -8,7 +8,7 @@ very preliminary and the mathematical results almost certainly have
 errors. You can find the latest version of this repository at
 <https://git.ece.iastate.edu/gcalhoun/oosbootstrap>.
 
-This repository is for development after the "2015-04-18" version of
+This repository is for the "2015-04-19" version of
 the paper.  The paper is an offshoot of another paper,
 "An asymptotically normal out-of-sample test based on mixed estimation
 windows."
