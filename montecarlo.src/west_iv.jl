@@ -19,7 +19,7 @@ include(codezfile) # define estimators, etc.
 @everywhere eachmc(x) = allmcs(x, nboot, Ps, Rs, α)
 mcres = mean(pmap(eachmc, fill(integer(nsims / nprocs()), nprocs())))
 
-stats = ["Naive", "CS07", "Full", "Ours"]
+stats = ["Naive", "Full"]
 f = open(outputfile, "w")
 write(f, "R,P,Method,Size\n")
 for r in 1:length(Rs), p in 1:length(Ps), m in 1:length(stats)
