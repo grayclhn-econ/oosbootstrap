@@ -40,16 +40,19 @@ oosbootstrap_$(version).zip: oosbootstrap.pdf empirics.full/excessreturns.tex mo
 	zip $@ $^
 $(empiricsdir)/excessreturns.tex: empirics.src/excessreturns.R \
   empirics.src/yearlyData2009.csv $(empiricsconfig) | $(empiricsdir)
-$(montecarlodir)/west_iv.pdf: montecarlo.src/west_iv_table.R \
+$(montecarlodir)/west_iv.pdf: montecarlo.src/west_iv_graph.R \
+  $(montecarlodir)/west_iv.csv | $(montecarlodir)
+$(montecarlodir)/west_iv.tex: montecarlo.src/west_iv_table.R \
   $(montecarlodir)/west_iv.csv | $(montecarlodir)
 
-$(montecarlodir)/west_iv.pdf $(empiricsdir)/excessreturns.tex:
+$(montecarlodir)/west_iv.pdf $(montecarlodir)/west_iv.tex $(empiricsdir)/excessreturns.tex:
 	$(Rscript) $(RSCRIPTFLAGS) $< $@ $(filter-out $<,$^)
 endif
 
 empirics/excessreturns.tex: empirics/%: $(empiricsdir)/% | empirics
 	cp $< $@
-montecarlo/west_iv.pdf: montecarlo/%: $(montecarlodir)/% | montecarlo
+montecarlo/west_iv.pdf montecarlo/west_iv.tex: montecarlo/%: \
+  $(montecarlodir)/% | montecarlo
 	cp $< $@
 
 $(montecarlodir)/west_iv.csv: montecarlo.src/west_iv.jl \
@@ -60,7 +63,7 @@ empirics $(empiricsdir) montecarlo $(montecarlodir):
 	mkdir -p $@
 
 oosbootstrap.pdf: oosbootstrap.tex empirics/excessreturns.tex \
-  montecarlo/west_iv.pdf
+  montecarlo/west_iv.pdf montecarlo/west_iv.tex
 	pdflatex $(basename $<)
 	bibtex $(basename $<)
 	pdflatex $(basename $<)
