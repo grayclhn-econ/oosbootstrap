@@ -202,7 +202,7 @@ function allmcs(nsim, nboot, RP, α)
     mcstat = Array(Float64, nsim)
     mctest = BitArray(2, nsim)
     for r in 1:size(RP)[1]
-        runmc!(mcstat, mctest, nboot, RP[r,1], RP[r,2], α)
+        runmc!(mcstat, mctest, nboot, RP[r,2], RP[r,1], α)
         results[r,:] = mean(mctest, 2)
     end
     return results
