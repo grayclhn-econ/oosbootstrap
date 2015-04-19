@@ -141,56 +141,6 @@ function newbootmean!(ZW::Array{Float64,3}, ZY::Matrix{Float64}, l::Vector{Float
     l[1] - l[2]
 end
 
-## ooscs07! constructs the bootstrapped OOS test statistic corresponding to example
-## 5.2 West's 1996 Econometrica paper, using Corradi and Swanson's bootstrap.
-##
-## ZW_t - preallocated storage for the recursive window matrices Z[i,1:t]'*W[i,1:t];
-##        this array is written over by the function (2 × 2 × k)
-## ZY_t - preallocated storage for the recursive window vector Z[i,1:t]'*Y[1:t];
-##        this matrix is written over by the function, (2 × k)
-## l_t  - preallocated storage for the period t forecast loss, k-vector.
-## βhat - The original recursive coefficient estimates. Not overwritten here.
-## y -    Data: the target varable, n-vector.
-## w -    A matrix with the predictors; (n × k) each column corresponds to
-##        a different forecasting model. The models will be estimated with IV
-## z -    A matrix with the instruments for each model (n × k).
-## boot - A vector of the bootstrap-generated index. Defaults to no bootstrap.
-
-function ooscs07!(ZW_t::Array{Float64,3}, ZY_t::Matrix{Float64},
-                  l_t::Vector{Float64}, βhat::Array{Float64,3},
-                  y::Vector{Float64}, w::Matrix{Float64},
-                  z::Matrix{Float64}, boot::Vector{Int})
-    _,P,k = size(βhat)
-    R = length(y) - P
-    ## Intialize Z'W matrix
-    for i in 1:k
-        ZW_t[1, 1, i] = R
-        ZW_t[1, 2, i] = sum(w[boot[1:R], i])
-        ZW_t[2, 1, i] = sum(z[boot[1:R], i])
-        ZW_t[2, 2, i] = sum(w[boot[1:R], i] .* z[boot[1:R], i])
-    end
-    fboot = 0.0
-    for t = (R+1):(R+P)
-        for i in 1:2
-            ## need βhat[t,:] to be the coefficients used to predict
-            ## period t's y
-            mAdj_it = mean(y - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[:,i]))
-            ZY_t[1,i] = sum(y[boot[1:(t-1)]] - mAdj_it)
-            ZY_t[2,i] = (z[boot[1:(t-1)],i] '* (y[boot[1:(t-1)]] - mAdj_it))[1]
-            βh_it = ZW_t[:,:,i] \ ZY_t[:,i]
-            l_t[i] = ((y[boot[t]] - (βh_it[1] + βh_it[2] * w[t,i]))^2 -
-                      mean((y - (βhat[1,t-R,i] + βhat[2,t-R,i] * w[:,i])).^2))
-            ## Update Z'W matrix
-            ZW_t[1,1,i] += 1.
-            ZW_t[1,2,i] += w[boot[t],i]
-            ZW_t[2,1,i] += z[boot[t],i]
-            ZW_t[2,2,i] += w[boot[t],i] * z[boot[t],i]
-        end
-        fboot += (l_t[1] - l_t[2]) / P
-    end
-    return fboot
-end
-
 ## runmc! runs the West (1996)-based Monte Carlo for a particular value of P, R, and α.
 ## - oosstat: preallocated vector that stores the oos test statistics for
 ##   each run. The length of this array is the number of simulations.
@@ -216,31 +166,23 @@ function runmc!(oosstat::Vector{Float64}, oostest::BitArray, nboot, P, R, α)
     fullindex = Array(Int, n)
     initindex = Array(Int, R)
     naiveindex = Array(Int, P)
-    oosboot = Array(Float64, 4, nboot)
-    bootmean = Array(Float64, 4)
+    oosboot = Array(Float64, 2, nboot)
+    bootmean = Array(Float64, 2)
     for i in 1:length(oosstat)
         makedata!(y, w, z)
         oosstat[i] = oosstat!(βhat, f, ZW, ZY, l, y, w, z)
-        ## Do "non-destructive" bootstraps (still overwrites some of
-        ## the arguments, though)
+        ## Do "non-destructive" bootstraps
         for j in 1:nboot
             rand!(1:P, naiveindex)
             oosboot[1,j] = oosnaive(f, naiveindex)
-            rand!(1:n, fullindex)
-            oosboot[2,j] = ooscs07!(ZW, ZY, l, βhat, y, w, z, fullindex)
         end
         bootmean[1] = mean(oosboot[1,:])
-        bootmean[2] = 0 ## second bootstrap is centered inside ooscs07!
         ## Destructive bootstrap (overwrites f and βhat as well as ZW and ZY)
         for j in 1:nboot
             rand!(1:n, fullindex)
-            oosboot[3,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, fullindex)
-            rand!(1:R, initindex)
-            rand!((R+1):n, naiveindex)
-            oosboot[4,j] = oosstat_broken!(βhat, f, ZW, ZY, l, y, w, z, initindex, naiveindex)
+            oosboot[2,j] = oosstat!(βhat, f, ZW, ZY, l, y, w, z, fullindex)
         end
-        bootmean[3] = mean(oosboot[3,:])
-        bootmean[4] = mean(oosboot[4,:])
+        bootmean[2] = mean(oosboot[2,:])
         for j in 1:length(bootmean)
             bootcrit = quantile(vec(oosboot[j,:]), [α/2, 1 - α/2]) - bootmean[j]
             oostest[j,i] = oosstat[i] < bootcrit[1] || oosstat[i] > bootcrit[2]
@@ -256,9 +198,9 @@ end
 ## - α: nominal test size
 
 function allmcs(nsim, nboot, Ps, Rs, α)
-    results = Array(Float64, length(Ps), length(Rs), 4)
+    results = Array(Float64, length(Ps), length(Rs), 2)
     mcstat = Array(Float64, nsim)
-    mctest = BitArray(4, nsim)
+    mctest = BitArray(2, nsim)
     for r in 1:length(Rs), p in 1:length(Ps)
         runmc!(mcstat, mctest, nboot, Ps[p], Rs[r], α)
         results[p,r,:] = mean(mctest, 2)
