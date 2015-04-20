@@ -34,7 +34,8 @@
   under the null while continuing to use the standard formulas to
   estimate the model parameters under the bootstrap, while allowing
   the out-of-sample period to remain large. The resulting approach is
-  computationally more efficient and easier to program.
+  computationally more efficient, easier to program, and more widely
+  applicable.
 
 \strut
 
@@ -60,7 +61,7 @@ dataset --- using the Moving Blocks, Circular Block, or Stationary
 bootstraps proposed by \cite{Kun:89}, \cite{LiS:92}, \cite{PoR:92},
 and \cite{PoR:94} (which we will define shortly) --- and then
 calculating the \oos\ statistic of interest for each bootstrap sample.
-We show that this approach is valid under conditions simliar to
+We show that this approach is valid under conditions similar to
 \citepos{Wes:96} and \citepos{Mcc:00}; i.e. when the \oos\ statistic
 itself is asymptotically normal.
 
@@ -74,7 +75,7 @@ weak-dependence assumptions and other conditions on the \dgp,
 obviously.) These methods differ slightly in how they conduct this
 random sampling. For the \emph{Moving Blocks Bootstrap} developed by
 \cite{Kun:89} and \cite{LiS:92}, $\ell$ is set by the researcher, and
-each block of $\ell$ consectutive observations is equally likely to be
+each block of $\ell$ consecutive observations is equally likely to be
 chosen. The same principle applies for \citepos{PoR:92} \emph{Circular
   Block Bootstrap}, but now the bootstrap is allowed to ``wrap
 around'' the endpoints of the original time series and choose, for
@@ -90,9 +91,9 @@ block from the geometric distribution.%
   less than was originally thought. See \cite{Nor:09} for a discussion
   of this issue.}
 
-Although the nonparametric aspect of these block boostraps has led to
+Although the nonparametric aspect of these block bootstraps has led to
 their popularity in many areas of time-series econometrics, they have
-been relatively unpopular in the \oos\ testing literture. This is due
+been relatively unpopular in the \oos\ testing literature. This is due
 to several factors. Although the first papers developing the
 theoretical properties of these statistics, \cite{DiM:95} and
 \cite{Wes:96}, prove asymptotic normality, subsequent papers show that
@@ -115,7 +116,7 @@ particular \citealp{Whi:00}, \citealp{Han:05}, and \citealp{RoW:05}.)
 
 Previous treatments of these bootstraps have focused on restricted or
 recentered bootstraps, but ours seems to be the first to study the
-theoretical properties of a standard boostrap applied to the entire
+theoretical properties of a standard bootstrap applied to the entire
 dataset. \citet{Whi:00} and \citet{Han:05}, for example, require the
 out-of-sample period to be very small relative to the total sample
 size to remove the effects of estimating the unknown parameters of the
@@ -125,12 +126,12 @@ the \oos\ average; these adjustments can be somewhat awkward to
 implement and can add to the computation time, which reduces some of
 the block bootstrap's advantages. Moreover, \citepos{CoS:07} procedure
 is designed for $M$-estimators, and it is not obvious how to extend it
-to, for example, GMM. In our paper, in contrast, we show that standard
+to, for example, \gmm. In our paper, in contrast, we show that standard
 nonparametric block bootstraps are consistent without modification and
 derive the correct centering term to ensure consistency. Although this
 paper presents results for $M$-estimators, like \citepos{CoS:07}, the
 bootstrap and mathematical arguments are standard and apply to other
-nonlinear estimation strategies as well, including GMM.
+nonlinear estimation strategies as well, including \gmm.
 
 The next section presents our theoretical results. Section~\ref{sec:3}
 presents an empirical illustration of our approach based on
@@ -243,7 +244,7 @@ h(\beta)$ to the $(i,j)$ element of $\nabla^2 h(\beta)$.
 
 This assumption imposes standard moment and smoothness conditions on
 the underlying functions $f_t(\cdot)$ and $q_{it}(\cdot)$. It is quite
-likely that these are stronger than necessary and could be weakend to
+likely that these are stronger than necessary and could be weakened to
 smoothness conditions on $\E f_t(\cdot)$ and $\E q_{it}(\cdot)$, as in
 \cite{Mcc:00}, but we leave that for future work.%
 \footnote{Extending our results in this way would be equivalent to
@@ -746,9 +747,9 @@ arguments for $M$-estimators and is also omitted.
     \sup_{\beta \in N} \tfrac{1}{t-1} \sum_{s=1}^{t-1} (q_s^*(\beta) - \E^*q_s^*(\beta)) \to^p 0.
   \end{equation}
   Pointwise convergence holds from the \lln\ \citep{Cal:14} and
-  stochastic equitcontinuity of this function is implied by our moment
+  stochastic equicontinuity of this function is implied by our moment
   and smoothness conditions, so~\eqref{eq:28} holds by standard
-  arguments. Then given uniform convergence and identification, 
+  arguments. Then given uniform convergence and identification,
   $\pr[| \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$ follows.
 
   Then extending this result to
@@ -769,7 +770,7 @@ First, observe that for any $\Delta$
 The last two probabilities converges to zero by
 Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
 Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
-be reexpressed as the sum of a uniformly integrable \mds\ that obeys
+be re-expressed as the sum of a uniformly integrable \mds\ that obeys
 a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
 converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
 uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
@@ -1065,7 +1066,7 @@ probability by Lemma~\ref{res:a2} as well.
    zero.  The second term converges in probability to zero by
    consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
 
-   Similary, \eqref{eq:7} holds if
+   Similarly, \eqref{eq:7} holds if
    \begin{equation*}
      1\{\beta_0^* \in N\} \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to 0,
    \end{equation*}
