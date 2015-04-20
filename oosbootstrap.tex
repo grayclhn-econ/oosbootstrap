@@ -62,7 +62,7 @@ bootstraps proposed by \cite{Kun:89}, \cite{LiS:92}, and \cite{PoR:92,PoR:94},
 (which we will define shortly) --- and then
 calculating the \oos\ statistic of interest for each bootstrap sample.
 We show that this approach is valid under conditions similar to
-\citepos{Wes:96} and \citepos{Mcc:00}; i.e. when the \oos\ statistic
+\citepos{Wes:96} and \citepos{Mcc:00}; i.e.\ when the \oos\ statistic
 itself is asymptotically normal.
 
 The block bootstraps mentioned in the previous paragraph are all
@@ -136,7 +136,7 @@ nonlinear estimation strategies as well, including \gmm.
 The next section presents our theoretical results and further explains
 the statistics that we cover in this paper. Section~\ref{sec:3}
 presents an empirical illustration of our approach based on
-\citepos{Cal:15} \oos\ statistic, and Section~\ref{sec:mc} presents a
+\citepos{Cal:15} mixed-window \oos\ statistic, and Section~\ref{sec:mc} presents a
 Monte Carlo experiment that studies the bootstrap's finite sample
 properties. Finally, Section~\ref{sec:4} concludes.
 
@@ -195,7 +195,7 @@ term.  In particular, we should expect
   \sqrt{P} (\fb^* - \E^* f_t^*(\btrue^*))
 \end{equation*}
 to have the same asymptotic distribution and to give reliable
-confidence intervals, etc. where a * denotes a quantity under the
+confidence intervals, etc.\ where a * denotes a quantity under the
 bootstrap distribution and
 \begin{equation}
   \fb^* = \oavg{t} f(y_{t+1}^*, x_t^*, \bh_{1t}^*,\dots,\bh_{kt}^*)
@@ -307,7 +307,7 @@ bootstrap variance is consistent for the asymptotic variance of the
 original \oos\ statistic.
 
 \begin{thm}\label{res:3}
-  Under Assumptions~\ref{a1} -- \ref{a7}, $\var(\fb)/\var^*(\fb^*)
+  Under Assumptions~\ref{a1}--\ref{a7}, $\var(\fb)/\var^*(\fb^*)
   \to^p 1$ and
   \begin{equation}\label{eq:15}
     \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x]
@@ -365,7 +365,7 @@ simplified somewhat: the bootstrap is consistent with a block length 1.
 Theorem~\ref{thm2} formalizes this result.
 
 \begin{thm}\label{thm2}
-  Suppose that Assumptions \ref{a1} -- \ref{a7} hold and also assume
+  Suppose that Assumptions~\ref{a1}--\ref{a7} hold and also assume
   that $f_t - \E f_t$ is an \mds\ and that the i.i.d.\ bootstrap is
   used instead of the block bootstraps of Theorem~\ref{res:3}. Then
   $\var(\fb)/\var^*(\fb^*) \to^p 1$
@@ -419,7 +419,7 @@ is greater than the standard size-\bootsize\% critical value (1.28)
 and the critical value estimated by the procedure of
 Theorem~\ref{res:2} (\empiricalcriticalvalue).%
 \footnote{The bootstrap
-  uses \nboot\ replications with i.i.d. sampling, since the
+  uses \nboot\ replications with i.i.d.\ sampling, since the
   null hypothesis is that excess returns form an \mds.} %
 Three predictors are
 significant at the naive critical values for both the original and
@@ -746,8 +746,8 @@ $\btrue^*$ to get
     \intertext{and}
     \omax{t} \big\lvert -\tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
   \end{gather}
-  where each $b_t$ is any array a.s. between $\bh_t$ and $\btrue$
-  and each $b_t^*$ is any array a.s. between $\bh_t^*$ and
+  where each $b_t$ is any array a.s.\ between $\bh_t$ and $\btrue$
+  and each $b_t^*$ is any array a.s.\ between $\bh_t^*$ and
   $\btrue^*$.
 \end{lema}
 The proof of~\eqref{eq:21} follows from standard
@@ -779,7 +779,7 @@ First, observe that for any $\Delta$
   \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
   &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
   &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{ for some } t = R,\dots,T-1]
+  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1]
 \end{align}
 The last two probabilities converges to zero by
 Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
@@ -793,8 +793,8 @@ uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
   \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
   (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
   \leq \\
-  \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{ and }
-  \btrue^* \in N,\text{ and } \bh_t^* \in N \text{ for all } t = R,\dots,T-1]
+  \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{\ and\ }
+  \btrue^* \in N,\text{\ and\ } \bh_t^* \in N \text{\ for all\ } t = R,\dots,T-1]
 \end{multline*}
 which again converges to zero in probability.
 
@@ -958,7 +958,7 @@ Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
 \bh_t^* - \btrue^* = \Big(- \sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^* / (t-1)
 \end{equation*}
-with each $b_s^*$ a.s. between $\bh_t^*$ and $\btrue^*$. Then
+with each $b_s^*$ a.s.\ between $\bh_t^*$ and $\btrue^*$. Then
 \begin{multline}
   \omax{t} (t-1)^a | \hat{\beta}_t - \btrue |
   \leq
@@ -1075,7 +1075,7 @@ probability by Lemma~\ref{res:a2} as well.
     \E(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} \mid \Hs_{j-1}^*) \big).
    \end{equation*}
    This term is the sum of a uniformly integrable martingale
-   difference sequence and satisfies the \lln\ (i.e. Davidson's, 1994,
+   difference sequence and satisfies the \lln\ (i.e.\ Davidson's, 1994,
    Theorem 19.7), and so it converges in (conditional) probability to
    zero.  The second term converges in probability to zero by
    consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
