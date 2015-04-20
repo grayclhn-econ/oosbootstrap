@@ -369,8 +369,8 @@ the \mds\ property holds.
 
 \section{Empirical Illustration}\label{sec:3}
 
-This section demonstrates the use of our new statistic by revisiting
-\citepos{GoW:08} study of excess stock returns.  Goyal and Welch argue
+This section demonstrates the use of the bootstrap by revisiting
+\citepos{GoW:08} study of excess stock returns. Goyal and Welch argue
 that many variables thought to predict excess returns (measured as the
 difference between the yearly log return of the S\&P 500 index and the
 T-bill interest rate) on the basis of in-sample evidence fail to do so
@@ -379,24 +379,22 @@ performance of models using a lag of the variable of interest, and
 show that these models do not significantly outperform the excess
 return's recursive sample mean.
 
-Here, I conduct the same analysis, but using this paper's \mds\ test.
-The benchmark model is the excess return's sample mean (as in the
-original) and the alternative models are of the form
-\[\text{excess return}_{t} = \alpha_{0} + \alpha_{1}\
-\text{predictor}_{t-1} + \varepsilon_{t},\] where $\alpha_{0}$ and
-$\alpha_{1}$ are estimated by \ols\ using a \windowlength-year window.
-The predictors used are listed in the ``predictor'' column of
-Table~\ref{tab:em1} \citep[see][for a detailed description of the
-variables]{GoW:08}.  We also consider \citepos{CaT:08} proposed
-correction to the models, that the forecasts be bounded below by zero
-since negative forecasts are incredible, as well as two simple
-combination forecasts, the mean and the median (over both the original
-and the non-negative forecasts).  The data set is annual data
-beginning in 1927 and ending in 2009, and the rolling window uses
-\windowlength\ observations.%
-\footnote{This statistical analysis was
-  conducted in R \citep{R} using the xtable
-  \citep[version~1.6-0]{Dah:09}, and dbframe \citep[version
+We will conduct the same analysis here, but using the asymptotically
+normal \mds\ test proposed by \cite{Cal:15}.  The benchmark model is
+the excess return's sample mean (as in the original) and the
+alternative models are of the form
+\[
+  \text{excess return}_{t} = \alpha_{0} +
+  \alpha_{1}\ \text{predictor}_{t-1} + \varepsilon_{t},
+\]
+where $\alpha_{0}$ and $\alpha_{1}$ are estimated by \ols\ using a
+\windowlength-year window. The predictors used are listed in the left
+column of Table~\ref{tab:em1} \citep[see][for a detailed description
+of the variables]{GoW:08}. The data set is annual data beginning in
+1927 and ending in 2009, and the rolling window uses \windowlength\
+observations.%
+\footnote{This statistical analysis was conducted in R \citep{R} using
+  the xtable \citep[version~1.6-0]{Dah:09}, and dbframe \citep[version
   0.2.7]{Cal:10b} packages.} %
 
 Table~\ref{tab:em1} presents the results for each model.  The column
@@ -406,8 +404,8 @@ is greater than the standard size-\bootsize\% critical value (1.28)
 and the critical value estimated by the procedure of
 Theorem~\ref{res:2} (\empiricalcriticalvalue).%
 \footnote{The bootstrap
-  uses \nboot\ replications with i.i.d. sampling, as proposed in
-  conclusion~\ref{it:1} of Theorem~\ref{res:2}.} %
+  uses \nboot\ replications with i.i.d. sampling, since the
+  null hypothesis is that excess returns form an \mds.} %
 Three predictors are
 significant at the naive critical values for both the original and
 bounded forecasts: the dividend yield, long term interest rate, and
@@ -455,8 +453,8 @@ The two competing forecasting models are $y_t = \alpha_i + \beta_i
 w_{it} + u_{it}$ and the coefficients are estimated by Instrumental
 Variables using $z_{it}$ as the instrument. The \oos\ test statistic
 is just the difference in squared loss associated with the forecasts,
-and the null is that the expeted squared loss is the same.  This
-approach is approrpiate when one wants to use the forecast performance
+and the null is that the expected squared loss is the same.  This
+approach is appropriate when one wants to use the forecast performance
 of the models as a proxy for other aspects of their specification. One
 could, of course, estimate the models with \ols\ instead of \iv, but
 that would not say anything about the structural models underlying the
@@ -470,11 +468,11 @@ forecast, inspection of the mathematical proofs show that the basic
 strategy used would apply equally well to \gmm\ estimators, and so we
 should expect our results to apply here as well. Moreover, since we
 are proposing a simple block bootstrap, it is easy to implement
-regardless of the actuall statistic.
+regardless of the actual statistic.
 
 Second, parameter estimation error has a substantial effect in this
 setting. In \citepos{Wes:96} simulations, the naive \oos\ test
-statisitc that ignores this source of error can have rejection
+statistic that ignores this source of error can have rejection
 probabilities of up to 50\% for a test with nominal size 5\%. Of
 course, if $P$ is quite small relative to $R$ this effect
 diminishes. In our setting, we would expect the same behavior for the
@@ -492,14 +490,14 @@ The simulation results are presented in both a table
 lets us read the individual values cleanly and the chart makes it easy
 to spot patterns. We can see immediately that the test based on the
 correct bootstrap is slightly undersized, but appears to not
-overreject for any of the parameterizations we consider. The test
+overreject for any of the parametrizations we consider. The test
 based on naively bootstrapping the realized out-of-sample values, on
 the other hand, is seriously deficient and overrejects
 considerably. As we expect, the overrejection probability is smaller
 when $P$ is very small relative to the total sample size, but increases
 as $P$ gets larger.
 
-\begin{table}[th]
+\begin{table}[t]
   \centering
   \input{montecarlo/west_iv.tex}
   \caption{Monte Carlo results.}
@@ -610,7 +608,7 @@ expansion (as in \citealp{Wes:96}) that
 \begin{equation}\label{eq:23}
   \pr^*[\sqrt{p} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
-where $\Phi$ is the CDF of the standard normal and $\sigma$ is a known
+where $\Phi$ is the \cdf\ of the standard normal and $\sigma$ is a known
 constant. Similar arguments directly following West's imply that
 \begin{equation}\label{eq:24}
   \pr[\sqrt{p} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)

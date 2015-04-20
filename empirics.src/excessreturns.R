@@ -36,29 +36,9 @@ names(predictor.names) <- predictor.names
 
 benchmark <- function(d) lm(equity.premium ~ 1, data = d)
 alternatives_gw <- lapply(predictor.names, function(n)
-  eval(parse(text = sprintf("function(d) lm(equity.premium ~ %s, data = d)",
-			    n))))
-alternatives_ct <- lapply(predictor.names, function(n)
-  eval(parse(text = sprintf("function(d)
-			       CT(lm(equity.premium ~ %s, data = d))", n))))
-names(alternatives_ct) <- paste(names(alternatives_ct), "CT", sep = ".")
+  eval(parse(text = sprintf("function(d) lm(equity.premium ~ %s, data = d)", n))))
 
-alternatives_mean <-
-  eval(parse(text = sprintf("function(d) Aggregate(%s, mean)",
-    sprintf("list(%s)", paste(collapse = ",\n ",
-    sapply(sprintf("lm(equity.premium ~ %s, data = d)", predictor.names),
-	   function(lmstring) c(lmstring, sprintf("CT(%s)", lmstring))))))))
-
-alternatives_median <-
-  eval(parse(text = sprintf("function(d) Aggregate(%s, median)",
-    sprintf("list(%s)", paste(collapse = ",\n ",
-    sapply(sprintf("lm(equity.premium ~ %s, data = d)", predictor.names),
-	   function(lmstring) c(lmstring, sprintf("CT(%s)", lmstring))))))))
-
-alternatives <- c(alternatives_gw, alternatives_ct,
-                  average = alternatives_mean, median = alternatives_median)
-  
-oos.bootstrap <- mixedbootstrap(benchmark, alternatives, financial.data,
+oos.bootstrap <- mixedbootstrap(benchmark, alternatives_gw, financial.data,
 				R = windowlength, nboot = nboot, blocklength = 1,
 				window = "rolling", bootstrap = "circular")
 
@@ -72,7 +52,6 @@ results.data <- data.frame(stringsAsFactors = FALSE,
                            corrected = ifelse(stepm.results$rejected, "sig.", ""))
 
 results.data <- results.data[order(results.data$value, decreasing = TRUE),]
-results.data$predictor <- gsub(" \\.CT", "(CT)", results.data$predictor)
 results.data$predictor <- gsub("\\.", " ", results.data$predictor)
 names(results.data)[1] <- " "
 
