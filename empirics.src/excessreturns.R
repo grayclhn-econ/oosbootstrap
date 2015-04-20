@@ -43,7 +43,7 @@ oos.bootstrap <- mixedbootstrap(benchmark, alternatives_gw, financial.data,
 				window = "rolling", bootstrap = "circular")
 
 ## 'wrong' oos bootstrap
-forecasts.null <- recursive_errors(benchmark, financial.data, windowlength, "recursive")
+forecasts.null <- recursive_forecasts(benchmark, financial.data, windowlength, "recursive")
 forecasts.alt <- sapply(alternatives_gw, function(m) {
     recursive_forecasts(m, financial.data, windowlength, "recursive")
 })
