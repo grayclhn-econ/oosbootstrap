@@ -42,6 +42,19 @@ oos.bootstrap <- mixedbootstrap(benchmark, alternatives_gw, financial.data,
 				R = windowlength, nboot = nboot, blocklength = 1,
 				window = "rolling", bootstrap = "circular")
 
+## 'wrong' oos bootstrap
+forecasts.null <- recursive_errors(benchmark, financial.data, windowlength, "recursive")
+forecasts.alt <- sapply(alternatives_gw, function(m) {
+    recursive_forecasts(m, financial.data, windowlength, "recursive")
+})
+y <- financial.data$equity.premium[-(1:windowlength)]
+f.t <- (y - forecasts.null)^2 - (y - forecasts.alt)^2 + (forecasts.null - forecasts.alt)^2
+naiveboot <- replicate(nboot, {
+    fboot <- f.t[sample(1:length(y), replace = TRUE),]
+    bootstat <- sqrt(length(y)) * colMeans(fboot) / apply(fboot, 2, sd)
+})
+naivecrit <- quantile(naiveboot - rowMeans(naiveboot), 1 - bootsize)
+
 stepm.results <- stepm(oos.bootstrap$statistics, oos.bootstrap$replications, 
                        NA, bootsize)
 
@@ -49,21 +62,22 @@ results.data <- data.frame(stringsAsFactors = FALSE,
                            predictor = names(oos.bootstrap$statistics),
                            value = oos.bootstrap$statistics,
                            naive = ifelse(oos.bootstrap$statistics > qnorm(1 - bootsize), "sig.", ""),
-                           corrected = ifelse(stepm.results$rejected, "sig.", ""))
+                           SPA = ifelse(oos.bootstrap$statistics > naivecrit, "sig.", ""),
+                           ours = ifelse(stepm.results$rejected, "sig.", ""))
 
 results.data <- results.data[order(results.data$value, decreasing = TRUE),]
 results.data$predictor <- gsub("\\.", " ", results.data$predictor)
 names(results.data)[1] <- " "
 
-
 integer.macros <- c(nboot = nboot, bootsize = 100 * bootsize,
                        windowlength = windowlength)
-real.macros <- c(empiricalcriticalvalue = unname(stepm.results$rightcrit))
+real.macros <- c(empiricalcriticalvalue = unname(stepm.results$rightcrit),
+                 spacriticalvalue = unname(naivecrit))
 
 cat(file = outputfile, sep = "\n",
     sprintf("\\newcommand{\\%s}{%.2f}", names(real.macros), real.macros),
     sprintf("\\newcommand{\\%s}{%d}", names(integer.macros), integer.macros),
     sprintf("\\newcommand{\\empiricaltable}{%s}",
-            booktabs(results.data, align = c("l", rep("C", 3)), 
-                     numberformat = c(FALSE, TRUE, FALSE, FALSE),
-                     digits = rep(2, 4)),"}"))
+            booktabs(results.data, align = c("l", rep("C", 4)),
+                     numberformat = c(FALSE, TRUE, FALSE, FALSE, FALSE),
+                     digits = rep(2, 5)),"}"))
