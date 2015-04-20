@@ -9,11 +9,24 @@ library(lattice)
 lattice.options(default.theme = standard.theme(color = FALSE))
 
 d <- read.csv(datafile)
-d$Size <- 100 * d$Size
 d$P <- factor(d$P)
-d$T <- factor(d$T)
-pdf(outputfile, width = 3.5, height = 3)
-dotplot(P ~ Size | T, d, groups = Method,
+d$T <- paste("T =", d$T)
+pdf(outputfile, width = 4, height = 4.5)
+dotplot(P ~ Size | T, d, groups = Method, layout = c(1,2),
         auto.key = list(space = "right"),
+        scales = list(y = list(relation = "free")),
+        ## Next part taken from an R-help post
+        prepanel = function(x, y, ...) {
+            ## drop unused levels
+            yy <- y[, drop = TRUE]
+            ## reset y-limits
+            list(ylim = levels(yy),
+                 yat = sort(unique(as.numeric(yy))))
+        },
+        panel = function(x, y, ...) {
+            ## drop unused levels...again...
+            yy <- y[, drop = TRUE]
+            panel.dotplot(x, yy, ...)
+        },
         main = "Summary of Monte Carlo results")
 dev.off()
