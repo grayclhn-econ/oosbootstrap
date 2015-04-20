@@ -9,10 +9,9 @@ library(lattice)
 lattice.options(default.theme = standard.theme(color = FALSE))
 
 d <- read.csv(datafile)
-d$Size <- 100 * d$Size
 d$P <- factor(d$P)
 d$T <- factor(d$T)
-pdf(outputfile, width = 3.5, height = 3)
+pdf(outputfile, width = 4.5, height = 3)
 dotplot(P ~ Size | T, d, groups = Method,
         auto.key = list(space = "right"),
         main = "Summary of Monte Carlo results")
