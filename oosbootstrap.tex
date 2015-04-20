@@ -34,7 +34,8 @@
   under the null while continuing to use the standard formulas to
   estimate the model parameters under the bootstrap, while allowing
   the out-of-sample period to remain large. The resulting approach is
-  computationally more efficient and easier to program.
+  computationally more efficient, easier to program, and more widely
+  applicable.
 
 \strut
 
@@ -57,10 +58,10 @@ consistently estimate the distributions of asymptotically normal
 out-of-sample (\oos) test statistics. We propose the ``obvious''
 approach of drawing a large number of bootstrap samples from the full
 dataset --- using the Moving Blocks, Circular Block, or Stationary
-bootstraps proposed by \cite{Kun:89}, \cite{LiS:92}, \cite{PoR:92},
-and \cite{PoR:94} (which we will define shortly) --- and then
+bootstraps proposed by \cite{Kun:89}, \cite{LiS:92}, and \cite{PoR:92,PoR:94},
+(which we will define shortly) --- and then
 calculating the \oos\ statistic of interest for each bootstrap sample.
-We show that this approach is valid under conditions simliar to
+We show that this approach is valid under conditions similar to
 \citepos{Wes:96} and \citepos{Mcc:00}; i.e. when the \oos\ statistic
 itself is asymptotically normal.
 
@@ -74,7 +75,7 @@ weak-dependence assumptions and other conditions on the \dgp,
 obviously.) These methods differ slightly in how they conduct this
 random sampling. For the \emph{Moving Blocks Bootstrap} developed by
 \cite{Kun:89} and \cite{LiS:92}, $\ell$ is set by the researcher, and
-each block of $\ell$ consectutive observations is equally likely to be
+each block of $\ell$ consecutive observations is equally likely to be
 chosen. The same principle applies for \citepos{PoR:92} \emph{Circular
   Block Bootstrap}, but now the bootstrap is allowed to ``wrap
 around'' the endpoints of the original time series and choose, for
@@ -90,9 +91,9 @@ block from the geometric distribution.%
   less than was originally thought. See \cite{Nor:09} for a discussion
   of this issue.}
 
-Although the nonparametric aspect of these block boostraps has led to
+Although the nonparametric aspect of these block bootstraps has led to
 their popularity in many areas of time-series econometrics, they have
-been relatively unpopular in the \oos\ testing literture. This is due
+been relatively unpopular in the \oos\ testing literature. This is due
 to several factors. Although the first papers developing the
 theoretical properties of these statistics, \cite{DiM:95} and
 \cite{Wes:96}, prove asymptotic normality, subsequent papers show that
@@ -115,7 +116,7 @@ particular \citealp{Whi:00}, \citealp{Han:05}, and \citealp{RoW:05}.)
 
 Previous treatments of these bootstraps have focused on restricted or
 recentered bootstraps, but ours seems to be the first to study the
-theoretical properties of a standard boostrap applied to the entire
+theoretical properties of a standard bootstrap applied to the entire
 dataset. \citet{Whi:00} and \citet{Han:05}, for example, require the
 out-of-sample period to be very small relative to the total sample
 size to remove the effects of estimating the unknown parameters of the
@@ -125,14 +126,15 @@ the \oos\ average; these adjustments can be somewhat awkward to
 implement and can add to the computation time, which reduces some of
 the block bootstrap's advantages. Moreover, \citepos{CoS:07} procedure
 is designed for $M$-estimators, and it is not obvious how to extend it
-to, for example, GMM. In our paper, in contrast, we show that standard
+to, for example, \gmm. In our paper, in contrast, we show that standard
 nonparametric block bootstraps are consistent without modification and
 derive the correct centering term to ensure consistency. Although this
 paper presents results for $M$-estimators, like \citepos{CoS:07}, the
 bootstrap and mathematical arguments are standard and apply to other
-nonlinear estimation strategies as well, including GMM.
+nonlinear estimation strategies as well, including \gmm.
 
-The next section presents our theoretical results. Section~\ref{sec:3}
+The next section presents our theoretical results and further explains
+the statistics that we cover in this paper. Section~\ref{sec:3}
 presents an empirical illustration of our approach based on
 \citepos{Cal:15} \oos\ statistic, and Section~\ref{sec:mc} presents a
 Monte Carlo experiment that studies the bootstrap's finite sample
@@ -188,9 +190,7 @@ We know from \citet{Wes:96} that, under appropriate assumptions,
 $\sqrt{P} (\fb - \E f_t(\btrue))$ is asymptotically normal with mean
 zero. The key insight in our paper is that we can match this result in
 the bootstrap, but we need to be careful about the exact centering
-term.  In particular, under the circular bootstrap, $\btrue^*$ is the
-equivalent of $\btrue$ and the sample average is the equivalent of the
-population mean. That means that we should expect
+term.  In particular, we should expect
 \begin{equation*}
   \sqrt{P} (\fb^* - \E^* f_t^*(\btrue^*))
 \end{equation*}
@@ -220,7 +220,9 @@ and
 \end{equation*}
 For the moving blocks bootstrap, a slight correction is necessary
 since observations at the ends of the sample are less likely to be
-selected, but the same equations hold approximately.
+selected, but the same equations hold approximately. In any of these
+three bootstraps, $\E^* f_t^*(\btrue^*)$ does not incorporate the
+$\bh_t$ terms.
 
 In general, let $\to^{p^{*}}$ and $\to^{d^{*}}$ refer to convergence
 in probability or distribution conditional on the observed data.
@@ -243,7 +245,7 @@ h(\beta)$ to the $(i,j)$ element of $\nabla^2 h(\beta)$.
 
 This assumption imposes standard moment and smoothness conditions on
 the underlying functions $f_t(\cdot)$ and $q_{it}(\cdot)$. It is quite
-likely that these are stronger than necessary and could be weakend to
+likely that these are stronger than necessary and could be weakened to
 smoothness conditions on $\E f_t(\cdot)$ and $\E q_{it}(\cdot)$, as in
 \cite{Mcc:00}, but we leave that for future work.%
 \footnote{Extending our results in this way would be equivalent to
@@ -329,11 +331,24 @@ A few quick remarks follow.
 \end{rem}
 
 \begin{rem}
+  Often the bootstrap is more accurate for studentized statistics than
+  for the corresponding sample mean. One can certainly estimate the
+  asymptotic variance in our setting and apply the bootstrap to the
+  studentized \oos\ statistic. But there are other options as well:
+  first, one can use the bootstrap to estimate the variance of the
+  \oos\ statistic, then use a double bootstrap to normalize the
+  bootstrap statistic. Obviously, this may be computationally
+  impractical. Another approach is to partially studentize the
+  statistics by dividing by the naive estimator of the standard
+  deviation, which may reduce some of the effects of the variance.
+\end{rem}
+
+\begin{rem}
   As mentioned earlier, this bootstrap procedure can be especially
-  useful when comparing multiple forecasting models.  \cite{Whi:00},
-  \cite{Han:05} and \cite{RoW:05} are substantial contributions to
-  this literature and \cite{RSW:08} review aspects of this literature
-  as well.
+  useful when comparing multiple forecasting models, which will be
+  part of our empirical example. \cite{Whi:00}, \cite{Han:05} and
+  \cite{RoW:05} are substantial contributions to this literature and
+  \cite{RSW:08} review aspects of this literature as well.
 \end{rem}
 
 \begin{rem}\label{rem1}
@@ -369,8 +384,8 @@ the \mds\ property holds.
 
 \section{Empirical Illustration}\label{sec:3}
 
-This section demonstrates the use of our new statistic by revisiting
-\citepos{GoW:08} study of excess stock returns.  Goyal and Welch argue
+This section demonstrates the use of the bootstrap by revisiting
+\citepos{GoW:08} study of excess stock returns. Goyal and Welch argue
 that many variables thought to predict excess returns (measured as the
 difference between the yearly log return of the S\&P 500 index and the
 T-bill interest rate) on the basis of in-sample evidence fail to do so
@@ -379,24 +394,22 @@ performance of models using a lag of the variable of interest, and
 show that these models do not significantly outperform the excess
 return's recursive sample mean.
 
-Here, I conduct the same analysis, but using this paper's \mds\ test.
-The benchmark model is the excess return's sample mean (as in the
-original) and the alternative models are of the form
-\[\text{excess return}_{t} = \alpha_{0} + \alpha_{1}\
-\text{predictor}_{t-1} + \varepsilon_{t},\] where $\alpha_{0}$ and
-$\alpha_{1}$ are estimated by \ols\ using a \windowlength-year window.
-The predictors used are listed in the ``predictor'' column of
-Table~\ref{tab:em1} \citep[see][for a detailed description of the
-variables]{GoW:08}.  We also consider \citepos{CaT:08} proposed
-correction to the models, that the forecasts be bounded below by zero
-since negative forecasts are incredible, as well as two simple
-combination forecasts, the mean and the median (over both the original
-and the non-negative forecasts).  The data set is annual data
-beginning in 1927 and ending in 2009, and the rolling window uses
-\windowlength\ observations.%
-\footnote{This statistical analysis was
-  conducted in R \citep{R} using the xtable
-  \citep[version~1.6-0]{Dah:09}, and dbframe \citep[version
+We will conduct the same analysis here, but using the asymptotically
+normal \mds\ test proposed by \cite{Cal:15}.  The benchmark model is
+the excess return's sample mean (as in the original) and the
+alternative models are of the form
+\[
+  \text{excess return}_{t} = \alpha_{0} +
+  \alpha_{1}\ \text{predictor}_{t-1} + \varepsilon_{t},
+\]
+where $\alpha_{0}$ and $\alpha_{1}$ are estimated by \ols\ using a
+\windowlength-year window. The predictors used are listed in the left
+column of Table~\ref{tab:em1} \citep[see][for a detailed description
+of the variables]{GoW:08}. The data set is annual data beginning in
+1927 and ending in 2009, and the rolling window uses \windowlength\
+observations.%
+\footnote{This statistical analysis was conducted in R \citep{R} using
+  the xtable \citep[version~1.6-0]{Dah:09}, and dbframe \citep[version
   0.2.7]{Cal:10b} packages.} %
 
 Table~\ref{tab:em1} presents the results for each model.  The column
@@ -406,8 +419,8 @@ is greater than the standard size-\bootsize\% critical value (1.28)
 and the critical value estimated by the procedure of
 Theorem~\ref{res:2} (\empiricalcriticalvalue).%
 \footnote{The bootstrap
-  uses \nboot\ replications with i.i.d. sampling, as proposed in
-  conclusion~\ref{it:1} of Theorem~\ref{res:2}.} %
+  uses \nboot\ replications with i.i.d. sampling, since the
+  null hypothesis is that excess returns form an \mds.} %
 Three predictors are
 significant at the naive critical values for both the original and
 bounded forecasts: the dividend yield, long term interest rate, and
@@ -455,8 +468,8 @@ The two competing forecasting models are $y_t = \alpha_i + \beta_i
 w_{it} + u_{it}$ and the coefficients are estimated by Instrumental
 Variables using $z_{it}$ as the instrument. The \oos\ test statistic
 is just the difference in squared loss associated with the forecasts,
-and the null is that the expeted squared loss is the same.  This
-approach is approrpiate when one wants to use the forecast performance
+and the null is that the expected squared loss is the same.  This
+approach is appropriate when one wants to use the forecast performance
 of the models as a proxy for other aspects of their specification. One
 could, of course, estimate the models with \ols\ instead of \iv, but
 that would not say anything about the structural models underlying the
@@ -470,11 +483,11 @@ forecast, inspection of the mathematical proofs show that the basic
 strategy used would apply equally well to \gmm\ estimators, and so we
 should expect our results to apply here as well. Moreover, since we
 are proposing a simple block bootstrap, it is easy to implement
-regardless of the actuall statistic.
+regardless of the actual statistic.
 
 Second, parameter estimation error has a substantial effect in this
 setting. In \citepos{Wes:96} simulations, the naive \oos\ test
-statisitc that ignores this source of error can have rejection
+statistic that ignores this source of error can have rejection
 probabilities of up to 50\% for a test with nominal size 5\%. Of
 course, if $P$ is quite small relative to $R$ this effect
 diminishes. In our setting, we would expect the same behavior for the
@@ -492,14 +505,14 @@ The simulation results are presented in both a table
 lets us read the individual values cleanly and the chart makes it easy
 to spot patterns. We can see immediately that the test based on the
 correct bootstrap is slightly undersized, but appears to not
-overreject for any of the parameterizations we consider. The test
+overreject for any of the parametrizations we consider. The test
 based on naively bootstrapping the realized out-of-sample values, on
 the other hand, is seriously deficient and overrejects
 considerably. As we expect, the overrejection probability is smaller
 when $P$ is very small relative to the total sample size, but increases
 as $P$ gets larger.
 
-\begin{table}[th]
+\begin{table}[t]
   \centering
   \input{montecarlo/west_iv.tex}
   \caption{Monte Carlo results.}
@@ -610,7 +623,7 @@ expansion (as in \citealp{Wes:96}) that
 \begin{equation}\label{eq:23}
   \pr^*[\sqrt{p} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
-where $\Phi$ is the CDF of the standard normal and $\sigma$ is a known
+where $\Phi$ is the \cdf\ of the standard normal and $\sigma$ is a known
 constant. Similar arguments directly following West's imply that
 \begin{equation}\label{eq:24}
   \pr[\sqrt{p} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)
@@ -748,9 +761,9 @@ arguments for $M$-estimators and is also omitted.
     \sup_{\beta \in N} \tfrac{1}{t-1} \sum_{s=1}^{t-1} (q_s^*(\beta) - \E^*q_s^*(\beta)) \to^p 0.
   \end{equation}
   Pointwise convergence holds from the \lln\ \citep{Cal:14} and
-  stochastic equitcontinuity of this function is implied by our moment
+  stochastic equicontinuity of this function is implied by our moment
   and smoothness conditions, so~\eqref{eq:28} holds by standard
-  arguments. Then given uniform convergence and identification, 
+  arguments. Then given uniform convergence and identification,
   $\pr[| \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$ follows.
 
   Then extending this result to
@@ -771,7 +784,7 @@ First, observe that for any $\Delta$
 The last two probabilities converges to zero by
 Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
 Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
-be reexpressed as the sum of a uniformly integrable \mds\ that obeys
+be re-expressed as the sum of a uniformly integrable \mds\ that obeys
 a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
 converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
 uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
@@ -1067,7 +1080,7 @@ probability by Lemma~\ref{res:a2} as well.
    zero.  The second term converges in probability to zero by
    consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
 
-   Similary, \eqref{eq:7} holds if
+   Similarly, \eqref{eq:7} holds if
    \begin{equation*}
      1\{\beta_0^* \in N\} \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to 0,
    \end{equation*}
