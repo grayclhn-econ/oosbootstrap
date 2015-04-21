@@ -565,7 +565,9 @@ bootstrap that only samples from $\fh_R,\dots\fh_{T-1}$.
 For the specific simulation parameters, we run 2000 simulations each
 with 499 bootstrap replications. We run simulations with 300
 observations and 500 observations and consider several splits between
-$R$ and $P$. All tests are conducted for $\alpha = 10\%$, and all of
+$R$ and $P$. Since the observations are independent, we do a simple
+i.i.d.\ bootstrap. (This is equivalent to using a block length of 1.)
+All tests are two-sided with $\alpha = 10\%$, and all of
 the simulations were conducted in Julia version 0.3.6 (described in
 \citealp{BKSE12}, and \citealp{BEKS14}).
 
@@ -584,13 +586,26 @@ to the total sample size, but increases as $P$ gets larger.
 \begin{table}[t]
   \centering
   \input{montecarlo/west_iv.tex}
-  \caption{Monte Carlo results.}
+  \caption{Results of the Monte Carlo experiment, based on 2000
+    simulations from the \dgp described in Section~\ref{sec:mc} with 499
+    bootstrap replications each. The ``naive bootstrap'' column lists the
+    actual size
+    using resamples of the observed out-of-sample loss to produce the
+    bootstrap critical values and the column labeled ``our bootstrap'' uses
+    the method proposed in this paper.}
   \label{tab:1}
 \end{table}
 
 \begin{figure}[t]
   \includegraphics{montecarlo/west_iv.pdf}
-  \caption{Visual summary of Monte Carlo results.}
+  \caption{Results of the Monte Carlo experiment, based on 2000
+    simulations from the \dgp described in Section~\ref{sec:mc} with 499
+    bootstrap replications each. The circles labeled ``naive bootstrap'' plot the
+    actual size
+    using resamples of the observed out-of-sample loss to produce the
+    bootstrap critical values and the points labeled ``our bootstrap'' use
+    the method proposed in this paper. The tests' nominal size is plotted
+    for reference.}
   \label{fig:1}
 \end{figure}
 
