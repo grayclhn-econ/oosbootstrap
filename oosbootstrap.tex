@@ -691,17 +691,17 @@ Also let $l = T - J \ell$ be the number of elements in the last block.
 The proof proceeds in several steps. First, we prove via a Taylor
 expansion (as in \citealp{Wes:96}) that
 \begin{equation}\label{eq:23}
-  \pr^*[\sqrt{p} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
+  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
 where $\Phi$ is the \cdf\ of the standard normal and $\sigma$ is a known
 constant. Similar arguments directly following West's imply that
 \begin{equation}\label{eq:24}
-  \pr[\sqrt{p} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)
+  \pr[\sqrt{P} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
 under our assumptions, so
 \begin{equation}\label{eq:25}
-  \pr^*[\sqrt{p} (\fb^* - \E^* f_t^*) \leq x] \to^p
-  \pr[\sqrt{p} (\fb - \E f_t) \leq x].
+  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p
+  \pr[\sqrt{P} (\fb - \E f_t) \leq x].
 \end{equation}
 Moreover, the assumed moment conditions ensure that the variance of
 $\sqrt{P} \fb^*$ under the bootstrap distribution converges to the
@@ -840,7 +840,7 @@ arguments for $M$-estimators and is also omitted.
   \begin{equation*}
     \pr[ \omax{t} | \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0
   \end{equation*}
-  follows the same argument as used in Calhoun's (2014) uniform \clt.
+  follows the same argument as used in Calhoun's (2014) \fclt.
 \end{proof}
 
 \begin{proof}[Proof of \eqref{eq:22}.]
@@ -870,11 +870,11 @@ which again converges to zero in probability.
 
 Now choose $\Delta$ so that
 \begin{equation*}
-  - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} < \Delta
+  \big| - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} \big| < \Delta
 \end{equation*}
 implies that
 \begin{equation*}
-\Big[- \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^* < \epsilon.
+\Big|\Big[- \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big| < \epsilon.
 \end{equation*}
 Then
 \begin{multline*}
@@ -1156,8 +1156,8 @@ probability by Lemma~\ref{res:a2} as well.
    \end{equation*}
    which holds by uniform integrability of $1\{\beta_0^* \in N\} z_j^{*2}$.
 
-   Finally, since the variance of the bootstrapped statistic is
-   equivalent to a \hac\ estimator,
+   Finally, since the variance of the bootstrapped statistic can be
+   rewritten as a \hac\ variance estimator,
    \begin{equation*}
      v^{*2} \to^p \gamma_1' S_{ff} \gamma_1 + 2 \lambda_{fh} (\gamma_2' S_{fh}' \gamma_1)
      + \lambda_{hh} \gamma_2' S_{hh} \gamma_2
