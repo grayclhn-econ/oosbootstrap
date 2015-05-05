@@ -1,0 +1,402 @@
+A simple block bootstrap for asymptotically normal out-of-sample test statistics
+#+Date: May 8, 2015
+#+Author: Gray Calhoun \newline Iowa State University \newline (http://gray.clhn.org)
+
+* Introduction
+** _Very quick overview of the talk_
+   + Out-of-sample tests: assess one or more models by
+     1) producing a series of forecasts
+     2) testing hypotheses about their properties (unbiasedness, MDS, etc.)
+     e.g. Meese and Rogoff (1983), Diebold-Mariano-West, etc.
+   + $P$ --- number of observations in test sample
+   + $R$ --- number of observations in training sample
+
+   {{{s}}}
+
+   + Propose a straightforward block bootstrap
+     - Works well when the statistic fits West's (1996) framework
+     - Extensions to nested and overlapping models "soon"
+   + Monte Carlo evidence of finite-sample performance
+   + Empirical exercise based on Goyal and Welch (2008)
+     + (but there's not going to be time)
+** _Basic setup and notation_
+   OOS statistics have the form
+   \begin{align*}
+   \fb &= \oavg{t} f(y_{t+1}, x_t, \bh_{1t},\dots,\bh_{kt}) \\
+       &\equiv \oavg{t} f_t(\bh_{1t},\dots,\bh_{kt}),
+   \end{align*}
+
+   + $f$ --- criterion for comparing forecasting models (scalar in the talk)
+     + Equal MSE: $f_t(\beta_1,\beta_2) = (y_{t+1} - x_{1t}'\beta_1)^2 - (y_{t+1} - x_{2t}'\beta_2)^2$
+   + $y_{t+1}$ --- target variable of interest; $t = 1,\dots,T-1$
+   + $x_t$ --- vector of predictors
+     + $x_{it}$ --- the vector of predictors for model $i$
+   + $\bh_{it}$ --- parameter estimates for model $i$
+** _Estimation strategies_
+   Each $\bh_{it}$ is an $M$-estimator calculated with data that would
+   be available to a forecaster in period $t$:
+
+   \begin{equation*}
+   \hat\beta_{it} = \begin{cases}
+   \argmin_\beta \sum_{s=1}^{t-1} q_i(y_{s+1}, x_s, \beta) & \text{recursive window} \\ \\
+   \argmin_\beta \sum_{s=t-R+1}^{t-1} q_i(y_{s+1}, x_s, \beta) & \text{(\emph{rolling window})} \\ \\
+   \argmin_\beta \sum_{s=1}^{R-1} q_i(y_{s+1}, x_s, \beta) & \text{(\emph{fixed window})},
+   \end{cases}
+   \end{equation*}
+
+   + Should be straightforward to extend results to other estimation
+     strategies (GMM, for example), but I haven't done it
+     + Allows comparison with prev. results (Corradi and Swanson, 2007)
+   + For the talk, let $k = 1$ (our assumptions ensure nondegeneracy)
+** _We're operating in the West/Clark/McCracken world_
+   + Inference, not point estimation
+   + Null hypothesis of interest is $\E f_t(\beta_0) = 0$,
+     \[
+       \beta_{0} = \argmin_\beta \E q(y_{t+1}, x_t, \beta) \qquad\text{(pseudotrue parameter)}
+     \]
+   + Not looking at...
+     + Giacomini and White's (2006) null (comparison of /forecast methods/)
+     + Diebold and Mariano's (1995) null (comparison of /forecasts/) \newline (See Diebold, 2015)
+     + Calhoun's (2014) null (comparison of /generalization error/)
+   + Assuming West's (1996) asymptotics apply (nonnested models)
+     \[
+       \sqrt{P}\ (\ \fb - \E f_t(\beta_0)) \to^d N(0, \Sigma)
+     \]
+** _Bootstraps (particularly Circular Block Bootstrap)_
+   + We're using block bootstraps in this paper
+     + Focus on the Circular Bootstrap for talk (Politis and Romano, 1992)
+     + $\ell$ --- block length
+   + Generate $\ell / T$ uniform $1,\dots,T$ random variables $u_1$, $u_2$,\dots
+     \begin{align*}
+       (y^*_1, x^*_1) &= (y_{u_1}, x_{u_1}) \\
+       (y^*_2, x^*_2) &= (y_{u_1+1}, x_{u_1+1}) \\
+       &\vdots \\
+       (y^*_\ell, x^*_\ell) &= (y_{u_1+\ell-1}, x_{u_1+\ell-1}) \\
+       (y^*_{\ell+1}, x^*_{\ell+1}) &= (y_{u_2}, x_{u_2}) \\
+       &\vdots
+     \end{align*}
+   + If $u_j + k > n$, use $u_j + k - n$ as the index instead
+** _Our proposed approach_
+   Bootstrap OOS statistics exactly as you would expect
+   \begin{align*}
+   \fb^* &= \oavg{t} f(y_{t+1}^*, x_t^*, \bh_{t}^*) \\
+         &\equiv \oavg{t} f_t^*(\bh_{t}^*),
+   \end{align*}
+   where (for the recursive window; other windows are similar)
+   \[
+      \hat\beta_{t}^* =
+      \argmin_\beta \sum_{s=1}^{t-1} q(y_{s+1}^*, x_s^*, \beta).
+   \]
+   + Informal result:
+     $\quad\sqrt{P}\, (\, \fb^* - \E^* f_t^*(\beta_0^*)) \to^d N(0, \Sigma)$
+   + $\E^*$ --- expectation under bootstrap distribution
+** _Theorem 1 --- the bootstrap is consistent_
+  Under Assumptions 1 -- 5 (we'll get to them),
+  $\var(\fb)/\var^*(\fb^*) \to^p 1$
+  and
+  \begin{multline*}
+    \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P}\ (\ \fb^* - \E^* f_t^*(\beta_0^*)) \leq x] \\ -
+    \pr[\sqrt{P}\ (\ \bar{f} - \E f_t(\beta_0)) \leq x] \big\rvert > \epsilon\big] \to 0
+  \end{multline*}
+  for all $\epsilon > 0$.
+
+  {{{s}}}
+
+  + $\beta^*_0 = \bh_T = \argmin_\beta \tfrac{1}{T-1} \sum_{t=1}^{T-1} q(y_{t+1}, x_t, \beta)$
+  + $\E^* f^*_t(\beta_0^*) \approx \tfrac{1}{B} \sum_{i=1}^B \fb_{i}^*$
+    + $\fb_i^*$ is the OOS average in the \(i\)th replication
+
+  {{{s}}}
+
+  tl;dr --- the [circular] block bootstrap works
+
+** Sneak peek of Monte Carlo results --- "sanity check"
+
+   [[../montecarlo/west_iv_slides.pdf]]
+
+   + Vertical axis is $P$, 10% nominal size
+   + Size not egregiously bad but somewhat undersized
+   + "Naive bootstrap" just resamples the $\hat f_R,\dots,\hat f_{T-1}$ and is bad
+   + We'll discuss the MC design later in the talk
+** _Why is this novel? An extremely short literature review_
+   + Most of the literature has focused on nested models
+     + Approaches developed for nested models tend to be model-based
+     + Kilian (1998), Clark and McCracken (multiple papers)
+   + OOS block bootstrap literature started by bootstrapping $\fh_t$ directly
+     + e.g. White (2000) and Hansen (2005)
+     + Has required $P$ to be small --- $(P/R) \log \log R \to 0$
+   + Problem in general: $\hat\beta_t$ is not necessarily close to $\beta_0^*$ unless $P$ is small
+     + Corradi and Swanson (2007) develop a correction to the
+       $\hat\beta_t^*$ to account for this difference ---
+       $\hat\beta_t^*$ must be estimated differently than $\hat\beta_t$
+* Basic assumptions
+** _Assumption 1 (estimators)_
+   + $\hat \beta_{t}$ and $\hat \beta_{t}^*$ are $M$-estimators as defined earlier
+   + $\beta_{0} = \argmin_\beta \E\, q_{s}(\beta)$ is uniquely identified
+   + $\beta_{0}$ is an element of a compact set $\Theta$.
+** _Assumption 2 (moments and smoothness)_
+   + $f_t(\beta)$ and $q_{t}(\beta)$ are almost surely twice
+     continuously differentiable in an open neighborhood $N$ of
+     $\beta_0$
+   + $\E \nabla^2 q_t(\beta)$ is positive definite uniformly in $N$
+   + There exists a sequence of random variables $m_t$ such that (a.s.)
+     + $\sup_{\beta \in N} |\nabla^2 q_{t}(\beta)| \leq m_t$,
+     + $\sup_{\beta \in N} |\nabla^2 f_t(\beta)| \leq m_t$,
+     + $\sup_{\beta \in N} |\nabla q_{t}(\beta)| \leq m_t$, and
+     + $\sup_{\beta \in N} |\nabla f_t(\beta)| \leq m_t$
+     $\E m_t^r$ is uniformly finite, with $r > 2$
+
+     {{{s}}}
+
+   Here $q_t(\beta) = q(y_{t+1}, x_t, \beta)$
+
+** _Assumption 3 (stationarity and weak dependence)_
+   + The stochastic process
+     \[
+       (f_t(\beta_0), \nabla f_t(\beta_0), \nabla q_{t}(\beta_0), \nabla^2 q_t(\beta_0))
+     \]
+     is weakly stationary
+   + $(y_{t+1}, x_t)$ is strong-mixing of size $-r/(r-2)$ or uniform
+     mixing of size $-r/(2r-2)$ with $r>2$.
+** _Assumption 4 (non-nestedness)_
+   The asymptotic variance of $\fb$ is uniformly positive.
+** _Assumption 5 (sample split, bootstrap)_
+   + $R, P \to \infty$ as $T \to \infty$.
+   + The bootstrap sequence $(y_2^*, x_1^*),\dots,(y_T^*, x_{T-1}^*)$
+     is constructed using a moving blocks, circular blocks, or
+     stationary bootstrap with block lengths drawn from the geometric
+     distribution.
+   + The (expected) block length $\ell$ satisfies $\ell \to \infty$
+     and $\ell/T \to 0$.
+* Main result and remarks
+** _Theorem 1 --- the bootstrap is (still) consistent_
+  Under Assumptions 1 -- 5,
+  $\var(\fb)/\var^*(\fb^*) \to^p 1$
+  and
+  \begin{multline*}
+    \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P}\ (\ \fb^* - \E^* f_t^*(\beta_0^*)) \leq x] \\ -
+    \pr[\sqrt{P}\ (\ \bar{f} - \E f_t(\beta_0)) \leq x] \big\rvert > \epsilon\big] \to 0
+  \end{multline*}
+  for all $\epsilon > 0$.
+
+  {{{s}}}
+
+  + $\beta^*_0 = \argmin_\beta \tfrac{1}{T-1} \sum_{t=1}^{T-1} q(y_{t+1}, x_t, \beta)$
+  + $\E^* \fb^*_t \approx \tfrac{1}{B} \sum_{i=1}^B \fb_{i}^*$
+    + $\fb_i^*$ is the OOS average in the \(i\)th replication
+
+  {{{s}}}
+
+  tl;dr --- the [circular] block bootstrap works
+** _Thumbnail sketch of a proof_
+   + Proof follows West (1996) and McCracken (2000) very
+     closely
+   + Expand $f^*_t(\bh_t^*)$ around $\beta_0^*$ (not around $\bh_t$)
+     \begin{align*}
+       \sqrt{P}\ (\ \fb^* - \E^* f_t^*(\beta_0^*))
+       &= \oclt{t} (\, f_t^*(\beta_0^*) - \E^* f_t^*(\beta_0^*)) \\ &\quad + \oclt{t} \nabla f_t^*(\beta_0^*) \cdot (\bh_t^* - \btrue^*) + o_{p^*}(1)
+     \end{align*}
+   + Both summations obey CLTs and have mean zero (under bootstrap-induced distribution)
+   + Converges to the same limiting distribution as the original OOS average
+** COMMENT _Theorem 2_
+   If
+   + Assumptions 1 -- 5 hold
+   + $f_t - \E f_t(\beta_0)$ is an MDS
+   + i.i.d. bootstrap is used instead of block bootstrap.
+
+   {{{s}}}
+
+   Then, for all $\epsilon > 0$,
+   \[
+     \var(\fb)/\var^*(\fb^*) \to^p 1
+   \]
+   and
+   \begin{multline*}
+   \pr\big[\sup_x \big\lvert \pr^*[\sqrt{P}\, (\,\fb^* - \E^* f_t^*(\beta_0^*)) \leq x] \\ -
+   \pr[\sqrt{P}\,(\, \bar{f} - \E f_t) \leq x] \big\rvert > \epsilon\big] \to 0
+   \end{multline*}
+* Monte Carlo exercise
+** _Basic MC setup_
+   + Very simple (and preliminary, more realistic sims needed...)
+   + Originally proposed by West (1996)
+     + example where correct SE matter
+     \begin{align*}
+     y_t &=  w_{1t} + w_{2t} + v_t \\
+     w_{it} &= z_{it} + v_t \\
+     (v_t, z_{1t}, z_{2t}) &\sim \text{i.i.d.}\ N(0, I_3).
+     \end{align*}
+   + forecasting models are $y_t = \alpha_i + \beta_i
+     w_{it} + u_{it}$
+   + Coefficients estimated with IV using $z_{it}$ as instrument
+     + so performance is a proxy for other aspects of the model
+     + *Not* an $M$-estimator, so we can't use CS approach
+** _Basic MC setup_
+   Comparison is OOS MSE
+   \[
+   \fb = \tfrac{1}{P} \sum_{t=R+1}^T \big((y_t - \hat\alpha_{1t} - \hat\beta_{1t} w_{1t})^2 - (y_t - \hat\alpha_{2t} - \hat\beta_{2t} w_{2t})^2\big)
+   \]
+   Use bootstrap to generate critical values for two-sided test at 10%
+   + Our bootstrap
+   + /Naive/ bootstrap of $f_{R+1}(\bh_{R+1}),\dots, f_T(\bh_{T})$
+
+   {{{s}}}
+
+   + 2000 simulations, 499 bootstrap reps, $T =$ 300 or 500
+   + Simulations in Julia 0.3.6
+     + I'll evangelize to anyone interested later...
+   + Graphs in R
+** Monte Carlo results again
+
+   [[../montecarlo/west_iv_slides.pdf]]
+
+   + Vertical axis is $P$, 10% nominal size
+   + Size not egregiously bad but somewhat undersized
+   + "Naive bootstrap" is very bad
+   + Power, etc. still needs to be done
+** Monte Carlo results as a table
+#+BEGIN_LaTeX
+\begin{tabular}{rrrr}
+  \toprule T & P & naive size (\%) & our size (\%) \\
+  \midrule $300$ & $\enskip50$ & $24.1$ & $7.5$ \\
+   & $100$ & $34.6$ & $7.2$ \\
+   & $200$ & $51.2$ & $7.3$ \\
+   & $250$ & $55.3$ & $7.1$ \\ \\
+  $500$ & $\enskip50$ & $19.7$ & $8.8$ \\
+   & $150$ & $32.6$ & $7.8$ \\
+   & $350$ & $50.1$ & $7.9$ \\
+   & $450$ & $58.5$ & $8.2$ \\
+   \bottomrule \end{tabular}
+#+END_LaTeX
+
+   {{{s}}}
+
+   + Size not egregiously bad but somewhat undersized
+   + "Naive bootstrap" is very bad
+   + Power, etc. still needs to be done
+* Empirical example
+** _Goyal and Welch (2008) empirical study_
+   * Goyal and Welch (2008) look out out-of-sample excess return
+     predictability
+     * excess returns measured as the difference between the yearly
+       log return of the S\&P 500 index and the T-bill interest rate
+   * They find that none of the variables thought to predict excess
+     returns based on in-sample evidence successfully predict
+     out-of-sample
+   * Benchmark model is the excess return's sample mean
+   * Alternative models are of the form
+     \begin{equation*}
+       \mathit{excess~return}_{t+1} = \alpha_{0} + \alpha_{1}\
+       \mathit{predictor}_{t} + \ep_{t+1},
+     \end{equation*}
+** _List of predictors_
+*** Predictors 							      :BMCOL:
+   :PROPERTIES:
+   :BEAMER_col: 0.45
+   :END:
+   * long term rate
+   * book to market
+   * dividend yield
+   * dividend price ratio
+   * net equity
+   * dividend payout ratio
+   * treasury bill
+   * stock variance
+   * default return spread
+   * default yield spread
+   * inflation rate
+   * term spread
+   * earnings price ratio
+   * long term yield
+*** Other notes on forecasts 					      :BMCOL:
+   :PROPERTIES:
+   :BEAMER_col: 0.45
+   :END:
+   * Use annual data beginning in 1927 and ending in 2009
+** _OOS test statistic_
+   + Use the test statistic proposed by Calhoun (2015)
+   + Estimate $\alpha_0$ and $\alpha_1$ for each predictor using OLS
+     with a 10-year rolling window
+     + Produces forecasts $\hat y_{it}$
+   + Benchmark is the sample mean calculated with \emph{recursive window}
+     + Call these forecasts $\hat y_{0t}$
+   + The OOS statistic is a Clark-West type adjusted squared-error
+     \begin{equation*}
+       \fb_i = \tfrac{1}{P} \osum{t}
+         \big[(y_{t+1} - \hat y_{0,t+1})^2 - (y_{t+1} - \hat y_{i,t+1})^2 + (\hat y_{0,t+1} - \hat y_{i,t+1})^2 \big]
+     \end{equation*}
+   + This statistic is asymptotically normal under null that
+     $y_{t+1} - \E y_{t+1}$ is MDS (see Calhoun, 2015)
+** _Accounting for multiple models_
+   + Plan to conduct 14 one-sided tests
+   + We use the bootstrap to implement an BRC-type test (White, 2000)
+   + Studentized statistics (using Calhoun's variance formula)
+   + Remove variables with statistics less than SPA threshold (about
+     --1.7, none of the variables) --- Hansen (2005)
+   + Use the bootstrap to estimate the distribution of
+     \[
+     \max_i \sqrt{P}\ \frac{\fb_i - \E f_{it}(\beta_0)}{\hat\sigma_i}
+     \]
+     + Use the 0.9 quantile of this distribution as our 10% critical value
+   + Two bootstraps:
+     + ``BRC'' bootstrap: bootstrap $\hat f_t$ directly
+     + Approach proposed in this paper
+     + Both with block length of 1 (MDS null)
+** Excess return predictability results
+#+BEGIN_LaTeX
+\begin{tabular}{lcccc}
+  \toprule Predictor  & value & v. naive & ``BRC'' & ours \\
+  \midrule long term rate & $\enskip1.56$ & sig. & sig. &  \\
+  book to market & $\enskip1.41$ & sig. & sig. &  \\
+  dividend yield & $\enskip1.27$ &  & sig. &  \\
+  dividend price ratio & $\enskip0.95$ &  &  &  \\
+  net equity & $\enskip0.70$ &  &  &  \\
+  \vdots \\
+  earnings price ratio & $\!\!-0.56$ &  &  &  \\
+  long term yield & $\!\!-0.74$ &  &  &  \\
+   \bottomrule \end{tabular}
+#+END_LaTeX
+
+   {{{s}}}
+
+   + "v. naive" --- compare to single-model critical value (1.28)
+   + "BRC" --- bootstrap observed OOS values (1.27)
+   + "ours" --- full MDS bootstrap proposed in this paper (2.67)
+   + Goyal and Welch remain un-overturned
+* Conclusion
+** _Summary_
+   + Read the paper, it's not so bad
+   + Block bootstraps work as expected for OOS statistics
+     + Potentially useful approach when the variance is awkward
+     + Bootstrapping the OOS forecast errors directly
+       can do quite poorly
+   + Simulations based on West's (1996) MC design support our theory
+     + (this isn't a simulation that I tailored to support my statistic)
+   + Empirical exercise showing how to use it for BRC-type tests
+
+   {{{s}}}
+
+   _Logical next steps_
+
+   {{{s}}}
+
+   + Bootstrapping real time data (joint project with Todd Clark and
+     Mike McCracken)
+   + Extend results to nested and overlapping models
+   + More comprehensive simulations for this paper!
+* COMMENT slide setup
+#+BEAMER_FRAME_LEVEL: 2
+#+OPTIONS: toc:nil
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presentation,fleqn,t,serif]
+#+STARTUP: beamer
+#+LaTeX_HEADER: \input{preamble}
+#+MACRO: s \vspace{\baselineskip}
+#+BEAMER_HEADER_EXTRA: \defbeamertemplate*{sec page}{default}[1][]
+#+BEAMER_HEADER_EXTRA: {
+#+BEAMER_HEADER_EXTRA:   \centering
+#+BEAMER_HEADER_EXTRA:     \begin{beamercolorbox}[sep=8pt,center,#1]{sec title}
+#+BEAMER_HEADER_EXTRA:       \usebeamerfont{sec title}\Huge\insertsection\par
+#+BEAMER_HEADER_EXTRA:     \end{beamercolorbox}
+#+BEAMER_HEADER_EXTRA: }
+#+BEAMER_HEADER_EXTRA: \newcommand*{\secpage}{\usebeamertemplate*{sec page}}
+#+BEAMER_HEADER_EXTRA: \AtBeginSection{\begin{frame}[c] \secpage \end{frame}}

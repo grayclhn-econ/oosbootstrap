@@ -1,0 +1,72 @@
+\usepackage{amsfonts,amsmath,amsthm,amssymb,graphicx,setspace,url,booktabs,tabularx,longtable,microtype,ae,tikz}
+\usepackage[sort,round]{natbib}
+\usepackage{lmodern}
+\urlstyle{same}
+\frenchspacing
+\usepackage{xcolor}
+\usepackage{sourcecodepro}
+\usepackage[charter]{mathdesign}
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{items}[circle]
+\setbeamerfont{sec title}{parent=title}
+\setbeamercolor{sec title}{parent=titlelike}
+\setbeamerfont{frametitle}{size=\normalsize}
+\setbeamertemplate{frametitle}{\vspace{\baselineskip}\insertframetitle\vphantom{g}}
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{0pt}}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel.}
+\setbeamertemplate{enumerate subsubitem}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel.}
+\setbeamertemplate{enumerate mini template}{\insertenumlabel}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\cov}{cov}
+%\DeclareMathOperator{\vec}{vec}
+\DeclareMathOperator{\vech}{vech}
+
+\DeclareMathOperator{\pr}{Pr}
+
+\newcommand{\btrue}{\beta_0}
+
+\newcommand{\X}{\ensuremath{\mathrm{X}}}
+\newcommand{\R}{\ensuremath{\mathrm{R}}}
+\newcommand{\p}{\ensuremath{\mathrm{P}}}
+
+\newcommand{\bh}{\hat \beta}
+\newcommand{\ep}{\varepsilon}
+\newcommand{\eph}{\hat\varepsilon}
+\newcommand{\fb}{\bar f}
+\newcommand{\fh}{\hat f}
+\newcommand{\Hs}{\mathcal{H}}
+
+\newcommand{\osum}[1]{\sum_{#1=R}^{T-1}}
+\newcommand{\omax}[1]{\max_{#1=R,\dots,T-1}}
+\newcommand{\oavg}[1]{\tfrac{1}{P} \osum{#1}}
+\newcommand{\oclt}[1]{\tfrac{1}{\sqrt{P}} \osum{#1}}
+
+\newcommand{\aic}{AIC}
+\newcommand{\bic}{BIC}
+\newcommand{\brc}{BRC}
+\newcommand{\cdf}{CDF}
+\newcommand{\clt}{CLT}
+\newcommand{\dd}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\dgp}{DGP}
+\newcommand{\fclt}{FCLT}
+\newcommand{\fwe}{FWE}
+\newcommand{\gdp}{GDP}
+\newcommand{\gmm}{GMM}
+\newcommand{\hac}{HAC}
+\newcommand{\iv}{IV}
+\newcommand{\lln}{LLN}
+\newcommand{\ma}{MA}
+\newcommand{\mds}{MDS}
+\newcommand{\ned}{NED}
+\newcommand{\ols}{OLS}
+\newcommand{\oos}{OOS}
+\newcommand{\sfwe}{SFWE}
+\newcommand{\spa}{SPA}
+\newcommand{\wfwe}{WFWE}
+
+\renewcommand{\Re}{\ensuremath{\mathbb{R}}}
