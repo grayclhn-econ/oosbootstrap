@@ -64,10 +64,7 @@ empirics $(empiricsdir) montecarlo $(montecarlodir):
 
 oosbootstrap.pdf: oosbootstrap.tex empirics/excessreturns.tex \
   montecarlo/west_iv.pdf montecarlo/west_iv.tex
-	pdflatex $(basename $<)
-	bibtex $(basename $<)
-	pdflatex $(basename $<)
-	pdflatex $(basename $<)
+	texi2dvi -p -b -c $<
 
 # For `make zip` we're going to make a zipfile with the monte carlo
 # and empirical results, then upload it to an accessible location.
