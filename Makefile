@@ -1,13 +1,24 @@
-.PHONY: all dl full test zip clean burn libs dirs
+.PHONY: all dl full test zip clean burn libs dirs source
 .DELETE_ON_ERROR:
 
 latexmk := latexmk
 Rscript := Rscript
 sqlite  := sqlite3
 SHELL := /bin/bash
-version := $(shell git describe --tags --abbrev=0)
+version = $(shell git describe --tags --abbrev=0)
+zipfile = calhoun_oosbootstrap_$(version).zip
+pdffile = calhoun_oosbootstrap_$(version).pdf
+files = $(filter-out .gitignore TODO.md, \
+  $(addprefix texextra/, \
+    $(shell cd texextra && git ls-tree --full-tree -r --name-only HEAD)) \
+  $(shell git ls-tree --full-tree -r --name-only HEAD))
 
-dl all full test: oosbootstrap.pdf
+dl all full test: oosbootstrap.pdf $(zipfile)
+
+source: $(zipfile)
+$(zipfile): $(files)
+	zip $@ $(files)
+
 
 # Use different configuration files for `make test` and store the
 # results in another directory
