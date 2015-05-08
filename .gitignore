@@ -6,6 +6,7 @@ montecarlo.default/*
 montecarlo.full/*
 montecarlo.test/*
 montecarlo/*
+talks/*.tex
 
 *.zip
 *.stamp
