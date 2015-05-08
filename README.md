@@ -8,14 +8,15 @@ very preliminary and the mathematical results almost certainly have
 errors. You can find the latest version of this repository at
 <https://git.ece.iastate.edu/gcalhoun/oosbootstrap>.
 
-This repository is for development after the "2015-04-21" version of
-the paper. The paper is an offshoot of another paper,
-"An asymptotically normal out-of-sample test based on mixed estimation
+This current version number for repository is listed as the date in
+the `VERSION.tex` file. The paper is an offshoot of another paper, "An
+asymptotically normal out-of-sample test based on mixed estimation
 windows."
 
 Version notes
 -------------
 
+* 2015-05-08: presented at CIREQ
 * 2015-04-21: sent to discussant for CIREQ time series converence
               (Atsushi Inoue)
 
