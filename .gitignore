@@ -31,8 +31,10 @@ _region_.tex
 *.bbl
 *.blg
 *.log
+*.nav
 *.pdf
 *.db
+*.snm
 *.toc
 *.tof
 *.tot
