@@ -1,7 +1,0 @@
-@everywhere begin
-    ncore = 2
-    nsims = 4
-    nboot =  9
-    RP = [25 25; 25 150; 50 25; 50 150]
-    α = 0.05
-end
