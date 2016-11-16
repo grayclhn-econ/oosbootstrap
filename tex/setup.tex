@@ -1,5 +1,5 @@
 \usepackage{amsfonts}
-\usepackage{amsmath,amsthm,amssymb,graphicx,setspace,url,booktabs,tabularx,enumerate,slantsc}
+\usepackage{amsmath,amsthm,amssymb,fancyhdr,graphicx,setspace,url,booktabs,tabularx,enumerate,slantsc}
 \usepackage[T1]{fontenc}
 
 \usepackage[sort,round,comma]{natbib}
@@ -101,3 +101,24 @@
 \setcounter{bottomnumber}{9}
 \setcounter{totalnumber}{20}
 \setcounter{dbltopnumber}{9}
+
+% Add version information to headers
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{}{\footnotesize{\thesection. #1}}}
+\renewcommand{\subsectionmark}[1]{\markboth{}{\footnotesize{\thesubsection. #1}}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[LE,LO]{\textit{\footnotesize{\nouppercase{\rightmark}}}}
+\rhead{\footnotesize{\textit{\VERSION}}}
+
+% Check if shell commands can be executed
+\ifnum\pdfshellescape=1
+% Yes, enabled
+\usepackage{bashful}
+\newcommand{\VERSION}{\splice{echo `git log -1 --date=short --format=\%cd`},
+  version\splice{echo `git describe --tags`}}
+\else
+% No, disabled
+\newcommand{\VERSION}{\today}
+\fi
+\date{\VERSION}

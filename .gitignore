@@ -40,3 +40,6 @@ _region_.tex
 *.tot
 
 lib/
+oosbootstrap.sh
+*.stderr
+*.stdout
