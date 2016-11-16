@@ -6,19 +6,21 @@ unreleased paper *A simple block bootstrap for asymptoticall normal
 out-of-sample test statistics*. The current version of the paper is
 very preliminary and the mathematical results almost certainly have
 errors. You can find the latest version of this repository at
-<https://git.ece.iastate.edu/gcalhoun/oosbootstrap>.
+<https://github.com/grayclhn/oosbootstrap>.
 
-This current version number for repository is listed as the date in
-the `VERSION.tex` file. The paper is an offshoot of another paper, "An
-asymptotically normal out-of-sample test based on mixed estimation
-windows."
+The paper is an offshoot of another paper, "An asymptotically normal
+out-of-sample test based on mixed estimation windows."
 
 Version notes
 -------------
 
-* 2015-05-08: presented at CIREQ
-* 2015-04-21: sent to discussant for CIREQ time series converence
-              (Atsushi Inoue)
+* 0.7: Version of paper presented at CIREQ
+* 0.6: Version of paper sent to discussant for CIREQ time series
+       converence (Atsushi Inoue)
+* 0.2: Paper split from original mixed-window material
+* 0.1: Original version of paper submitted to Econometrica
+
+Versions 0.3, 0.4, and 0.5 seem to have been used internally.
 
 Main files
 ----------
