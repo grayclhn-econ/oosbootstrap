@@ -101,3 +101,15 @@
 \setcounter{bottomnumber}{9}
 \setcounter{totalnumber}{20}
 \setcounter{dbltopnumber}{9}
+
+% Check if shell commands can be executed
+\ifnum\pdfshellescape=1
+% Yes, enabled
+\usepackage{bashful}
+\newcommand{\VERSION}{\splice{echo `git log -1 --date=short --format=\%cd`},
+  version\splice{echo `git describe --tags`}}
+\else
+% No, disabled
+\newcommand{\VERSION}{\today}
+\fi
+\date{\VERSION}
