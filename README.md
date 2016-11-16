@@ -2,7 +2,7 @@ oosbootstrap overview
 =====================
 
 This repository contains the code and data for my (Gray Calhoun's)
-unreleased paper *A simple block bootstrap for asymptoticall normal
+unreleased paper *A simple block bootstrap for asymptotically normal
 out-of-sample test statistics*. The current version of the paper is
 very preliminary and the mathematical results almost certainly have
 errors. You can find the latest version of this repository at
