@@ -769,7 +769,7 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
     \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
     = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1),
   \end{equation*}
-  by Lemma~\ref{res:a4}. Lemma~\ref{lem-clt} implies
+  by Lemma~\ref{SA4}. Lemma~\ref{SA6} implies
   \begin{equation}\label{eq:19}
     \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} \begin{pmatrix}
       (f_t^* - \E^* f_t^*) 1\{t \geq R\} \\ a_t h_t^*
@@ -783,7 +783,7 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
       \end{pmatrix}
     \end{pmatrix}
   \end{equation}
-  and Lemma~\ref{res:a3} implies $F^* \to^p F$ and $B^* \to^p
+  and Lemma~\ref{SA1} implies $F^* \to^p F$ and $B^* \to^p
   B$. Then~\eqref{eq:23} holds with
   \begin{equation*}
     \sigma^2 = S_{ff} + \lambda_{fh} (F B S_{fh} + S_{fh}' B'F') + \lambda_{hh} F B S_{hh} B' F'.
@@ -793,12 +793,12 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
 
 \subsection{Supporting Results}
 
-\begin{lema}\label{res:a3}
+\begin{lema}\label{SA1}
   Under the conditions of Theorem~\ref{T1}, $\btrue^* \to^p
   \btrue$, $B^* \to^p B$, and $F^* \to^p F$.
 \end{lema}
 
-\begin{proof}[Proof of Lemma~\ref{res:a3}]
+\begin{proof}[Proof of Lemma~\ref{SA1}]
   We'll present proofs of these results for the circular block
   bootstrap; the proofs for the moving blocks and stationary
   bootstraps are similar.
@@ -825,7 +825,7 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
   \lln. The proof for $B^*$ is similar.
 \end{proof}
 
-\begin{lema}\label{res:a_1}
+\begin{lema}\label{SA2}
   Under the conditions of Theorem~\ref{T1},
   \begin{gather}
     \omax{t} | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:26} \\
@@ -870,7 +870,7 @@ First, observe that for any $\Delta$
   &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1]
 \end{align}
 The last two probabilities converges to zero by
-Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
+Lemma~\ref{SA3} and by~\eqref{eq:27}.  Moreover, just as in the proof of
 Theorem~\ref{T1}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
 be re-expressed as the sum of a uniformly integrable \mds\ that obeys
 a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
@@ -905,7 +905,7 @@ Then
 completing the proof.
 \end{proof}
 
-\begin{lema}\label{res:a2}
+\begin{lema}\label{SA3}
   If $a \in [0,1/2)$ and the conditions of Theorem~\ref{T1}
   hold, then
   \begin{gather}
@@ -1023,7 +1023,7 @@ where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
   &\quad + \pr[\btrue^* \notin N].
 \end{align*}
 The second probability, $\pr[\btrue^* \notin N]$, converges to zero by
-Lemma~\ref{res:a3}. For the first, we have
+Lemma~\ref{SA1}. For the first, we have
 \begin{align*}
   \E \tfrac{1}{T^2} &\sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
@@ -1058,7 +1058,7 @@ and both terms converge to zero in (conditional) probability by the
 previous arguments.
 \end{proof}
 
-\begin{lema}\label{res:a4}
+\begin{lema}\label{SA4}
   Under the conditions of Theorem~\ref{T1},
   \begin{equation}\label{eq:16}
     \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \to^{p^*} 0
@@ -1078,7 +1078,7 @@ We have
   &\quad + \pr[\btrue^* \notin N] + \pr[\bh_t^* \notin N\ \text{for some}\ t = R,\dots,T-1\}
 \end{align*}
 The second two probabilities on the rhs converge to zero by
-Lemma~\ref{res:a2} and the random variable inside the first probability is bounded by
+Lemma~\ref{SA3} and the random variable inside the first probability is bounded by
 \begin{multline*}
   1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
   \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
@@ -1086,7 +1086,7 @@ Lemma~\ref{res:a2} and the random variable inside the first probability is bound
   \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
 \end{multline*}
 The summation is $O_p(1)$ by assumption and the supremum converges to
-zero by using Lemma~\ref{res:a2} again.
+zero by using Lemma~\ref{SA3} again.
 \end{proof}
 \begin{proof}[Proof of~\eqref{eq:17}]
 For~\eqref{eq:17}, we have the upper bound
@@ -1096,7 +1096,7 @@ For~\eqref{eq:17}, we have the upper bound
   + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert.
 \end{multline*}
 The first term converges in conditional probability to zero by
-Lemma~\ref{res:a2}.
+Lemma~\ref{SA3}.
 
 For the second, expand each $\sum_{s=1}^t \nabla q_s^*(\bh_t^*)$
 around $\btrue^*$ to get
@@ -1111,15 +1111,15 @@ where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
   \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
   &= O_{p^*}(1) \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
 \end{align*}
-by Lemma~\ref{res:a2} and the supremum converges to zero in
-probability by Lemma~\ref{res:a2} as well.
+by Lemma~\ref{SA3} and the supremum converges to zero in
+probability by Lemma~\ref{SA3} as well.
 \end{proof}
 
 \begin{lema}\label{SA5}
   Under the conditions of Theorem~\ref{T1}, \eqref{eq:30} holds.
 \end{lema}
 
-\begin{lema}\label{lem-clt}
+\begin{lema}\label{SA6}
   Under the conditions of Theorem~\ref{T1}, \eqref{eq:19} holds.
 \end{lema}
 \begin{proof}
@@ -1170,7 +1170,7 @@ probability by Lemma~\ref{res:a2} as well.
    difference sequence and satisfies the \lln\ (i.e.\ Davidson's, 1994,
    Theorem 19.7), and so it converges in (conditional) probability to
    zero.  The second term converges in probability to zero by
-   consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
+   consistency of $\btrue^*$ (Lemma~\ref{SA1}).
 
    Similarly, \eqref{eq:7} holds if
    \begin{equation*}
