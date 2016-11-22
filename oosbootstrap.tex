@@ -795,34 +795,34 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
 
 \begin{lema}\label{res:a3}
   Under the conditions of Theorem~\ref{res:3}, $\btrue^* \to^p
-  \btrue$, $B^* \to^p B$, $F^* \to^p F$.
+  \btrue$, $B^* \to^p B$, and $F^* \to^p F$.
 \end{lema}
 
 \begin{proof}[Proof of Lemma~\ref{res:a3}]
   We'll present proofs of these results for the circular block
   bootstrap; the proofs for the moving blocks and stationary
-  bootstraps are similar. For $\btrue^*$, by definition $\btrue^* =
-  \argmin_\beta \sum_{s=2}^T q_s(\beta)$. Our smoothness and moment conditions
-  ensure that $\sum_{s=2}^T q_s(\beta)$
-  obeys a uniform \lln\ and converges in probability to $\E
-  q_s(\beta)$ for all $\beta \in \Theta$. Then consistency of
-  $\btrue^*$ follows from, for example, Theorem~2.1 of \cite{NeM:94}.
+  bootstraps are similar.
 
-  For $F^*$, we have
-  \begin{equation*}
-    \pr[|F^* - F| > \epsilon] \leq
-    \pr[|F^* - F| 1\{\btrue^* \in N\} > \epsilon] + \pr[\btrue^* \notin N].
-  \end{equation*}
-  The second probability converges to zero by consistency of
-  $\btrue^*$.  Now $F^* - F = F^* - F(\btrue^*) + F(\btrue^*) - F$,
-  and $F^* - F(\btrue^*) \to^p 0$ by the uniform \lln. Choose
-  $\Delta$ so that $|\beta_1 - \beta_2| < \Delta$ implies that
-  $|F(\beta_1) - F(\beta_2) | < \epsilon$. Then
-  \begin{equation*}
-     \pr[|F(\btrue^*) - F | > \epsilon] \leq \pr[|\btrue^* - \btrue| > \Delta]
-  \end{equation*}
-  which converges to zero by the first part of this Lemma. The proof
-  for $B^*$ is similar.
+  By construction, $\btrue^* = \argmin_\beta \sum_{s=2}^T q_s(\beta)$
+  almost surely and our smoothness and moment conditions ensure that
+  $\sum_{s=2}^T q_s(\beta)$ obeys a uniform \lln\ and converges in
+  probability to $\E q_s(\beta)$ for all $\beta \in \Theta$.
+  Consistency of $\btrue^*$ then follows standard arguments; see
+  Theorem~2.1 of \cite{NeM:94}, for example.
+
+  For $F^*$, let $\varepsilon$ be an arbitrary positive constant and
+  choose $\Delta$ such that $|\beta_1 - \beta_2| < \Delta$ implies
+  that $|F(\beta_1) - F(\beta_2) | < \epsilon$ for any $\beta_1$ and
+  $\beta_2$ in $N$. Then
+  \begin{multline*}
+    \pr[|F^* - F| > \epsilon] \leq \\
+    \pr[|F^* - F(\btrue^*)| 1\{\btrue^* \in N\} > \epsilon]
+      + \pr[\lvert \btrue^* - \btrue \rvert \geq \Delta]
+      + \pr[\btrue^* \notin N].
+  \end{multline*}
+  The second and third probabilities converge to zero since
+  $\btrue^* \to^p \btrue$ and the first converges by the uniform
+  \lln. The proof for $B^*$ is similar.
 \end{proof}
 
 \begin{lema}\label{res:a_1}
