@@ -692,9 +692,18 @@ $\pi = \lim P/R$, and
     2 \lambda_{fh} & \text{recursive window} \\
     \pi - \pi^2/3 & \text{rolling window}, \pi \leq 1 \\
     \pi - 1/3\pi & \text{rolling window} , \pi > 1 \\
-    \pi & \text{fixed window}.
+    \pi & \text{fixed window}
   \end{cases}
 \end{align*}
+and define the weights
+\begin{equation}\label{eq:1}
+  a_t =
+  \begin{cases}
+    \sum_{s=\max(R-1, t)}^{T-1} 1/s & \text{recursive window} \\
+    \min(\tfrac{t}{R-1}, \tfrac{T - t}{R-1}, 1) & \text{rolling window} \\
+    \tfrac{P}{R-1} 1\{t < R-1\} &  \text{fixed window}.
+  \end{cases}
+\end{equation}
 
 Also define $u_1,\dots,u_J$ to be the first period of each
 block of the circular bootstrap, and, for each $j = 1,\dots,J$,
@@ -717,30 +726,31 @@ Also let $l = T - J \ell$ be the number of elements in the last block.
 
 \subsection*{Proof of Theorem~\ref{res:3}}
 
-The proof proceeds in several steps. First, we prove via a Taylor
-expansion (as in \citealp{Wes:96}) that
-\begin{equation}\label{eq:23}
-  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
-\end{equation}
-where $\Phi$ is the \cdf\ of the standard normal and $\sigma$ is a known
-constant. Similar arguments directly following West's imply that
+First, observe that
 \begin{equation}\label{eq:24}
   \pr[\sqrt{P} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
-under our assumptions, so
-\begin{equation}\label{eq:25}
-  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p
-  \pr[\sqrt{P} (\fb - \E f_t) \leq x].
+under our assumptions, which can be shown using arguments directly
+following West's (1996).\footnote{%
+  Supporting Lemmas presented in this paper's appendix establish the
+  intermediate results necessary for the main steps of West's proofs
+  to hold under Theorem~\ref{res:3}'s assumptions.} %
+The scale parameter~$\sigma$ is the asymptotic variance of $\fb$ and
+$\Phi$ is the \cdf\ of the standard normal. The conclusion of
+Theorem~\ref{res:3} then holds if
+\begin{equation}\label{eq:23}
+  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
-Moreover, the assumed moment conditions ensure that the variance of
-$\sqrt{P} \fb^*$ under the bootstrap distribution converges to the
-variance of $\sqrt{P} \fb$. Finally, a standard argument attributed
-to Poly{\`a} ensures that~\eqref{eq:15} follows
-from~\eqref{eq:25}. (See the proof of Theorem~1 in \citealp{Cal:14},
-for example, for an explicit statement of these final steps.)
+and
+\begin{equation}\label{eq:30}
+  \var^*(\sqrt{P} \fb^*) \to^p \sigma^2.
+\end{equation}
+A standard argument attributed to Poly{\`a} ensures that~\eqref{eq:15}
+follows from~\eqref{eq:24}--\eqref{eq:30}. (See Chapter 23 of
+\citealp{Vaa:00}, for details.)
 
-For~\eqref{eq:23}, begin by expanding $f_t^{*}(\bh_t^*)$ around
-$\btrue^*$ to get
+For~\eqref{eq:23}, begin as in \citet{Wes:96} by expanding
+$f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
   \begin{align*}
     \sqrt{P} (\fb^* - \E^* f_t^*)
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
@@ -749,27 +759,17 @@ $\btrue^*$ to get
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
      + F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
   \end{align*}
-  where (similar to \citealp{Wes:96})
+  where
   \begin{equation*}
     w_{t} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{t}^*(b_{t}^*) (\bh_t^* - \btrue^*),
   \end{equation*}
-  \begin{equation}\label{eq:1}
-    a_t =
-    \begin{cases}
-      \sum_{s=\max(R-1, t)}^{T-1} 1/s & \text{recursive window} \\
-      \min(\tfrac{t}{R-1}, \tfrac{T - t}{R-1}, 1) & \text{rolling window} \\
-      \tfrac{P}{R-1} 1\{t < R-1\} &  \text{fixed window},
-    \end{cases}
-  \end{equation}
   and each $b_{t}^*$ lies between $\bh_t^*$ and $\btrue^*$. The second equality holds because
   $\oclt{t} w_t^* = o_{p^*}(1)$ and
   \begin{equation*}
     \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
     = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1),
   \end{equation*}
-  both from Lemma~\ref{res:a4}.
-
-  By Lemma~\ref{lem-clt},
+  by Lemma~\ref{res:a4}. Lemma~\ref{lem-clt} implies
   \begin{equation}\label{eq:19}
     \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} \begin{pmatrix}
       (f_t^* - \E^* f_t^*) 1\{t \geq R\} \\ a_t h_t^*
@@ -783,24 +783,13 @@ $\btrue^*$ to get
       \end{pmatrix}
     \end{pmatrix}
   \end{equation}
-  and $F^* \to^p F$ and $B^* \to^p B$ by Lemma~\ref{res:a3}, so
-  \begin{equation}\label{eq:2}
-    \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) < x] \to^p \Phi(x / \sigma)
-  \end{equation}
-  for all $x$, with
+  and Lemma~\ref{res:a3} implies $F^* \to^p F$ and $B^* \to^p
+  B$. Then~\eqref{eq:23} holds with
   \begin{equation*}
     \sigma^2 = S_{ff} + \lambda_{fh} (F B S_{fh} + S_{fh}' B'F') + \lambda_{hh} F B S_{hh} B' F'.
   \end{equation*}
-
-  Normality for the original \oos\ average follows essentially the
-  same argument (this is essentially the same argument as in
-  \citealp{Wes:96}; the Lemmas referenced above establish intermediate
-  results for the original \oos\ statistic under our assumptions as
-  well as the bootstrapped statistic), so
-  \begin{equation}\label{eq:3}
-    \pr[\sqrt{P} (\fb - \E f_t) < x] \to \Phi(x / \sigma)
-  \end{equation}
-  for all $x$. As discussed above, this completes the proof.\qed
+  Finally,~\eqref{eq:30} follows from Lemma~\ref{SA5}, completing the
+  proof.\qed
 
 \subsection{Supporting Results}
 
@@ -1125,6 +1114,10 @@ where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
 by Lemma~\ref{res:a2} and the supremum converges to zero in
 probability by Lemma~\ref{res:a2} as well.
 \end{proof}
+
+\begin{lema}\label{SA5}
+  Under the conditions of Theorem~\ref{res:3}, \eqref{eq:30} holds.
+\end{lema}
 
 \begin{lema}\label{lem-clt}
   Under the conditions of Theorem~\ref{res:3}, \eqref{eq:19} holds.
