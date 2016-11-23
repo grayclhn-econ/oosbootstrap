@@ -847,27 +847,59 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
     \nabla h_s^*(b_t) - B^{*-1} \big\rvert \to^p 0. \label{eq:22}
   \end{gather}
 \end{lema}
-The proof of~\eqref{eq:21} follows from standard
-arguments for $M$-estimators and is also omitted.
-\begin{proof}[Proof of~\eqref{eq:27}]
-  First, assume $t \to \infty$ as $T \to \infty$. We have $\pr^*[|
-  \hat{\beta}^{*}_t - \btrue^* | > \epsilon] \to^p 0$ if $\pr[|
-  \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$. To prove this
-  second convergence, we will first establish that
-  \begin{equation}\label{eq:28}
-    \sup_{\beta \in N} \tfrac{1}{t-1} \sum_{s=1}^{t-1} (q_s^*(\beta) - \E^*q_s^*(\beta)) \to^p 0.
-  \end{equation}
-  Pointwise convergence holds from the \lln\ \citep{Cal:14} and
-  stochastic equicontinuity of this function is implied by our moment
-  and smoothness conditions, so~\eqref{eq:28} holds by standard
-  arguments. Then given uniform convergence and identification,
-  $\pr[| \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$ follows.
 
-  Then extending this result to
-  \begin{equation*}
-    \pr[ \omax{t} | \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0
-  \end{equation*}
-  follows the same argument as used in Calhoun's (2014) \fclt.
+The proofs of~\eqref{eq:26} and~\eqref{eq:21} follow standard
+arguments and are omitted.
+
+\begin{proof}[Proof of~\eqref{eq:27}]
+  For any $\beta \in N$ and $\delta \in (0,1)$,
+  \begin{multline}\label{eq:28}
+    \tfrac{1}{\delta(T-1)} \sum_{s=1}^{\lfloor \delta(T-1) \rfloor}
+    (q_s^*(\beta) - \E^*q_s^*(\beta))
+    =  \tfrac{1}{\delta(T-1)} \sum_{j=1}^{\lfloor J_{\delta(T-1)} \rfloor - 1}
+    \sum_{s=\ell (j-1) + 1}^{\ell j}
+    (q_s^*(\beta) - \E^*_{\ell (j-1)}  q_s^*(\beta)) \\
+    + \tfrac{1}{\delta(T-1)} \sum_{s=\ell J_{\delta(T-1)} - \ell + 1}^{\lfloor \delta(T-1) \rfloor}
+    (q_s^*(\beta) - \E^*_{\ell (j-1)}  q_s^*(\beta)).
+  \end{multline}
+  The terms of the outer summation, indexed by $j$, along with the
+  last summation considered as a single block, form a Martingale
+  Difference Sequence with finite $r$th moments, so it converges in
+  probability to zero by the LLN. Stochastic equicontinuity for
+  $\beta \in N$ holds because the derivative of $q_s$ has bounded
+  $r$th moments for $r > 2$ by assumption and stochastic
+  equicontinuity in $\delta$ follows the arguments used in Theorem 2
+  of \citet{Cal:14}.
+
+  The remainder of the proof follows the usual steps. \citep[See, for
+  example,][]{NeM:94} Take $\varepsilon > 0$ and let
+  \[
+    \varepsilon' =
+    \inf_{\beta : \lvert \beta - \btrue^* \rvert \geq \varepsilon,\ \beta \in N}
+    \E^* q_s^*(\beta) - \E^* q_s^*(\btrue^*).
+  \]
+  Also define $Q^*(b) = \E^* q_s^*(b)$ and
+  \[
+    \hat t^* = \argmax_{t=R,\dots,T-1} \lvert \bh_t^* - \btrue^* \rvert.
+  \]
+  Then
+  \begin{align*}
+    \pr[ \max_{t=R,\dots,T-1} &\lvert \bh_t^* - \btrue^* \rvert > \varepsilon ] \\
+    &\leq \pr[ Q^*(\bh_{\hat t^*}^*) > Q^*(\btrue^*) + \varepsilon'
+      \text{\ and\ } \btrue^* \in N] + \pr[\btrue^* \notin N] \\
+    &\leq \pr\Big[ Q^*(\bh_{\hat t^*}^*) >
+     \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\bh_{\hat t^*}^*) + \varepsilon'/3
+     \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr\Big[ \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\bh_{\hat t^*}^*) >
+      \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\btrue^*) + \varepsilon'/3
+      \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr\Big[\tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\btrue^*) >
+      Q^*(\btrue^*) + \varepsilon'/3 \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr[\btrue^* \notin N].
+  \end{align*}
+  The first three probabilities converge to zero as a consequence of
+  stochastic equicontinuity and the last from consistency of
+  $\btrue^*$.
 \end{proof}
 
 \begin{proof}[Proof of \eqref{eq:22}.]
