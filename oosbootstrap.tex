@@ -903,47 +903,48 @@ arguments and are omitted.
 \end{proof}
 
 \begin{proof}[Proof of \eqref{eq:22}.]
-First, observe that for any $\Delta$
-\begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1]
-\end{align}
-The last two probabilities converges to zero by
-Lemma~\ref{SA3} and by~\eqref{eq:27}.  Moreover, just as in the proof of
-Theorem~\ref{T1}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
-be re-expressed as the sum of a uniformly integrable \mds\ that obeys
-a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
-converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
-uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
-< \delta$ implies that $|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \Delta$. Then
-\begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
-  (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
-  \leq \\
-  \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{\ and\ }
-  \btrue^* \in N,\text{\ and\ } \bh_t^* \in N \text{\ for all\ } t = R,\dots,T-1]
-\end{multline*}
-which again converges to zero in probability.
+For any $\varepsilon$,
+\begin{align*}\label{eq:18}
+  \pr\Big[&\sup_{t = R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1}
+  \nabla h_s^*(b_t) - B^{*-1} \big\rvert > \varepsilon \Big] \\
+  &\leq \pr\Big[\sup_{t=R,\dots,T-1}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^* - B^{*-1} \big\rvert
+  1\{\beta_0^* \in N\}> \varepsilon \Big] \\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} (\nabla h_s^*(b_t) - \nabla h_s^*)
+  \big\rvert 1\{\beta_0^*, \bh_t^* \in N\} > \varepsilon \Big] \\
+  &\quad + \pr[\beta_0^* \notin N]
+  + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1].
+\end{align*}
+The last two probabilities converges to zero by Lemma~\ref{SA1}
+and~\eqref{eq:27}.  Moreover, just as in the proof of
+Theorem~\ref{T1}, $(1/(t-1)) \sum_{s=1}^{t-1} \nabla h_s^*$ can be is
+the sum of a uniformly integrable \mds\ and obeys a uniform \lln, so
+\begin{equation*}
+  \sup_{t=R,\dots,T-1}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^* - B^{*-1} \big\rvert
+  1\{\beta_0^* \in N\} \to^p 0.
+\end{equation*}
 
-Now choose $\Delta$ so that
-\begin{equation*}
-  \big| - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} \big| < \Delta
-\end{equation*}
-implies that
-\begin{equation*}
-\Big|\Big[- \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big| < \epsilon.
-\end{equation*}
-Then
+It remains to prove
+\begin{equation}\label{eq:31}
+  \sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} (\nabla h_s^*(b_t) - \nabla h_s^*)
+  \big\rvert 1\{\beta_0^*, \bh_t^* \in N\} \to^p 0.
+\end{equation}
+Since $\nabla h_s(\beta)$ is continuous uniformly in $N$, choose
+$\delta$ so that $|\beta_1 - \beta_2| < \delta$ implies that
+$|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \varepsilon$. Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[- \tfrac{1}{t} \sum_{s=1}^t
-  \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big\rvert > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert - \tfrac{1}{t} \sum_{s=1}^t
-  \nabla h_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
-  \to^{p^*} 0,
+  \pr\Big[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
+  (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^*, \bh_t^* \in N\}
+  > \varepsilon \Big]
+  \\ \leq \pr[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \lvert b_t^* - \btrue^* \rvert > \delta]
 \end{multline*}
-completing the proof.
+which converges to zero in probability by~\eqref{eq:27}.
 \end{proof}
 
 \begin{lema}\label{SA3}
