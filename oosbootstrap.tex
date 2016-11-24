@@ -1084,20 +1084,24 @@ term converges to zero, completing the proof.
 \end{proof}
 
 \begin{proof}[Proof of~\eqref{eq:13}.]
-Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
+The previous results establish that both $\bh_t^*$ and $\btrue^*$
+are contained in $N$ for large enough $n$. Then expanding
+$h_s^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
-\bh_t^* - \btrue^* = \Big(- \sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^* / (t-1)
+  \bh_t^* - \btrue^* =
+  \Big(- \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t) \Big)^{-1}
+  \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^*
 \end{equation*}
-with each $b_s^*$ a.s.\ between $\bh_t^*$ and $\btrue^*$. Then
+with each $b_t \in \rect(\bh_t^*, \btrue^*)$ almost surely. Then
 \begin{multline}
   \omax{t} (t-1)^a | \hat{\beta}_t - \btrue |
-  \leq
-  \omax{t,u} \Big|\Big[ \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} - B^* \Big]
-  (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \Big|\\
-  + \omax{t} \big| B^*   (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big|
+  \leq \omax{t} \big| (t-1)^{a-1} B^* \sum_{s=1}^{t-1} h_s^* \big| \\
+  + \omax{t} \Big| \Big(
+  - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) \Big)^{-1} - B^* \Big|
+  \times \omax{t} \Big| (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \Big|.
 \end{multline}
-and both terms converge to zero in (conditional) probability by the
-previous arguments.
+These terms converge to zero in (conditional) probability by~\eqref{eq:11}
+and Lemma~\ref{SA2}.
 \end{proof}
 
 \begin{lema}\label{SA4}
