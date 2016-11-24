@@ -960,27 +960,23 @@ which converges to zero in probability by~\eqref{eq:27}.
 \end{lema}
 
 \noindent%
-The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
-as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:15}
-and are omitted. Note that~\eqref{eq:12} and~\eqref{eq:13} are
-refinements of~\eqref{eq:26} and~\eqref{eq:27}; \eqref{eq:26}
-and~\eqref{eq:27} establish basic consistency results using standard
-arguments, and these results are used heavily in the other proofs,
-but~\eqref{eq:12} and~\eqref{eq:13} strengthen those results by adding
-rate of convergence conditions.
+The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow similar arguments
+to~\citet{Wes:96} and are omitted. Note that~\eqref{eq:12}
+and~\eqref{eq:13} are refinements of~\eqref{eq:26} and~\eqref{eq:27}
+that add results on the rates of convergence.
+
+All of these proofs will be presented for the case where $h_t$ is
+univariate to minimize notational clutter.
 
 \begin{proof}[Proof of~\eqref{eq:11}.]
-We will present this proof under the assumption that $h_t$ is
-univariate to reduce the notational clutter. Otherwise the argument
-holds element-by-element.
-
-Let $\delta$ be a positive number less than $1/2 - a$ and
-define
-$H_i^* = \sum_{t=K_{i-1}+1}^{K_i} h_t^*/t^{1-\delta}$, so
+Let $\delta$ be a positive number less than $1/2 - a$ and define
+\[
+  H_i^* = (t-1)^{\delta - 1} \sum_{t=K_{i-1}+1}^{K_i} h_t^*,
+\] so
 \begin{align*}
   \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big|
   &\leq R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
-  + R^{-\delta} \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* / (t-1)^{1-\delta} \big|,
+  + R^{-\delta} \omax{t} \big| (t-1)^{\delta-1} \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* \big|,
 \end{align*}
 where $j_s^*$ is defined to be the index of the block containing
 observation $s$ of the bootstrap sequence.  (So, for example, $j_1^* =
@@ -1000,18 +996,19 @@ By definition
 \end{align*}
 Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
 \begin{gather}
-  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell_{i}}
+  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell}
   h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \sum_{t = 1}^{\ell_{i}} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
+  \sum_{t = 1}^{\ell} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
   \label{eq:5}
   \intertext{and}
   \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).\label{eq:14}
 \end{gather}
 As in \citet{Cal:15}, our assumptions ensure that $h_t$ is an
-$L_2$-mixingale of size $-1/2$. And if $c_t$ and $\zeta_j$ denote its
-mixingale constants and coefficients, $h_t/t^{1-a-\delta}$ is also an
-$L_2$-mixingale of size $-1/2$ with constants $c_t/t^{1-a-\delta}$.
+$L_2$-mixingale of size $-1/2$; moreover, $h_t/t^{1-a-\delta}$ is also
+an $L_2$-mixingale of size $-1/2$ with constants $c_t/t^{1-a-\delta}$
+where $c_t$ and $\zeta_j$ denote its mixingale constants and
+coefficients.
 
 For~\eqref{eq:14}, we have
 \begin{align*}
@@ -1045,7 +1042,8 @@ inequality (again) implies that
 Since $\delta$ was chosen to ensure that $2a+2\delta-2 < -1$, this
 last summation is finite as required.
 
-For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
+For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ (when
+$\btrue^* \in N$) gives
 \begin{align*}
   \tfrac{1}{T-1} & \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t}(\btrue))/ (K_{i-1} + t)^{1-a-\delta} \Big)^2 \\
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell}
@@ -1058,10 +1056,10 @@ For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
 where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
 \begin{align*}
   \pr\Big[& \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \epsilon \Big] \\
+  \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \varepsilon \Big] \\
   & \leq \pr\Big[ \tfrac{1}{T^2} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
-  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \epsilon \Big] \\
+  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \varepsilon \Big] \\
   &\quad + \pr[\btrue^* \notin N].
 \end{align*}
 The second probability, $\pr[\btrue^* \notin N]$, converges to zero by
