@@ -963,8 +963,7 @@ which converges to zero in probability by~\eqref{eq:27}.
 The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow similar arguments
 to~\citet{Wes:96} and are omitted. Note that~\eqref{eq:12}
 and~\eqref{eq:13} are refinements of~\eqref{eq:26} and~\eqref{eq:27}
-that add results on the rates of convergence.
-
+that adds additional details on the rates of convergence.
 All of these proofs will be presented for the case where $h_t$ is
 univariate to minimize notational clutter.
 
@@ -973,11 +972,11 @@ Let $\delta$ be a positive number less than $1/2 - a$ and define
 \[
   H_i^* = (t-1)^{\delta - 1} \sum_{t=K_{i-1}+1}^{K_i} h_t^*,
 \] so
-\begin{align*}
-  \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big|
-  &\leq R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
+\begin{multline}\label{eq:2}
+  \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big| \leq \\
+  R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
   + R^{-\delta} \omax{t} \big| (t-1)^{\delta-1} \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* \big|,
-\end{align*}
+\end{multline}
 where $j_s^*$ is defined to be the index of the block containing
 observation $s$ of the bootstrap sequence.  (So, for example, $j_1^* =
 1$.) Now observe that $\{H_i^*, \Hs_i^*\}$ is a martingale difference
@@ -986,15 +985,15 @@ sequence, so the maximal inequality implies that
   \pr^*\Big[ \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_{i}^* \big| > \epsilon \Big]
   \leq (1/\epsilon^2) \sum_{i=1}^J \E^*(H_{i}^{*2} \mid \Hs_{i-1}^*).
 \end{equation*}
-By definition
+By definition,
 \begin{align*}
   \E^*(H_i^{*2} \mid \Hs_{i-1}^*)
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2}
   \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue^*) / (K_{i-1} + t)^{1-\delta} \Big]^2 \\
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Big[\sum_{t = 1}^{\ell}
-  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-\delta}\Big]^2.
+  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-\delta}\Big]^2
 \end{align*}
-Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
+so~\eqref{eq:11} follows from~\eqref{eq:2} combined with
 \begin{gather}
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell}
   h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
@@ -1002,15 +1001,17 @@ Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
   \sum_{t = 1}^{\ell} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
   \label{eq:5}
   \intertext{and}
-  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).\label{eq:14}
+  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p}(1)\label{eq:14}
 \end{gather}
-As in \citet{Cal:15}, our assumptions ensure that $h_t$ is an
-$L_2$-mixingale of size $-1/2$; moreover, $h_t/t^{1-a-\delta}$ is also
-an $L_2$-mixingale of size $-1/2$ with constants $c_t/t^{1-a-\delta}$
-where $c_t$ and $\zeta_j$ denote its mixingale constants and
-coefficients.
+since $R^{-\delta} \to 0$. To establish \eqref{eq:4}, \eqref{eq:5},
+and~\eqref{eq:14}, we will exploit the fact that $h_t$ is an
+$L_2$-mixingale of size $-1/2$ under our assumptions. Moreover,
+$h_t/t^{1-a-\delta}$ is also an $L_2$-mixingale of size $-1/2$ with
+constants $c_t/t^{1-a-\delta}$ where $c_t$ and $\zeta_j$ denote the
+mixingale constants and coefficients of $h_t$.
 
-For~\eqref{eq:14}, we have
+First, we show that~\eqref{eq:14} is implied by~\eqref{eq:4}
+and~\eqref{eq:5}. Note that
 \begin{align*}
   \E^* \big(\omax{t} &\big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|\big)^2 \\
   &\leq \E^* \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|^2 \\
@@ -1020,18 +1021,18 @@ For~\eqref{eq:14}, we have
 \citepos{Mcl:75} maximal inequality for mixingales implies that
 \begin{equation*}
   \E \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_{s+u} /(t-1)^{1-a-\delta} \big|^2
-  \leq \E \big| \sum_{s=K_{i-1}+1}^{K_i} h_{s+u} /(s-1)^{1-a-\delta} \big|^2.
+  \leq \E \big| \sum_{s=K_{i-1}+1}^{K_i} h_{s+u} /(s-1)^{1-a-\delta} \big|^2
 \end{equation*}
-Moreover,
+which is the quantity bounded in~\eqref{eq:4}. In addition,
 \begin{multline*}
   \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t (h_{s+u}(\btrue^*) - h_{s+u}) /(t-1)^{1-a-\delta} \big|^2 \\
   \leq \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \sum_{s=K_{i-1}+1}^{K_i} \big[(h_{s+u}(\btrue^*) - h_{s+u})/(t-1)^{1-a-\delta}\big]^2,
 \end{multline*}
-so the net result is that~\eqref{eq:14} holds whenever~\eqref{eq:4}
-and~\eqref{eq:5} do.
+the quantity bounded in~\eqref{eq:5}.
 
-We'll prove~\eqref{eq:4} first. Using \citepos{Mcl:75} maximal
-inequality (again) implies that
+We'll prove~\eqref{eq:4} next, by proving that the expected value of
+the LHS is $O(1)$. Using \citepos{Mcl:75} maximal inequality (again)
+implies that
 \begin{align*}
   \E\Big|\tfrac{1}{T-1}
   &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell} h_{u + t}/ (K_{i-1} + t)^{1-a-\delta}\Big]^2 \Big| \\
@@ -1053,7 +1054,7 @@ $\btrue^* \in N$) gives
   &= O_p\big(\tfrac{1}{T^2}\big) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s})
 \end{align*}
-where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
+where each $b_{u+t} \in \rect(\btrue^*,\btrue)$ almost surely, and so
 \begin{align*}
   \pr\Big[& \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
   \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \varepsilon \Big] \\
@@ -1082,7 +1083,7 @@ term converges to zero, completing the proof.
 \end{proof}
 
 \begin{proof}[Proof of~\eqref{eq:13}.]
-The previous results establish that both $\bh_t^*$ and $\btrue^*$
+We have already established that both $\bh_t^*$ and $\btrue^*$
 are contained in $N$ for large enough $n$. Then expanding
 $h_s^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
