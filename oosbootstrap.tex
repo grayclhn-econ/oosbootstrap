@@ -726,7 +726,7 @@ operation as the rectangle defined by their elements:
 \end{multline*}
 
 \newcommand{\WesA}[1][]{\oclt{t}
-  (F_t^{#1} - \E^{#1} F_t^{#1}) B^{#1} H_t^{#1}}
+  (F_t^{#1} - F^{#1}) B^{#1} \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^{#1}}
 \newcommand{\WesB}[1][]{\tfrac{1}{\sqrt{P}} \E^{#1} F_t^{#1} \osum{t} (B_t^{#1} -
   B^{#1}) H_t^{#1}}
 \newcommand{\WesC}[1][]{\oclt{t}
@@ -1123,59 +1123,87 @@ and Lemma~\ref{SA2}.
 
 \begin{lema}\label{SA4}
   Under the conditions of Theorem~\ref{T1},
-  \begin{equation}\label{eq:16}
-    \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \to^{p^*} 0
-  \end{equation}
+  \begin{gather}
+    \label{eq:18}
+    \oclt{t} (F_t^* - F^*) B^* \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0 \\
+    \label{eq:17}
+    \oclt{t} F^* (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0 \\
+    \label{eq:25}
+    \oclt{t} (F_t^* - F^*) (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0
+  \end{gather}
   and
-  \begin{equation}\label{eq:17}
-    \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
-    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1).
+  \begin{equation}\label{eq:16}
+    \sup_{b_{it} \in \rect(\btrue^*, \bh_t^*)} \oclt{t}
+    (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \to^{p^*} 0.
   \end{equation}
 \end{lema}
+
+\begin{proof}[Proof of~\eqref{eq:18}]
+Choose $\delta > 0$ and $a \in (0,1/2)$ and write
+\begin{align}\label{eq:A3}
+  &\WesA[*] \notag \\
+  &\qquad= \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta\big\} \notag \\
+  &\quad\qquad + \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert \leq \delta \big\}.
+\end{align}
+For any $c > 0$,
+\begin{multline*}
+  \pr^*\Bigg[ \Big\lvert \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta\big\}
+  \Big\rvert > c \Bigg] \\
+  \leq \pr^*\Big[\omax{t} \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta \Big]
+\end{multline*}
+which converges to zero in probability by Lemma~\ref{SA3}, so the
+first summation on the RHS of~\eqref{eq:A3} converges to zero in
+probability as well. The second summation is of order
+\[
+  \oclt{t} (F_t^* - F^*) / (t-1)^a
+\]
+and converges in probability to zero by Lemma~\ref{SA3}.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:17}]
+  We have
+  \[
+    \big\lvert \oclt{t} F^* (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \big\rvert
+    = O_{p^*}\big(\omax{t} \lvert B_t^* - B^* \rvert\big)
+    \oclt{t} \Big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \Big\rvert,
+  \]
+  so the conclusion follows from Lemmas~\ref{SA2} and~\ref{SA3}.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:25}]
+  Here
+  \begin{multline*}
+    \oclt{t} (F_t^* - F^*) (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) = \\
+    O_p\big(\omax{t}\lvert B_t^* - B^* \rvert \big)
+    \Big(\oclt{t} (F_t^* - F^*)  \sum_{s=1}^{t-1} h_s^* / (t-1) \Big).
+  \end{multline*}
+  The first term is $o_p(1)$ from Lemma~\ref{SA2} and the second is $o_p(1)$ from
+  an argument essentially identical to that of~\eqref{eq:18}.
+\end{proof}
 
 \begin{proof}[Proof of~\eqref{eq:16}]
 We have
 \begin{align*}
-  \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
-  &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
   &\quad + \pr[\btrue^* \notin N] + \pr[\bh_t^* \notin N\ \text{for some}\ t = R,\dots,T-1\}
 \end{align*}
-The second two probabilities on the rhs converge to zero by
-Lemma~\ref{SA3} and the random variable inside the first probability is bounded by
+The second two probabilities on the RHS converge to zero by
+Lemmas~\ref{SA1} and~\ref{SA3} and the random variable inside the
+first probability has the upper bound
 \begin{multline*}
-  1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
-  \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
+  \big\lvert 1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
+  \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big\rvert
   \\ \leq
-  \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
+  \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}
+  \lvert \nabla^2 f_{it}^*(b_{it}) \rvert 1\{\btrue^* \in N, \bh_t^* \in N\}.
 \end{multline*}
-The summation is $O_p(1)$ by assumption and the supremum converges to
-zero by using Lemma~\ref{SA3} again.
-\end{proof}
-\begin{proof}[Proof of~\eqref{eq:17}]
-For~\eqref{eq:17}, we have the upper bound
-\begin{multline*}
-  \big\lvert \oclt{t} \big(F_t^* \cdot (\bh_t^* - \btrue^*) - F^* B^* a_t h_t^*\big) \big\rvert \leq \\
-   \sup_{s=R,\dots,T-1} |\bh_s^* - \btrue^*|\; \big\lvert \oclt{t} (F_t^* - F^*) \big\rvert
-  + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert.
-\end{multline*}
-The first term converges in conditional probability to zero by
-Lemma~\ref{SA3}.
-
-For the second, expand each $\sum_{s=1}^t \nabla q_s^*(\bh_t^*)$
-around $\btrue^*$ to get
-\begin{equation*}
-  \oclt{t} (\bh_t^* - \btrue^*)
-  = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t h_s^*
-\end{equation*}
-where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
-\begin{align*}
-  \big\lvert \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert
-  &\leq \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-  \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
-  &= O_{p^*}(1) \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-\end{align*}
-by Lemma~\ref{SA3} and the supremum converges to zero in
-probability by Lemma~\ref{SA3} as well.
+The summation is $O_p(1)$ by assumption and the supremum term converges to zero
+by Lemma~\ref{SA3}.
 \end{proof}
 
 \begin{lema}\label{SA5}
