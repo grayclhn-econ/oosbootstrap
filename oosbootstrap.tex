@@ -106,7 +106,7 @@ for nested models, where it is natural to impose that a restricted
 benchmark model holds under the null hypothesis and to use that
 restricted model to generate the bootstrap samples, as in
 \cite{Lut:99} and \cite{ClM:05}.
-However, \cite{GiW:06}, \cite{ClW:06,ClW:07}, and \cite{Cal:15} have
+However, \cite{GiW:06}, \cite{ClW:06,ClW:07}, and \cite{Cal:16} have
 proposed \oos\ test statistics that are asymptotically normal under
 general conditions, so it is worth exploring whether block bootstraps
 can be applied to these new statistics.
@@ -149,7 +149,7 @@ including \gmm.
 
 The next section presents our theoretical results and further explains
 the statistics under consideration. Section~\ref{sec:3} presents an
-empirical illustration of our approach based on \citepos{Cal:15}
+empirical illustration of our approach based on \citepos{Cal:16}
 mixed-window \oos\ statistic, and Section~\ref{sec:mc} presents a
 Monte Carlo experiment that studies the bootstrap's finite sample
 properties. Finally, Section~\ref{sec:4} concludes.
@@ -297,7 +297,7 @@ For Assumption~\ref{a3}, define
 The next assumption limits the practical applicability of these
 results, but is difficult to relax in general. There are \oos\ test
 statistics that satisfy this condition (\citealp{GiW:06},
-\citealp{ClW:06,ClW:07}, and \citealp{Cal:15}) but many do not.
+\citealp{ClW:06,ClW:07}, and \citealp{Cal:16}) but many do not.
 
 \begin{asmp}\label{a6}
   The asymptotic variance matrix of $\fb$ is uniformly positive definite.
@@ -409,7 +409,7 @@ show that these models do not significantly outperform the excess
 return's recursive sample mean.
 
 We will conduct the same analysis here, but using the asymptotically
-normal \mds\ test proposed by \cite{Cal:15}.  The benchmark model is
+normal \mds\ test proposed by \cite{Cal:16}.  The benchmark model is
 the excess return's sample mean (as in the original) and the
 alternative models are of the form
 \begin{equation}\label{eq:29}
@@ -422,7 +422,7 @@ of the variables]{GoW:08}. The data set is annual data beginning in
 1927 and ending in 2009, and the rolling window uses \windowlength\
 observations.
 
-To implement \citepos{Cal:15} statistic, we estimate $\alpha_0$ and
+To implement \citepos{Cal:16} statistic, we estimate $\alpha_0$ and
 $\alpha_1$ for each predictor using \ols\ with a \windowlength-year
 rolling window to produce forecasts $\hat y_{it}$. We also use the
 sample mean calculated with a \emph{recursive} window as the benchmark
@@ -434,7 +434,7 @@ predictor,
   \big[(y_{t+1} - \hat y_{0,t+1})^2 - (y_{t+1} - \hat y_{i,t+1})^2 +
   (\hat y_{0,t+1} - \hat y_{i,t+1})^2 \big].
 \end{equation*}
-\citet{Cal:15} shows that this statistic remains asymptotically normal
+\citet{Cal:16} shows that this statistic remains asymptotically normal
 as $T \to \infty$ as long as the window length of the rolling window
 stays fixed and that $\E \fb_i$ is asymptotically normal with mean zero
 under the null hypothesis that $y_{t+1} - \E y_{t+1}$ is an \mds\ with
@@ -452,7 +452,7 @@ multiplicity. Hansen's test uses studentized statistics,%
   population standard deviation under the distribution induced by the
   bootstrap; this is a shortcut that can save computation time, but is
   not necessary here.} %
-so we use the variance formula derived by \citet{Cal:15} (let
+so we use the variance formula derived by \citet{Cal:16} (let
 $\hat\sigma_i^2$ denote the estimated variance for $\sqrt{P}\fb_i$),
 and proceeds in several steps:
 \begin{itemize}
