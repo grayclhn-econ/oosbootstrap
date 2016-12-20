@@ -953,9 +953,11 @@ which converges to zero in probability by~\eqref{eq:27}.
   \begin{gather}
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s \big\rvert \to^p 0 \label{eq:6}\\
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big\rvert \to^{p^{*}} 0 \label{eq:11}\\
-    \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12}
+    \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12} \\
+    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:13} \\
+    \oclt{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \big\rvert = O_{p^*}(1)\label{eq:33}
     \intertext{and}
-    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0. \label{eq:13}
+    \tfrac{1}{\sqrt{P}} \osum{t} (F_t^* - F^*) / (t-1)^a \to^{p^*} 0. \label{eq:32}
   \end{gather}
 \end{lema}
 
@@ -1101,6 +1103,22 @@ with each $b_t \in \rect(\bh_t^*, \btrue^*)$ almost surely. Then
 \end{multline}
 These terms converge to zero in (conditional) probability by~\eqref{eq:11}
 and Lemma~\ref{SA2}.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:33}.]
+  A similar argument to~\eqref{eq:11} establishes that
+  \[
+    \oclt{t} \Big(\E^* \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \big\rvert^2\Big)^{1/2}
+    = O_p\Big(\oclt{t} (t-1)^{-1/2} \Big)
+  \]
+  which is $O_p(1)$ by Lemma A1 of \citet{Wes:96}.
+\end{proof}
+\begin{proof}[Proof of~\eqref{eq:32}.]
+  A similar argument to (\ref{eq:11}) establishes that
+  \[
+    \E^*\Big(\osum{t} (F_t^* - F^*) / (t-1)^a\Big)^2 = O_p(1) \osum{t} (t-1)^{-2a}
+  \]
+  and the result then follows from Kronecker's Lemma.
 \end{proof}
 
 \begin{lema}\label{SA4}
