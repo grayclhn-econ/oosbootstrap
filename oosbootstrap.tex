@@ -747,7 +747,8 @@ The scale parameter~$\sigma$ is the asymptotic variance of $\fb$ and
 $\Phi$ is the \cdf\ of the standard normal. The conclusion of
 Theorem~\ref{T1} then holds if
 \begin{equation}\label{eq:23}
-  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
+  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) / \var^*(\sqrt{P} \bar f^*)^{1/2} \leq x]
+  \to^p \Phi(x)
 \end{equation}
 and
 \begin{equation}\label{eq:30}
@@ -786,8 +787,8 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
     \begin{pmatrix}
       \begin{pmatrix} 0 \\ 0 \end{pmatrix},
       \begin{pmatrix}
-        S_{ff} & \lambda_{fh} S_{fh} \\
-        \lambda_{fh} S_{fh}' &  \lambda_{hh} S_{hh}
+        S_{ff}^* & \lambda_{fh} S_{fh}^* \\
+        \lambda_{fh} S_{fh}^{*\prime} &  \lambda_{hh} S_{hh}^*
       \end{pmatrix}
     \end{pmatrix}
   \end{equation}
