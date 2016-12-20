@@ -1219,8 +1219,7 @@ by Lemma~\ref{SA3}.
   Under the conditions of Theorem~\ref{T1}, \eqref{eq:19} holds.
 \end{lema}
 \begin{proof}
-
-  We will use arguments very similar to \cite{Cal:14}. Define
+  Define
   \[
   \zeta_{st}^* = \gamma_1'(f_t^* - \E^* f_t^*) + a_s \gamma_2' h_t^*
   \]
@@ -1239,9 +1238,9 @@ by Lemma~\ref{SA3}.
 
   From the \mds\ property, we have
   \begin{equation*}
-    \sum_{j=1}^J z_j^* / \sqrt{v^*} \to^d N(0, 1)
+    \sum_{j=1}^J z_j^* / v^* \to^d N(0, 1)
   \end{equation*}
-  as long as the following properties hold:
+  as long as the following properties hold (along with Lemma~\ref{SA5}):
   \begin{equation}\label{eq:7}
     \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0
   \end{equation}
@@ -1262,26 +1261,21 @@ by Lemma~\ref{SA3}.
     =  \sum_{j=1}^J \big(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} -
     \E(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} \mid \Hs_{j-1}^*) \big).
    \end{equation*}
-   This term is the sum of a uniformly integrable martingale
-   difference sequence and satisfies the \lln\ (i.e.\ Davidson's, 1994,
-   Theorem 19.7), and so it converges in (conditional) probability to
-   zero.  The second term converges in probability to zero by
-   consistency of $\btrue^*$ (Lemma~\ref{SA1}).
+   Uniform integrability of the summand follows from similar arguments
+   to those used in \cite{Cal:14}, making this term is the sum of a
+   uniformly integrable martingale difference sequence and satisfies
+   the \lln\ (i.e.\ Davidson's, 1994, Theorem 19.7), so it converges
+   in (conditional) probability to zero. The second term converges in
+   probability to zero by consistency of $\btrue^*$ (Lemma~\ref{SA1}).
 
    Similarly, \eqref{eq:7} holds if
    \begin{equation*}
-     1\{\beta_0^* \in N\} \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to 0,
+     1\{\beta_0^* \in N\} \sum_{j=1}^J
+     \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0,
    \end{equation*}
-   which holds by uniform integrability of $1\{\beta_0^* \in N\} z_j^{*2}$.
-
-   Finally, since the variance of the bootstrapped statistic can be
-   rewritten as a \hac\ variance estimator,
-   \begin{equation*}
-     v^{*2} \to^p \gamma_1' S_{ff} \gamma_1 + 2 \lambda_{fh} (\gamma_2' S_{fh}' \gamma_1)
-     + \lambda_{hh} \gamma_2' S_{hh} \gamma_2
-   \end{equation*}
-   holds by Theorem 2.2 of \cite{JoD:00}, using West's (1996)
-   arguments to handle the $a_s$ terms.
+   which again follows from uniform integrability.  The formula for
+   the limiting variance follows from West (1996), completing the
+   proof.
 \end{proof}
 
 \bibliography{texextra/references}
