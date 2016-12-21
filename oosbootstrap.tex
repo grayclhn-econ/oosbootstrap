@@ -320,7 +320,7 @@ consistent for the asymptotic distribution of the statistic and the
 bootstrap variance is consistent for the asymptotic variance of the
 original \oos\ statistic.
 
-\begin{thm}\label{res:3}
+\begin{thm}\label{T1}
   Under Assumptions~\ref{a1}--\ref{a7}, $\var(\fb)/\var^*(\fb^*)
   \to^p 1$ and
   \begin{equation}\label{eq:15}
@@ -381,7 +381,7 @@ Theorem~\ref{thm2} formalizes this result.
 \begin{thm}\label{thm2}
   Suppose that Assumptions~\ref{a1}--\ref{a7} hold and also assume
   that $f_t - \E f_t$ is an \mds\ and that the i.i.d.\ bootstrap is
-  used instead of the block bootstraps of Theorem~\ref{res:3}. Then
+  used instead of the block bootstraps of Theorem~\ref{T1}. Then
   $\var(\fb)/\var^*(\fb^*) \to^p 1$
   and
   \begin{equation}\label{eq:20}
@@ -392,7 +392,7 @@ Theorem~\ref{thm2} formalizes this result.
 \end{thm}
 
 The proof is a straightforward modification of that of
-Theorem~\ref{res:3} and is omitted. It is important to recognize that
+Theorem~\ref{T1} and is omitted. It is important to recognize that
 this result allows for other forms of serial dependence, as long as
 the \mds\ property holds.
 
@@ -655,11 +655,10 @@ change our arguments. This also implies that we will drop the $i$
 index for the estimators $\bh_{it}$, estimation criteria
 $q_{it}(\beta)$ etc.
 
-We will also present proofs for the recursive window; the fixed and
-rolling window have similar proofs but are less complicated.
-
-To make the mathematical results in this appendix clearer, we will
-introduce the following additional notation:
+We will only present proofs for the recursive window and the circular
+block bootstrap. The other methods have very similar proofs.  To make
+the mathematical results in this appendix clearer, we will introduce
+the following additional notation:
 \begin{itemize}
 \item $f_t = f_t(\btrue)$ and $f_t^* = f_t^*(\btrue^*)$
 \item $F_t(\beta) = \nabla f_t(\beta)$ and $F_t^*(\beta) = \nabla
@@ -692,9 +691,18 @@ $\pi = \lim P/R$, and
     2 \lambda_{fh} & \text{recursive window} \\
     \pi - \pi^2/3 & \text{rolling window}, \pi \leq 1 \\
     \pi - 1/3\pi & \text{rolling window} , \pi > 1 \\
-    \pi & \text{fixed window}.
+    \pi & \text{fixed window}
   \end{cases}
 \end{align*}
+and define the weights
+\begin{equation}\label{eq:1}
+  a_t =
+  \begin{cases}
+    \sum_{s=\max(R-1, t)}^{T-1} 1/s & \text{recursive window} \\
+    \min(\tfrac{t}{R-1}, \tfrac{T - t}{R-1}, 1) & \text{rolling window} \\
+    \tfrac{P}{R-1} 1\{t < R-1\} &  \text{fixed window}.
+  \end{cases}
+\end{equation}
 
 Also define $u_1,\dots,u_J$ to be the first period of each
 block of the circular bootstrap, and, for each $j = 1,\dots,J$,
@@ -708,39 +716,49 @@ and
 \]
 Also let $l = T - J \ell$ be the number of elements in the last block.
 
+Finally, for any two $k-$vectors $w$ and $z$, define the $\rect$
+operation as the rectangle defined by their elements:
+\begin{multline*}
+  \rect(w, z) = [\min(w_1, z_1), \max(w_1, z_1)] \times
+  [\min(w_2, z_2), \max(w_2, z_2)] \times \cdots \\ \times
+  [\min(w_k, z_k), \max(w_k, z_k)].
+\end{multline*}
+
 \newcommand{\WesA}[1][]{\oclt{t}
-  (F_t^{#1} - \E^{#1} F_t^{#1}) B^{#1} H_t^{#1}}
+  (F_t^{#1} - F^{#1}) B^{#1} \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^{#1}}
 \newcommand{\WesB}[1][]{\tfrac{1}{\sqrt{P}} \E^{#1} F_t^{#1} \osum{t} (B_t^{#1} -
   B^{#1}) H_t^{#1}}
 \newcommand{\WesC}[1][]{\oclt{t}
   (F_t^{#1} - \E^{#1} F_t^{#1}) (B_t^{#1} - B^{#1}) H_t^{#1}}
 
-\subsection*{Proof of Theorem~\ref{res:3}}
+\subsection*{Proof of Theorem~\ref{T1}}
 
-The proof proceeds in several steps. First, we prove via a Taylor
-expansion (as in \citealp{Wes:96}) that
-\begin{equation}\label{eq:23}
-  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p \Phi(x / \sigma)
-\end{equation}
-where $\Phi$ is the \cdf\ of the standard normal and $\sigma$ is a known
-constant. Similar arguments directly following West's imply that
+First, observe that
 \begin{equation}\label{eq:24}
   \pr[\sqrt{P} (\fb - \E f_t) \leq x] \to^p \Phi(x / \sigma)
 \end{equation}
-under our assumptions, so
-\begin{equation}\label{eq:25}
-  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) \leq x] \to^p
-  \pr[\sqrt{P} (\fb - \E f_t) \leq x].
+under our assumptions, which can be shown using arguments directly
+following West's (1996).\footnote{%
+  Supporting Lemmas presented in this paper's appendix establish the
+  intermediate results necessary for the main steps of West's proofs
+  to hold under Theorem~\ref{T1}'s assumptions.} %
+The scale parameter~$\sigma$ is the asymptotic variance of $\fb$ and
+$\Phi$ is the \cdf\ of the standard normal. The conclusion of
+Theorem~\ref{T1} then holds if
+\begin{equation}\label{eq:23}
+  \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) / \var^*(\sqrt{P} \bar f^*)^{1/2} \leq x]
+  \to^p \Phi(x)
 \end{equation}
-Moreover, the assumed moment conditions ensure that the variance of
-$\sqrt{P} \fb^*$ under the bootstrap distribution converges to the
-variance of $\sqrt{P} \fb$. Finally, a standard argument attributed
-to Poly{\`a} ensures that~\eqref{eq:15} follows
-from~\eqref{eq:25}. (See the proof of Theorem~1 in \citealp{Cal:16c},
-for example, for an explicit statement of these final steps.)
+and
+\begin{equation}\label{eq:30}
+  \var^*(\sqrt{P} \fb^*) \to^p \sigma^2.
+\end{equation}
+A standard argument attributed to Poly{\`a} ensures that~\eqref{eq:15}
+follows from~\eqref{eq:24}--\eqref{eq:30}. (See Chapter 23 of
+\citealp{Vaa:00}, for details.)
 
-For~\eqref{eq:23}, begin by expanding $f_t^{*}(\bh_t^*)$ around
-$\btrue^*$ to get
+For~\eqref{eq:23}, begin as in \citet{Wes:96} by expanding
+$f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
   \begin{align*}
     \sqrt{P} (\fb^* - \E^* f_t^*)
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
@@ -749,208 +767,212 @@ $\btrue^*$ to get
     &= \oclt{t} (f_t^{*} - \E^* f_t^*)
      + F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1)
   \end{align*}
-  where (similar to \citealp{Wes:96})
+  where
   \begin{equation*}
-    w_{t} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{t}^*(b_{t}^*) (\bh_t^* - \btrue^*),
+    w_{t} = \tfrac12 (\bh_t^* - \btrue^*)' \nabla^2 f_{t}^*(b_{t}) (\bh_t^* - \btrue^*),
   \end{equation*}
-  \begin{equation}\label{eq:1}
-    a_t =
-    \begin{cases}
-      \sum_{s=\max(R-1, t)}^{T-1} 1/s & \text{recursive window} \\
-      \min(\tfrac{t}{R-1}, \tfrac{T - t}{R-1}, 1) & \text{rolling window} \\
-      \tfrac{P}{R-1} 1\{t < R-1\} &  \text{fixed window},
-    \end{cases}
-  \end{equation}
-  and each $b_{t}^*$ lies between $\bh_t^*$ and $\btrue^*$. The second equality holds because
-  $\oclt{t} w_t^* = o_{p^*}(1)$ and
+  and $b_t \in \rect(\bh_t^*, \btrue^*)$ almost surely. The second
+  equality holds because $\oclt{t} w_t^* = o_{p^*}(1)$ and
   \begin{equation*}
     \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
     = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1),
   \end{equation*}
-  both from Lemma~\ref{res:a4}.
-
-  By Lemma~\ref{lem-clt},
+  by Lemma~\ref{SA4}. Lemma~\ref{SA6} implies
   \begin{equation}\label{eq:19}
+    \begin{pmatrix}
+      S_{ff}^* & \lambda_{fh} S_{fh}^* \\
+      \lambda_{fh} S_{fh}^{*\prime} &  \lambda_{hh} S_{hh}^*
+    \end{pmatrix}^{-1/2}
     \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} \begin{pmatrix}
       (f_t^* - \E^* f_t^*) 1\{t \geq R\} \\ a_t h_t^*
     \end{pmatrix} \to^{d^*}
-    N\!
-    \begin{pmatrix}
-      \begin{pmatrix} 0 \\ 0 \end{pmatrix},
-      \begin{pmatrix}
-        S_{ff} & \lambda_{fh} S_{fh} \\
-        \lambda_{fh} S_{fh}' &  \lambda_{hh} S_{hh}
-      \end{pmatrix}
-    \end{pmatrix}
+    N(0, I)
   \end{equation}
-  and $F^* \to^p F$ and $B^* \to^p B$ by Lemma~\ref{res:a3}, so
-  \begin{equation}\label{eq:2}
-    \pr^*[\sqrt{P} (\fb^* - \E^* f_t^*) < x] \to^p \Phi(x / \sigma)
-  \end{equation}
-  for all $x$, with
+  which implies~\eqref{eq:23}. Moreover,
   \begin{equation*}
-    \sigma^2 = S_{ff} + \lambda_{fh} (F B S_{fh} + S_{fh}' B'F') + \lambda_{hh} F B S_{hh} B' F'.
+    \var^*(\sqrt{P} \bar{f}^*) = S_{ff}^* +
+    \lambda_{fh} (F^* B^* S^*_{fh} + S_{fh}^{*\prime} B^{*\prime}F^{*\prime}) +
+    \lambda_{hh} F^* B^* S^*_{hh} B^{*\prime} F^{*\prime}.
   \end{equation*}
-
-  Normality for the original \oos\ average follows essentially the
-  same argument (this is essentially the same argument as in
-  \citealp{Wes:96}; the Lemmas referenced above establish intermediate
-  results for the original \oos\ statistic under our assumptions as
-  well as the bootstrapped statistic), so
-  \begin{equation}\label{eq:3}
-    \pr[\sqrt{P} (\fb - \E f_t) < x] \to \Phi(x / \sigma)
-  \end{equation}
-  for all $x$. As discussed above, this completes the proof.\qed
+  and converges to $\sigma^2$ in probability by Lemmas~\ref{SA1}
+  and~\ref{SA5}, completing the proof.\qed
 
 \subsection{Supporting Results}
 
-\begin{lema}\label{res:a3}
-  Under the conditions of Theorem~\ref{res:3}, $\btrue^* \to^p
-  \btrue$, $B^* \to^p B$, $F^* \to^p F$.
+\begin{lema}\label{SA1}
+  Under the conditions of Theorem~\ref{T1}, $\btrue^* \to^p
+  \btrue$, $B^* \to^p B$, and $F^* \to^p F$.
 \end{lema}
 
-\begin{proof}[Proof of Lemma~\ref{res:a3}]
-  We'll present proofs of these results for the circular block
-  bootstrap; the proofs for the moving blocks and stationary
-  bootstraps are similar. For $\btrue^*$, by definition $\btrue^* =
-  \argmin_\beta \sum_{s=2}^T q_s(\beta)$. Our smoothness and moment conditions
-  ensure that $\sum_{s=2}^T q_s(\beta)$
-  obeys a uniform \lln\ and converges in probability to $\E
-  q_s(\beta)$ for all $\beta \in \Theta$. Then consistency of
-  $\btrue^*$ follows from, for example, Theorem~2.1 of \cite{NeM:94}.
+\begin{proof}[Proof of Lemma~\ref{SA1}]
+  By construction, $\btrue^* = \argmin_\beta \sum_{s=2}^T q_s(\beta)$
+  almost surely and our smoothness and moment conditions ensure that
+  $\sum_{s=2}^T q_s(\beta)$ obeys a uniform \lln\ and converges in
+  probability to $\E q_s(\beta)$ for all $\beta \in \Theta$.
+  Consistency of $\btrue^*$ then follows standard arguments; see
+  Theorem~2.1 of \cite{NeM:94}, for example.
 
-  For $F^*$, we have
-  \begin{equation*}
-    \pr[|F^* - F| > \epsilon] \leq
-    \pr[|F^* - F| 1\{\btrue^* \in N\} > \epsilon] + \pr[\btrue^* \notin N].
-  \end{equation*}
-  The second probability converges to zero by consistency of
-  $\btrue^*$.  Now $F^* - F = F^* - F(\btrue^*) + F(\btrue^*) - F$,
-  and $F^* - F(\btrue^*) \to^p 0$ by the uniform \lln. Choose
-  $\Delta$ so that $|\beta_1 - \beta_2| < \Delta$ implies that
-  $|F(\beta_1) - F(\beta_2) | < \epsilon$. Then
-  \begin{equation*}
-     \pr[|F(\btrue^*) - F | > \epsilon] \leq \pr[|\btrue^* - \btrue| > \Delta]
-  \end{equation*}
-  which converges to zero by the first part of this Lemma. The proof
-  for $B^*$ is similar.
+  For $F^*$, let $\varepsilon$ be an arbitrary positive constant and
+  choose $\Delta$ such that $|\beta_1 - \beta_2| < \Delta$ implies
+  that $|F(\beta_1) - F(\beta_2) | < \epsilon$ for any $\beta_1$ and
+  $\beta_2$ in $N$. Then
+  \begin{multline*}
+    \pr[|F^* - F| > \epsilon] \leq \\
+    \pr[|F^* - F(\btrue^*)| 1\{\btrue^* \in N\} > \epsilon]
+      + \pr[\lvert \btrue^* - \btrue \rvert \geq \Delta]
+      + \pr[\btrue^* \notin N].
+  \end{multline*}
+  The second and third probabilities converge to zero since
+  $\btrue^* \to^p \btrue$ and the first converges by the uniform
+  \lln. The proof for $B^*$ is similar.
 \end{proof}
 
-\begin{lema}\label{res:a_1}
-  Under the conditions of Theorem~\ref{res:3},
+\begin{lema}\label{SA2}
+  Under the conditions of Theorem~\ref{T1},
   \begin{gather}
     \omax{t} | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:26} \\
     \omax{t}  | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:27} \\
-    \omax{t} \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s(b_t) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
+    \omax{t} \max_{b_t \in \rect(\btrue, \bh_t)}
+    \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1}
+    \nabla h_s(b_t) - B^{-1} \big\rvert \to^p 0 \label{eq:21}
     \intertext{and}
-    \omax{t} \big\lvert -\tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert \to^p 0 \label{eq:22}
+    \omax{t}  \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+    \big\lvert -\tfrac{1}{t-1} \sum_{s=1}^{t-1}
+    \nabla h_s^*(b_t) - B^{*-1} \big\rvert \to^p 0. \label{eq:22}
   \end{gather}
-  where each $b_t$ is any array a.s.\ between $\bh_t$ and $\btrue$
-  and each $b_t^*$ is any array a.s.\ between $\bh_t^*$ and
-  $\btrue^*$.
 \end{lema}
-The proof of~\eqref{eq:21} follows from standard
-arguments for $M$-estimators and is also omitted.
-\begin{proof}[Proof of~\eqref{eq:27}]
-  First, assume $t \to \infty$ as $T \to \infty$. We have $\pr^*[|
-  \hat{\beta}^{*}_t - \btrue^* | > \epsilon] \to^p 0$ if $\pr[|
-  \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$. To prove this
-  second convergence, we will first establish that
-  \begin{equation}\label{eq:28}
-    \sup_{\beta \in N} \tfrac{1}{t-1} \sum_{s=1}^{t-1} (q_s^*(\beta) - \E^*q_s^*(\beta)) \to^p 0.
-  \end{equation}
-  Pointwise convergence holds from the \lln\ \citep{Cal:16c} and
-  stochastic equicontinuity of this function is implied by our moment
-  and smoothness conditions, so~\eqref{eq:28} holds by standard
-  arguments. Then given uniform convergence and identification,
-  $\pr[| \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0$ follows.
 
-  Then extending this result to
-  \begin{equation*}
-    \pr[ \omax{t} | \hat{\beta}^{*}_{t} - \btrue^* | > \epsilon] \to 0
-  \end{equation*}
-  follows the same argument as used in Calhoun's (2014) \fclt.
+The proofs of~\eqref{eq:26} and~\eqref{eq:21} follow standard
+arguments and are omitted.
+
+\begin{proof}[Proof of~\eqref{eq:27}]
+  For any $\beta \in N$ and $\delta \in (0,1)$,
+  \begin{multline}\label{eq:28}
+    \tfrac{1}{\delta(T-1)} \sum_{s=1}^{\lfloor \delta(T-1) \rfloor}
+    (q_s^*(\beta) - \E^*q_s^*(\beta))
+    =  \tfrac{1}{\delta(T-1)} \sum_{j=1}^{\lfloor J_{\delta(T-1)} \rfloor - 1}
+    \sum_{s=\ell (j-1) + 1}^{\ell j}
+    (q_s^*(\beta) - \E^*_{\ell (j-1)}  q_s^*(\beta)) \\
+    + \tfrac{1}{\delta(T-1)} \sum_{s=\ell J_{\delta(T-1)} - \ell + 1}^{\lfloor \delta(T-1) \rfloor}
+    (q_s^*(\beta) - \E^*_{\ell (j-1)}  q_s^*(\beta)).
+  \end{multline}
+  The terms of the outer summation, indexed by $j$, along with the
+  last summation considered as a single block, form a Martingale
+  Difference Sequence with finite $r$th moments, so it converges in
+  probability to zero by the LLN. Stochastic equicontinuity for
+  $\beta \in N$ holds because the derivative of $q_s$ has bounded
+  $r$th moments for $r > 2$ by assumption and stochastic
+  equicontinuity in $\delta$ follows the arguments used in Theorem 2
+  of \citet{Cal:14}.
+
+  The remainder of the proof follows the usual steps. \citep[See, for
+  example,][]{NeM:94} Take $\varepsilon > 0$ and let
+  \[
+    \varepsilon' =
+    \inf_{\beta : \lvert \beta - \btrue^* \rvert \geq \varepsilon,\ \beta \in N}
+    \E^* q_s^*(\beta) - \E^* q_s^*(\btrue^*).
+  \]
+  Also define $Q^*(b) = \E^* q_s^*(b)$ and
+  \[
+    \hat t^* = \argmax_{t=R,\dots,T-1} \lvert \bh_t^* - \btrue^* \rvert.
+  \]
+  Then
+  \begin{align*}
+    \pr[ \max_{t=R,\dots,T-1} &\lvert \bh_t^* - \btrue^* \rvert > \varepsilon ] \\
+    &\leq \pr[ Q^*(\bh_{\hat t^*}^*) > Q^*(\btrue^*) + \varepsilon'
+      \text{\ and\ } \btrue^* \in N] + \pr[\btrue^* \notin N] \\
+    &\leq \pr\Big[ Q^*(\bh_{\hat t^*}^*) >
+     \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\bh_{\hat t^*}^*) + \varepsilon'/3
+     \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr\Big[ \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\bh_{\hat t^*}^*) >
+      \tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\btrue^*) + \varepsilon'/3
+      \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr\Big[\tfrac{1}{\hat t^*-1} \sum_{s=1}^{\hat t^*-1} q_s^*(\btrue^*) >
+      Q^*(\btrue^*) + \varepsilon'/3 \text{\ and\ } \btrue^* \in N\Big] \\
+    &\quad+ \pr[\btrue^* \notin N].
+  \end{align*}
+  The first three probabilities converge to zero as a consequence of
+  stochastic equicontinuity and the last from consistency of
+  $\btrue^*$.
 \end{proof}
 
 \begin{proof}[Proof of \eqref{eq:22}.]
-First, observe that for any $\Delta$
-\begin{align}\label{eq:18}
-  \pr^*\Big[&\sup_{t = R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t^*) - B^{*-1} \big\rvert > \Delta \Big] \\
-  &\leq \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^* - B^{*-1} \big\rvert 1\{\beta_0^* \in N\}> \Delta \Big]\\
-  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big] \\
-  &\quad + \pr[\beta_0^* \notin N] + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1]
-\end{align}
-The last two probabilities converges to zero by
-Lemma~\ref{res:a2} and by~\eqref{eq:27}.  Moreover, just as in the proof of
-Theorem~\ref{res:3}, $(1/t) \sum_{s=1}^t \nabla h_s^*$ can
-be re-expressed as the sum of a uniformly integrable \mds\ that obeys
-a uniform \lln, so the first probability on the rhs of~\eqref{eq:18}
-converges to zero. Finally, since $\nabla h_s(\beta)$ is continuous
-uniformly in $N$, we can choose $\delta$ so that $|\beta_1 - \beta_2|
-< \delta$ implies that $|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \Delta$. Then
-\begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
-  (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^* \in N,\ \bh_t^* \in N\} > \Delta \Big]
-  \leq \\
-  \pr^*[\sup_{t=R,\dots,T-1}  \lvert b_t^* - \btrue^* \rvert > \delta\text{\ and\ }
-  \btrue^* \in N,\text{\ and\ } \bh_t^* \in N \text{\ for all\ } t = R,\dots,T-1]
-\end{multline*}
-which again converges to zero in probability.
+For any $\varepsilon$,
+\begin{align*}\label{eq:18}
+  \pr\Big[&\sup_{t = R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1}
+  \nabla h_s^*(b_t) - B^{*-1} \big\rvert > \varepsilon \Big] \\
+  &\leq \pr\Big[\sup_{t=R,\dots,T-1}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^* - B^{*-1} \big\rvert
+  1\{\beta_0^* \in N\}> \varepsilon \Big] \\
+  &\quad + \pr\Big[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} (\nabla h_s^*(b_t) - \nabla h_s^*)
+  \big\rvert 1\{\beta_0^*, \bh_t^* \in N\} > \varepsilon \Big] \\
+  &\quad + \pr[\beta_0^* \notin N]
+  + \pr[\bh_t^* \notin N \text{\ for some\ } t = R,\dots,T-1].
+\end{align*}
+The last two probabilities converges to zero by Lemma~\ref{SA1}
+and~\eqref{eq:27}.  Moreover, just as in the proof of
+Theorem~\ref{T1}, $(1/(t-1)) \sum_{s=1}^{t-1} \nabla h_s^*$ can be is
+the sum of a uniformly integrable \mds\ and obeys a uniform \lln, so
+\begin{equation*}
+  \sup_{t=R,\dots,T-1}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^* - B^{*-1} \big\rvert
+  1\{\beta_0^* \in N\} \to^p 0.
+\end{equation*}
 
-Now choose $\Delta$ so that
-\begin{equation*}
-  \big| - \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t) - B^{*-1} \big| < \Delta
-\end{equation*}
-implies that
-\begin{equation*}
-\Big|\Big[- \tfrac{1}{t} \sum_{s=1}^t \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big| < \epsilon.
-\end{equation*}
-Then
+It remains to prove
+\begin{equation}\label{eq:31}
+  \sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t-1} \sum_{s=1}^{t-1} (\nabla h_s^*(b_t) - \nabla h_s^*)
+  \big\rvert 1\{\beta_0^*, \bh_t^* \in N\} \to^p 0.
+\end{equation}
+Since $\nabla h_s(\beta)$ is continuous uniformly in $N$, choose
+$\delta$ so that $|\beta_1 - \beta_2| < \delta$ implies that
+$|\nabla h_s(\beta_1) - \nabla h_s(\beta_2)| < \varepsilon$. Then
 \begin{multline*}
-  \pr^*\Big[\sup_{t=R,\dots,T-1} \Big\lvert\Big[- \tfrac{1}{t} \sum_{s=1}^t
-  \nabla h_s^*(b_t)\Big]^{-1} - B^*\Big\rvert > \epsilon\Big] \leq \\
-  \pr^*\Big[\sup_{t=R,\dots,T-1}\big\lvert - \tfrac{1}{t} \sum_{s=1}^t
-  \nabla h_s^*(b_t) - B^{*-1}\big\rvert > \Delta\Big]
-  \to^{p^*} 0,
+  \pr\Big[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \big\lvert - \tfrac{1}{t} \sum_{s=1}^t
+  (\nabla h_s^*(b_t^*) - \nabla h_s^*) \big\rvert 1\{\beta_0^*, \bh_t^* \in N\}
+  > \varepsilon \Big]
+  \\ \leq \pr[\sup_{t=R,\dots,T-1} \max_{b_t \in \rect(\btrue^*, \bh_t^*)}
+  \lvert b_t^* - \btrue^* \rvert > \delta]
 \end{multline*}
-completing the proof.
+which converges to zero in probability by~\eqref{eq:27}.
 \end{proof}
 
-\begin{lema}\label{res:a2}
-  If $a \in [0,1/2)$ and the conditions of Theorem~\ref{res:3}
+\begin{lema}\label{SA3}
+  If $a \in [0,1/2)$ and the conditions of Theorem~\ref{T1}
   hold, then
   \begin{gather}
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s \big\rvert \to^p 0 \label{eq:6}\\
     \omax{t} \big\lvert (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big\rvert \to^{p^{*}} 0 \label{eq:11}\\
-    \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12}
+    \omax{t} (t-1)^a | \hat{\beta}_{t} - \btrue | \to^{p} 0 \label{eq:12} \\
+    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0 \label{eq:13} \\
+    \oclt{t} \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \big\rvert = O_{p^*}(1)\label{eq:33}
     \intertext{and}
-    \omax{t} (t-1)^a | \hat{\beta}^{*}_{t} - \btrue^* | \to^{p^{*}} 0. \label{eq:13}
+    \tfrac{1}{\sqrt{P}} \osum{t} (F_t^* - F^*) / (t-1)^a \to^{p^*} 0. \label{eq:32}
   \end{gather}
 \end{lema}
 
 \noindent%
-The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow the same arguments
-as~\citet{Wes:96} with minor tweaks as in \citet[Lemma A.2]{Cal:16}
-and are omitted. Note that~\eqref{eq:12} and~\eqref{eq:13} are
-refinements of~\eqref{eq:26} and~\eqref{eq:27}; \eqref{eq:26}
-and~\eqref{eq:27} establish basic consistency results using standard
-arguments, and these results are used heavily in the other proofs,
-but~\eqref{eq:12} and~\eqref{eq:13} strengthen those results by adding
-rate of convergence conditions.
+The proofs of~\eqref{eq:6} and~\eqref{eq:12} follow similar arguments
+to~\citet{Wes:96} and are omitted. Note that~\eqref{eq:12}
+and~\eqref{eq:13} are refinements of~\eqref{eq:26} and~\eqref{eq:27}
+that adds additional details on the rates of convergence.
+All of these proofs will be presented for the case where $h_t$ is
+univariate to minimize notational clutter.
 
 \begin{proof}[Proof of~\eqref{eq:11}.]
-We will present this proof under the assumption that $h_t$ is
-univariate to reduce the notational clutter. Otherwise the argument
-holds element-by-element.
-
-Let $\delta$ be a positive number less than $1/2 - a$ and
-define
-$H_i^* = \sum_{t=K_{i-1}+1}^{K_i} h_t^*/t^{1-\delta}$, so
-\begin{align*}
-  \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big|
-  &\leq R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
-  + R^{-\delta} \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* / (t-1)^{1-\delta} \big|,
-\end{align*}
+Let $\delta$ be a positive number less than $1/2 - a$ and define
+\[
+  H_i^* = (t-1)^{\delta - 1} \sum_{t=K_{i-1}+1}^{K_i} h_t^*,
+\] so
+\begin{multline}\label{eq:2}
+  \omax{t} \big| \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_t^* \big| \leq \\
+  R^{-\delta} \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_i^* \big|
+  + R^{-\delta} \omax{t} \big| (t-1)^{\delta-1} \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^* \big|,
+\end{multline}
 where $j_s^*$ is defined to be the index of the block containing
 observation $s$ of the bootstrap sequence.  (So, for example, $j_1^* =
 1$.) Now observe that $\{H_i^*, \Hs_i^*\}$ is a martingale difference
@@ -959,30 +981,33 @@ sequence, so the maximal inequality implies that
   \pr^*\Big[ \max_{j=j^*_R,\dots,J} \big| \sum_{i=1}^{j} H_{i}^* \big| > \epsilon \Big]
   \leq (1/\epsilon^2) \sum_{i=1}^J \E^*(H_{i}^{*2} \mid \Hs_{i-1}^*).
 \end{equation*}
-By definition
+By definition,
 \begin{align*}
   \E^*(H_i^{*2} \mid \Hs_{i-1}^*)
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2}
   \Big[\sum_{t = 1}^{\ell} h_{u + t}(\btrue^*) / (K_{i-1} + t)^{1-\delta} \Big]^2 \\
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \Big[\sum_{t = 1}^{\ell}
-  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-\delta}\Big]^2.
+  (h_{u + t} + h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-\delta}\Big]^2
 \end{align*}
-Since $R^{-\delta} \to 0$, to prove~\eqref{eq:11} it suffices to show that
+so~\eqref{eq:11} follows from~\eqref{eq:2} combined with
 \begin{gather}
-  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell_{i}}
+  \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell}
   h_{u + t}/ (K_{i-1} + t)^{1-a-\delta} \Big]^2 = O_p(1) \label{eq:4} \\
   \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \sum_{t = 1}^{\ell_{i}} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
+  \sum_{t = 1}^{\ell} \big[(h_{u + t}(\btrue^*) - h_{u + t}) / (K_{i-1} + t)^{1-a-\delta}\big]^2 = O_p(1)
   \label{eq:5}
   \intertext{and}
-  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p^*}(1).\label{eq:14}
+  \omax{t} \big| \sum_{s=K_{j^*_{t - 1}}+1}^{t-1} h_s^*/(t-1)^{1-a-\delta} \big| = O_{p}(1)\label{eq:14}
 \end{gather}
-As in \citet{Cal:16}, our assumptions ensure that $h_t$ is an
-$L_2$-mixingale of size $-1/2$. And if $c_t$ and $\zeta_j$ denote its
-mixingale constants and coefficients, $h_t/t^{1-a-\delta}$ is also an
-$L_2$-mixingale of size $-1/2$ with constants $c_t/t^{1-a-\delta}$.
+since $R^{-\delta} \to 0$. To establish \eqref{eq:4}, \eqref{eq:5},
+and~\eqref{eq:14}, we will exploit the fact that $h_t$ is an
+$L_2$-mixingale of size $-1/2$ under our assumptions. Moreover,
+$h_t/t^{1-a-\delta}$ is also an $L_2$-mixingale of size $-1/2$ with
+constants $c_t/t^{1-a-\delta}$ where $c_t$ and $\zeta_j$ denote the
+mixingale constants and coefficients of $h_t$.
 
-For~\eqref{eq:14}, we have
+First, we show that~\eqref{eq:14} is implied by~\eqref{eq:4}
+and~\eqref{eq:5}. Note that
 \begin{align*}
   \E^* \big(\omax{t} &\big|\sum_{s=K_{j^*_t - 1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|\big)^2 \\
   &\leq \E^* \sum_{i=1}^{J} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_s^*/(t-1)^{1-a-\delta} \big|^2 \\
@@ -992,18 +1017,18 @@ For~\eqref{eq:14}, we have
 \citepos{Mcl:75} maximal inequality for mixingales implies that
 \begin{equation*}
   \E \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t h_{s+u} /(t-1)^{1-a-\delta} \big|^2
-  \leq \E \big| \sum_{s=K_{i-1}+1}^{K_i} h_{s+u} /(s-1)^{1-a-\delta} \big|^2.
+  \leq \E \big| \sum_{s=K_{i-1}+1}^{K_i} h_{s+u} /(s-1)^{1-a-\delta} \big|^2
 \end{equation*}
-Moreover,
+which is the quantity bounded in~\eqref{eq:4}. In addition,
 \begin{multline*}
   \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \max_{t = K_{i-1}+1,\dots,K_i} \big| \sum_{s=K_{i-1}+1}^t (h_{s+u}(\btrue^*) - h_{s+u}) /(t-1)^{1-a-\delta} \big|^2 \\
   \leq \tfrac{1}{T-1} \sum_{i=1}^{J} \sum_{u=0}^{T-2} \sum_{s=K_{i-1}+1}^{K_i} \big[(h_{s+u}(\btrue^*) - h_{s+u})/(t-1)^{1-a-\delta}\big]^2,
 \end{multline*}
-so the net result is that~\eqref{eq:14} holds whenever~\eqref{eq:4}
-and~\eqref{eq:5} do.
+the quantity bounded in~\eqref{eq:5}.
 
-We'll prove~\eqref{eq:4} first. Using \citepos{Mcl:75} maximal
-inequality (again) implies that
+We'll prove~\eqref{eq:4} next, by proving that the expected value of
+the LHS is $O(1)$. Using \citepos{Mcl:75} maximal inequality (again)
+implies that
 \begin{align*}
   \E\Big|\tfrac{1}{T-1}
   &\sum_{u = 0}^{T-2} \sum_{i=1}^J \Big[\sum_{t = 1}^{\ell} h_{u + t}/ (K_{i-1} + t)^{1-a-\delta}\Big]^2 \Big| \\
@@ -1014,7 +1039,8 @@ inequality (again) implies that
 Since $\delta$ was chosen to ensure that $2a+2\delta-2 < -1$, this
 last summation is finite as required.
 
-For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
+For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ (when
+$\btrue^* \in N$) gives
 \begin{align*}
   \tfrac{1}{T-1} & \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t}(\btrue))/ (K_{i-1} + t)^{1-a-\delta} \Big)^2 \\
   &= \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J \Big(\sum_{t = 1}^{\ell}
@@ -1024,17 +1050,17 @@ For~\eqref{eq:5}, expanding $h_{u+t}(\btrue^*)$ around $\btrue$ gives
   &= O_p\big(\tfrac{1}{T^2}\big) \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta} \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s})
 \end{align*}
-where each $b_{u+t}$ lies between $\btrue^*$ and $\btrue$ almost surely, and so
+where each $b_{u+t} \in \rect(\btrue^*,\btrue)$ almost surely, and so
 \begin{align*}
   \pr\Big[& \tfrac{1}{T-1} \sum_{u = 0}^{T-2} \sum_{i=1}^J
-  \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \epsilon \Big] \\
+  \Big(\sum_{t = 1}^{\ell} (h_{u + t}(\btrue^*) - h_{u + t})/ (K_{i-1} + t)^{1-a-\delta}\Big)^2 > \varepsilon \Big] \\
   & \leq \pr\Big[ \tfrac{1}{T^2} \sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
-  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \epsilon \Big] \\
+  \nabla h_{u + t}(b_{u+t})' \nabla h_{u + s}(b_{u+s}) \big\rvert 1\{\btrue^* \in N\} > \varepsilon \Big] \\
   &\quad + \pr[\btrue^* \notin N].
 \end{align*}
 The second probability, $\pr[\btrue^* \notin N]$, converges to zero by
-Lemma~\ref{res:a3}. For the first, we have
+Lemma~\ref{SA1}. For the first, we have
 \begin{align*}
   \E \tfrac{1}{T^2} &\sum_{u = 0}^{T-2} \sum_{i=1}^J \sum_{s,t = 1}^{\ell}
   \big\lvert \big(\tfrac{1}{(K_{i-1} + s) (K_{i-1} + t)}\big)^{1-a-\delta}
@@ -1053,85 +1079,142 @@ term converges to zero, completing the proof.
 \end{proof}
 
 \begin{proof}[Proof of~\eqref{eq:13}.]
-Expanding $h_t^*(\bh_t^*)$ around $\btrue^*$ gives
+We have already established that both $\bh_t^*$ and $\btrue^*$
+are contained in $N$ for large enough $n$. Then expanding
+$h_s^*(\bh_t^*)$ around $\btrue^*$ gives
 \begin{equation*}
-\bh_t^* - \btrue^* = \Big(- \sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} \sum_{s=1}^{t-1} h_s^* / (t-1)
+  \bh_t^* - \btrue^* =
+  \Big(- \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t) \Big)^{-1}
+  \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^*
 \end{equation*}
-with each $b_s^*$ a.s.\ between $\bh_t^*$ and $\btrue^*$. Then
+with each $b_t \in \rect(\bh_t^*, \btrue^*)$ almost surely. Then
 \begin{multline}
   \omax{t} (t-1)^a | \hat{\beta}_t - \btrue |
-  \leq
-  \omax{t,u} \Big|\Big[ \Big(\sum_{s=1}^{t-1} \nabla h_s^*(b_s^*) \Big)^{-1} - B^* \Big]
-  (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \Big|\\
-  + \omax{t} \big| B^*   (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \big|
+  \leq \omax{t} \big| (t-1)^{a-1} B^* \sum_{s=1}^{t-1} h_s^* \big| \\
+  + \omax{t} \Big| \Big(
+  - \tfrac{1}{t-1} \sum_{s=1}^{t-1} \nabla h_s^*(b_t^*) \Big)^{-1} - B^* \Big|
+  \times \omax{t} \Big| (t-1)^{a-1} \sum_{s=1}^{t-1} h_s^* \Big|.
 \end{multline}
-and both terms converge to zero in (conditional) probability by the
-previous arguments.
+These terms converge to zero in (conditional) probability by~\eqref{eq:11}
+and Lemma~\ref{SA2}.
 \end{proof}
 
-\begin{lema}\label{res:a4}
-  Under the conditions of Theorem~\ref{res:3},
-  \begin{equation}\label{eq:16}
-    \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \to^{p^*} 0
-  \end{equation}
+\begin{proof}[Proof of~\eqref{eq:33}.]
+  A similar argument to~\eqref{eq:11} establishes that
+  \[
+    \oclt{t} \Big(\E^* \big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \big\rvert^2\Big)^{1/2}
+    = O_p\Big(\oclt{t} (t-1)^{-1/2} \Big)
+  \]
+  which is $O_p(1)$ by Lemma A1 of \citet{Wes:96}.
+\end{proof}
+\begin{proof}[Proof of~\eqref{eq:32}.]
+  A similar argument to (\ref{eq:11}) establishes that
+  \[
+    \E^*\Big(\osum{t} (F_t^* - F^*) / (t-1)^a\Big)^2 = O_p(1) \osum{t} (t-1)^{-2a}
+  \]
+  and the result then follows from Kronecker's Lemma.
+\end{proof}
+
+\begin{lema}\label{SA4}
+  Under the conditions of Theorem~\ref{T1},
+  \begin{gather}
+    \label{eq:18}
+    \oclt{t} (F_t^* - F^*) B^* \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0 \\
+    \label{eq:17}
+    \oclt{t} F^* (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0 \\
+    \label{eq:25}
+    \oclt{t} (F_t^* - F^*) (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \to^{p^*} 0
+  \end{gather}
   and
-  \begin{equation}\label{eq:17}
-    \oclt{t} F_t^* \cdot (\bh_t^* - \btrue^*)
-    = F^* B^* \tfrac{1}{\sqrt{P}} \sum_{t=1}^{T-1} a_t h_t^* + o_{p^*}(1).
+  \begin{equation}\label{eq:16}
+    \sup_{b_{it} \in \rect(\btrue^*, \bh_t^*)} \oclt{t}
+    (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \to^{p^*} 0.
   \end{equation}
 \end{lema}
+
+\begin{proof}[Proof of~\eqref{eq:18}]
+Choose $\delta > 0$ and $a \in (0,1/2)$ and write
+\begin{align}\label{eq:A3}
+  &\WesA[*] \notag \\
+  &\qquad= \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta\big\} \notag \\
+  &\quad\qquad + \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert \leq \delta \big\}.
+\end{align}
+For any $c > 0$,
+\begin{multline*}
+  \pr^*\Bigg[ \Big\lvert \WesA[*] \Ind\big\{ \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta\big\}
+  \Big\rvert > c \Bigg] \\
+  \leq \pr^*\Big[\omax{t} \big\lvert (t - 1)^{a-1} B^*
+  \sum\nolimits_{s=1}^{t-1} h_s^* \big\rvert > \delta \Big]
+\end{multline*}
+which converges to zero in probability by Lemma~\ref{SA3}, so the
+first summation on the RHS of~\eqref{eq:A3} converges to zero in
+probability as well. The second summation is of order
+\[
+  \oclt{t} (F_t^* - F^*) / (t-1)^a
+\]
+and converges in probability to zero by Lemma~\ref{SA3}.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:17}]
+  We have
+  \[
+    \big\lvert \oclt{t} F^* (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) \big\rvert
+    = O_{p^*}\big(\omax{t} \lvert B_t^* - B^* \rvert\big)
+    \oclt{t} \Big\lvert \tfrac{1}{t-1} \sum_{s=1}^{t-1} h_s^* \Big\rvert,
+  \]
+  so the conclusion follows from Lemmas~\ref{SA2} and~\ref{SA3}.
+\end{proof}
+
+\begin{proof}[Proof of~\eqref{eq:25}]
+  Here
+  \begin{multline*}
+    \oclt{t} (F_t^* - F^*) (B_t^* - B^*) \sum_{s=1}^{t-1} h_s^* / (t-1) = \\
+    O_p\big(\omax{t}\lvert B_t^* - B^* \rvert \big)
+    \Big(\oclt{t} (F_t^* - F^*)  \sum_{s=1}^{t-1} h_s^* / (t-1) \Big).
+  \end{multline*}
+  The first term is $o_p(1)$ from Lemma~\ref{SA2} and the second is $o_p(1)$ from
+  an argument essentially identical to that of~\eqref{eq:18}.
+\end{proof}
 
 \begin{proof}[Proof of~\eqref{eq:16}]
 We have
 \begin{align*}
-  \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
-  &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  \pr\Big[& \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
+  &\leq \pr\Big[1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\} \big|\oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big| > \epsilon \Big] \\
   &\quad + \pr[\btrue^* \notin N] + \pr[\bh_t^* \notin N\ \text{for some}\ t = R,\dots,T-1\}
 \end{align*}
-The second two probabilities on the rhs converge to zero by
-Lemma~\ref{res:a2} and the random variable inside the first probability is bounded by
+The second two probabilities on the RHS converge to zero by
+Lemmas~\ref{SA1} and~\ref{SA3} and the random variable inside the
+first probability has the upper bound
 \begin{multline*}
-  1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
-  \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}^*) (\bh_t^* - \btrue^*)
+  \big\lvert 1\{\btrue^* \in N, \bh_t^* \in N\ \text{for all}\ t\}
+  \oclt{t} (\bh_t^* - \btrue^*)' \nabla^2 f_{it}^*(b_{it}) (\bh_t^* - \btrue^*) \big\rvert
   \\ \leq
-  \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}  \nabla^2 f_{it}^*(b_{it}^*) 1\{\btrue^* \in N, \bh_t^* \in N\}.
+  \big(\sup_{t=R,\dots,T-1} |P^{1/4}(\bh_t^* - \btrue^*)|^2\big) \oavg{t}
+  \lvert \nabla^2 f_{it}^*(b_{it}) \rvert 1\{\btrue^* \in N, \bh_t^* \in N\}.
 \end{multline*}
-The summation is $O_p(1)$ by assumption and the supremum converges to
-zero by using Lemma~\ref{res:a2} again.
-\end{proof}
-\begin{proof}[Proof of~\eqref{eq:17}]
-For~\eqref{eq:17}, we have the upper bound
-\begin{multline*}
-  \big\lvert \oclt{t} \big(F_t^* \cdot (\bh_t^* - \btrue^*) - F^* B^* a_t h_t^*\big) \big\rvert \leq \\
-   \sup_{s=R,\dots,T-1} |\bh_s^* - \btrue^*|\; \big\lvert \oclt{t} (F_t^* - F^*) \big\rvert
-  + \big\lvert F^* \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert.
-\end{multline*}
-The first term converges in conditional probability to zero by
-Lemma~\ref{res:a2}.
-
-For the second, expand each $\sum_{s=1}^t \nabla q_s^*(\bh_t^*)$
-around $\btrue^*$ to get
-\begin{equation*}
-  \oclt{t} (\bh_t^* - \btrue^*)
-  = \oclt{t} \Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t^*)\Big]^{-1} \tfrac{1}{t} \sum_{s=1}^t h_s^*
-\end{equation*}
-where $b_t^*$ is between $\bh_t^*$ and $\btrue^*$. Then
-\begin{align*}
-  \big\lvert \oclt{t} \big((\bh_t^* - \btrue^*) - B^* a_t h_t^*\big) \big\rvert
-  &\leq \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-  \Big\lvert\oclt{t} \tfrac{1}{t} \sum_{s=1}^t h_s^* \Big\rvert \\
-  &= O_{p^*}(1) \sup_{t=R,\dots,T-1} \Big\lvert\Big[\tfrac{1}{t} \sum_{s=1}^t \nabla^2 q_s^*(b_t)\Big]^{-1} - B^*\Big\rvert
-\end{align*}
-by Lemma~\ref{res:a2} and the supremum converges to zero in
-probability by Lemma~\ref{res:a2} as well.
+The summation is $O_p(1)$ by assumption and the supremum term converges to zero
+by Lemma~\ref{SA3}.
 \end{proof}
 
-\begin{lema}\label{lem-clt}
-  Under the conditions of Theorem~\ref{res:3}, \eqref{eq:19} holds.
+\begin{lema}\label{SA5}
+  Under the conditions of Theorem~\ref{T1}, $S_{ff}^* \to^p S_{ff}$,
+  $S_{fh}^* \to^p S_{fh}$, and $S_{hh}^* \to^p S_{hh}$.
 \end{lema}
 \begin{proof}
+  The result holds from rewriting the variances under the bootstrap
+  distribution a HAC estimators of the population variance, then
+  applying the results of \citet{JoD:00}.
+\end{proof}
 
-  We will use arguments very similar to \cite{Cal:16c}. Define
+\begin{lema}\label{SA6}
+  Under the conditions of Theorem~\ref{T1}, \eqref{eq:19} holds.
+\end{lema}
+\begin{proof}
+  Define
   \[
   \zeta_{st}^* = \gamma_1'(f_t^* - \E^* f_t^*) + a_s \gamma_2' h_t^*
   \]
@@ -1150,9 +1233,9 @@ probability by Lemma~\ref{res:a2} as well.
 
   From the \mds\ property, we have
   \begin{equation*}
-    \sum_{j=1}^J z_j^* / \sqrt{v^*} \to^d N(0, 1)
+    \sum_{j=1}^J z_j^* / v^* \to^d N(0, 1)
   \end{equation*}
-  as long as the following properties hold:
+  as long as the following properties hold (along with Lemma~\ref{SA5}):
   \begin{equation}\label{eq:7}
     \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0
   \end{equation}
@@ -1173,26 +1256,21 @@ probability by Lemma~\ref{res:a2} as well.
     =  \sum_{j=1}^J \big(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} -
     \E(1\{\btrue^* \in N\}z_j^{*2}/v^{*2} \mid \Hs_{j-1}^*) \big).
    \end{equation*}
-   This term is the sum of a uniformly integrable martingale
-   difference sequence and satisfies the \lln\ (i.e.\ Davidson's, 1994,
-   Theorem 19.7), and so it converges in (conditional) probability to
-   zero.  The second term converges in probability to zero by
-   consistency of $\btrue^*$ (Lemma~\ref{res:a3}).
+   Uniform integrability of the summand follows from similar arguments
+   to those used in \cite{Cal:14}, making this term is the sum of a
+   uniformly integrable martingale difference sequence and satisfies
+   the \lln\ (i.e.\ Davidson's, 1994, Theorem 19.7), so it converges
+   in (conditional) probability to zero. The second term converges in
+   probability to zero by consistency of $\btrue^*$ (Lemma~\ref{SA1}).
 
    Similarly, \eqref{eq:7} holds if
    \begin{equation*}
-     1\{\beta_0^* \in N\} \sum_{j=1}^J \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to 0,
+     1\{\beta_0^* \in N\} \sum_{j=1}^J
+     \E^*(z_j^{*2} 1\{z_j^{*2} > \epsilon\} \mid \Hs_{j-1}^*) \to^p 0,
    \end{equation*}
-   which holds by uniform integrability of $1\{\beta_0^* \in N\} z_j^{*2}$.
-
-   Finally, since the variance of the bootstrapped statistic can be
-   rewritten as a \hac\ variance estimator,
-   \begin{equation*}
-     v^{*2} \to^p \gamma_1' S_{ff} \gamma_1 + 2 \lambda_{fh} (\gamma_2' S_{fh}' \gamma_1)
-     + \lambda_{hh} \gamma_2' S_{hh} \gamma_2
-   \end{equation*}
-   holds by Theorem 2.2 of \cite{JoD:00}, using West's (1996)
-   arguments to handle the $a_s$ terms.
+   which again follows from uniform integrability.  The formula for
+   the limiting variance follows from West (1996), completing the
+   proof.
 \end{proof}
 
 \bibliography{texextra/references}
