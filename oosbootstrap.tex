@@ -655,11 +655,10 @@ change our arguments. This also implies that we will drop the $i$
 index for the estimators $\bh_{it}$, estimation criteria
 $q_{it}(\beta)$ etc.
 
-We will also present proofs for the recursive window; the fixed and
-rolling window have similar proofs but are less complicated.
-
-To make the mathematical results in this appendix clearer, we will
-introduce the following additional notation:
+We will only present proofs for the recursive window and the circular
+block bootstrap. The other methods have very similar proofs.  To make
+the mathematical results in this appendix clearer, we will introduce
+the following additional notation:
 \begin{itemize}
 \item $f_t = f_t(\btrue)$ and $f_t^* = f_t^*(\btrue^*)$
 \item $F_t(\beta) = \nabla f_t(\beta)$ and $F_t^*(\beta) = \nabla
@@ -806,10 +805,6 @@ $f_t^{*}(\bh_t^*)$ around $\btrue^*$ to get
 \end{lema}
 
 \begin{proof}[Proof of Lemma~\ref{SA1}]
-  We'll present proofs of these results for the circular block
-  bootstrap; the proofs for the moving blocks and stationary
-  bootstraps are similar.
-
   By construction, $\btrue^* = \argmin_\beta \sum_{s=2}^T q_s(\beta)$
   almost surely and our smoothness and moment conditions ensure that
   $\sum_{s=2}^T q_s(\beta)$ obeys a uniform \lln\ and converges in
